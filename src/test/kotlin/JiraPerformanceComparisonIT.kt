@@ -38,8 +38,8 @@ class JiraPerformanceComparisonIT {
     fun shouldComparePerformance() {
         val results: List<EdibleResult> = AbruptExecutorService(newCachedThreadPool()).use { pool ->
             listOf(
-                benchmark("a.properties", JiraDcScenario::class.java, quality, pool),
-                benchmark("b.properties", JiraCloudScenario::class.java, quality, pool)
+                benchmark("dc.properties", JiraDcScenario::class.java, quality, pool),
+                benchmark("c.properties", JiraCloudScenario::class.java, quality, pool)
                 // feel free to add more, e.g. benchmark("c.properties", ...
             )
                 .map { it.get() }
