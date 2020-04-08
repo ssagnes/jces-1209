@@ -6,11 +6,14 @@ import com.atlassian.performance.tools.report.api.FullTimeline
 import com.atlassian.performance.tools.report.api.WaterfallHighlightReport
 import com.atlassian.performance.tools.report.api.result.EdibleResult
 import com.atlassian.performance.tools.report.api.result.RawCohortResult
+import com.atlassian.performance.tools.virtualusers.api.TemporalRate
 import com.atlassian.performance.tools.virtualusers.api.VirtualUserOptions
 import com.atlassian.performance.tools.virtualusers.api.config.VirtualUserBehavior
 import com.atlassian.performance.tools.virtualusers.api.config.VirtualUserTarget
 import com.atlassian.performance.tools.workspace.api.RootWorkspace
 import com.atlassian.performance.tools.workspace.api.TestWorkspace
+import extract.to.lib.jpt.report.Apdex
+import extract.to.lib.jpt.report.ApdexPerExperience
 import jces1209.BenchmarkQuality
 import jces1209.SlowAndMeaningful
 import jces1209.log.LogConfigurationFactory
@@ -28,7 +31,6 @@ import java.util.concurrent.Executors.newCachedThreadPool
 class JiraPerformanceComparisonIT {
 
     private val workspace = RootWorkspace(Paths.get("build")).currentTask
-    private val quality: BenchmarkQuality = SlowAndMeaningful.Builder().build()
 
     init {
         ConfigurationFactory.setConfigurationFactory(LogConfigurationFactory(workspace))
@@ -38,14 +40,37 @@ class JiraPerformanceComparisonIT {
     fun shouldComparePerformance() {
         val results: List<EdibleResult> = AbruptExecutorService(newCachedThreadPool()).use { pool ->
             listOf(
-                benchmark("a.properties", JiraDcScenario::class.java, quality, pool),
-                benchmark("b.properties", JiraCloudScenario::class.java, quality, pool)
+                benchmark(
+                    "a.properties",
+                    JiraDcScenario::class.java,
+                    SlowAndMeaningful.Builder()
+                        .virtualUsers(18)
+                        .maxOverload(TemporalRate(3.75, Duration.ofSeconds(1)))
+                        .build(),
+                    pool
+                ),
+                benchmark(
+                    "b.properties",
+                    JiraDcScenario::class.java,
+                    SlowAndMeaningful.Builder()
+                        .virtualUsers(54)
+                        .maxOverload(TemporalRate(11.25, Duration.ofSeconds(1)))
+                        .build(),
+                    pool
+                ),
+                benchmark(
+                    "c.properties",
+                    JiraCloudScenario::class.java,
+                    SlowAndMeaningful.Builder().build(),
+                    pool
+                )
                 // feel free to add more, e.g. benchmark("c.properties", ...
             )
                 .map { it.get() }
                 .map { it.prepareForJudgement(FullTimeline()) }
         }
         FullReport().dump(results, workspace.isolateTest("Compare"))
+        ApdexPerExperience(Apdex()).report(results, workspace)
         dumpMegaSlowWaterfalls(results)
     }
 
@@ -66,7 +91,7 @@ class JiraPerformanceComparisonIT {
         scenario: Class<out Scenario>,
         quality: BenchmarkQuality
     ): RawCohortResult {
-        val options = loadOptions(properties, scenario)
+        val options = loadOptions(properties, scenario, quality)
         val cohort = properties.cohort
         val resultsTarget = workspace.directory.resolve("vu-results").resolve(cohort)
         val provisioned = quality
@@ -87,7 +112,8 @@ class JiraPerformanceComparisonIT {
 
     private fun loadOptions(
         properties: CohortProperties,
-        scenario: Class<out Scenario>
+        scenario: Class<out Scenario>,
+        quality: BenchmarkQuality
     ): VirtualUserOptions {
         val target = VirtualUserTarget(
             webApplication = properties.jira,

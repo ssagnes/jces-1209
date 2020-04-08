@@ -12,6 +12,8 @@ import java.time.Duration
 class SlowAndMeaningful private constructor(
     private val browser: Class<out Browser>,
     private val region: Regions,
+    private val virtualUsersCount: Int,
+    private val maxOverload: TemporalRate,
     private val duration: Duration
 ) : BenchmarkQuality {
 
@@ -21,8 +23,8 @@ class SlowAndMeaningful private constructor(
         .browser(browser)
         .load(
             VirtualUserLoad.Builder()
-                .virtualUsers(72)
-                .maxOverallLoad(TemporalRate(15.0, Duration.ofSeconds(1)))
+                .virtualUsers(virtualUsersCount)
+                .maxOverallLoad(maxOverload)
                 .flat(duration)
                 .build()
         )
@@ -34,15 +36,21 @@ class SlowAndMeaningful private constructor(
         private var browser: Class<out Browser> = EagerChromeBrowser::class.java
         private var region: Regions = Regions.US_EAST_1
         private var duration: Duration = Duration.ofMinutes(20)
+        private var virtualUsersCount = 72
+        private var maxOverload = TemporalRate(15.0, Duration.ofSeconds(1))
 
         fun browser(browser: Class<out Browser>) = apply { this.browser = browser }
         fun region(region: Regions) = apply { this.region = region }
         fun duration(duration: Duration) = apply { this.duration = duration }
+        fun virtualUsers(virtualUsersCount: Int) = apply { this.virtualUsersCount = virtualUsersCount }
+        fun maxOverload(maxOverload: TemporalRate) = apply { this.maxOverload = maxOverload }
 
         fun build(): BenchmarkQuality {
             return SlowAndMeaningful(
                 browser,
                 region,
+                virtualUsersCount,
+                maxOverload,
                 duration
             )
         }
