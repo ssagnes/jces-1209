@@ -1,4 +1,5 @@
 import com.atlassian.performance.tools.jiraactions.api.format.MetricCompactJsonFormat
+import com.atlassian.performance.tools.report.api.FullReport
 import com.atlassian.performance.tools.report.api.FullTimeline
 import com.atlassian.performance.tools.report.api.result.EdibleResult
 import com.atlassian.performance.tools.report.api.result.RawCohortResult
@@ -11,17 +12,20 @@ import java.nio.file.Paths
 
 class ExistingResultsIT {
 
-    private val existingResultsDir = "2020-04-01T11-28-28.99364"
+    private val existingResultsDir = "jces-1317-comparision"
 
     @Test
     fun shouldOnlyProcessGatheredData() {
         val taskWorkspace = RootWorkspace(Paths.get("build")).isolateTask(existingResultsDir)
-        val alphaProps = CohortProperties.load("a.properties")
-        val betaProps = CohortProperties.load("b.properties")
-        val alpha = processResults(alphaProps.cohort, taskWorkspace)
-        val beta = processResults(betaProps.cohort, taskWorkspace)
-        val results = listOf(alpha, beta)
 
+        val results = listOf(
+            processResults("DC Generic Base", taskWorkspace),
+            processResults("DC Mimic 2k Base", taskWorkspace),
+            processResults("DC Mimic 6k Base", taskWorkspace),
+            processResults("JCES-1317", taskWorkspace)
+        )
+
+        FullReport().dump(results, taskWorkspace.isolateTest("Compare"))
         ApdexPerExperience(Apdex()).report(results, taskWorkspace)
     }
 
