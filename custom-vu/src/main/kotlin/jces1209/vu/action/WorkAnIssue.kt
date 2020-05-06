@@ -1,10 +1,6 @@
 package jces1209.vu.action
 
-import com.atlassian.performance.tools.jiraactions.api.ADD_COMMENT
-import com.atlassian.performance.tools.jiraactions.api.ADD_COMMENT_SUBMIT
-import com.atlassian.performance.tools.jiraactions.api.SeededRandom
-import com.atlassian.performance.tools.jiraactions.api.VIEW_ISSUE
-import com.atlassian.performance.tools.jiraactions.api.WebJira
+import com.atlassian.performance.tools.jiraactions.api.*
 import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.IssueKeyMemory
@@ -49,6 +45,9 @@ class WorkAnIssue(
     }
 
     private fun edit(issuePage: AbstractIssuePage) {
+        meter.measure(ActionType("Edit Issue Description") {Unit}) {
+            issuePage.editDescription("updated")
+        }
         logger.debug("I want to edit the $issuePage")
     }
 
