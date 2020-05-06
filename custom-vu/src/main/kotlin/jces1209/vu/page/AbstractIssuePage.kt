@@ -4,4 +4,5 @@ interface AbstractIssuePage {
 
     fun waitForSummary(): AbstractIssuePage
     fun comment(): Commenting
+    fun editDescription(description: String): AbstractIssuePage
 }

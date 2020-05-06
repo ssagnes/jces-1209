@@ -3,7 +3,10 @@ package jces1209.vu.page
 import com.atlassian.performance.tools.jiraactions.api.page.JiraErrors
 import jces1209.vu.wait
 import org.openqa.selenium.By
+import org.openqa.selenium.Keys
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.interactions.Actions
+import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.ExpectedConditions.or
 import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
 
@@ -25,5 +28,30 @@ class DcIssuePage(
 
     override fun comment(): Commenting {
         return DcCommenting(driver)
+    }
+
+    override fun editDescription(description: String): DcIssuePage {
+        driver
+            .findElement(By.id("description-val"))
+            .click();
+
+        val descriptionForm = driver
+            .wait(
+                    visibilityOfElementLocated(By.id("description-form"))
+            )
+
+        Actions(driver)
+            .sendKeys(description)
+            .perform()
+
+        descriptionForm
+            .findElement(By.cssSelector("button[type='submit']"))
+            .click()
+
+        driver.wait(
+            ExpectedConditions
+                .invisibilityOfAllElements(descriptionForm)
+        )
+        return this;
     }
 }
