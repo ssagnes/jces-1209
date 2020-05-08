@@ -18,7 +18,8 @@ class WorkAnIssue(
     private val issueKeyMemory: IssueKeyMemory,
     private val random: SeededRandom,
     private val editProbability: Float,
-    private val commentProbability: Float
+    private val commentProbability: Float,
+    private val linkIssueProbability: Float
 ) : Action {
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
@@ -31,6 +32,10 @@ class WorkAnIssue(
         val loadedIssuePage = read(issueKey)
         if (random.random.nextFloat() < editProbability) {
             edit(loadedIssuePage)
+        }
+        if (random.random.nextFloat() < linkIssueProbability) {
+            // issue must have other issues in a project to link them
+            linkIssue(loadedIssuePage, issueKey.substringBefore("-"))
         }
         if (random.random.nextFloat() < commentProbability) {
             comment(loadedIssuePage)
@@ -45,10 +50,25 @@ class WorkAnIssue(
     }
 
     private fun edit(issuePage: AbstractIssuePage) {
-        meter.measure(ActionType("Edit Issue Description") {Unit}) {
+        meter.measure(ActionType("Edit Issue Description") { Unit }) {
             issuePage.editDescription("updated")
         }
         logger.debug("I want to edit the $issuePage")
+    }
+
+    private fun linkIssue(issuePage: AbstractIssuePage, issuePrefixSearch: String) {
+        val issueLinking = issuePage.linkIssue()
+        meter.measure(ActionType("Link Issue") { Unit }) {
+            meter.measure(ActionType("Link Issue(Load form)") { Unit }) {
+                issueLinking.openEditor()
+            }
+            meter.measure(ActionType("Link Issue(Search issue and choose)") { Unit }) {
+                issueLinking.searchAndChooseIssue(issuePrefixSearch)
+            }
+            meter.measure(ActionType("Link Issue(Submit)") { Unit }) {
+                issueLinking.submitIssue()
+            }
+        }
     }
 
     private fun comment(issuePage: AbstractIssuePage) {
