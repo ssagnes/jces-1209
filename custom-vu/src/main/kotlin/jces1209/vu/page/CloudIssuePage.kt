@@ -2,9 +2,12 @@ package jces1209.vu.page
 
 import jces1209.vu.wait
 import org.openqa.selenium.By
+import org.openqa.selenium.Keys
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.interactions.Actions
+import org.openqa.selenium.support.ui.ExpectedCondition
 import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.ExpectedConditions.*
 
 class CloudIssuePage(
     private val driver: WebDriver
@@ -38,7 +41,7 @@ class CloudIssuePage(
 
         val descriptionForm = driver
             .wait(
-                ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-test-id='issue.views.field.rich-text.editor-container']"))
+                presenceOfElementLocated(By.cssSelector("[data-test-id='issue.views.field.rich-text.editor-container']"))
             )
 
         Actions(driver)
@@ -50,10 +53,13 @@ class CloudIssuePage(
             .click()
 
         driver.wait(
-            ExpectedConditions
-                .invisibilityOfAllElements(descriptionForm)
+            invisibilityOfAllElements(descriptionForm)
         )
         return this;
+    }
+
+    override fun linkIssue(): CloudIssueLinking {
+        return CloudIssueLinking(driver)
     }
 
     private fun isCommentingClassic(): Boolean = driver
