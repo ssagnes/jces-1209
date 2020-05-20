@@ -5,13 +5,14 @@ import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.Memory
-import jces1209.vu.page.CloudBrowseBoardsPage
-import jces1209.vu.page.boards.cloud.BoardPage
+import jces1209.vu.page.boards.browse.BrowseBoardsPage
+import jces1209.vu.page.boards.view.BoardPage
 import net.jcip.annotations.NotThreadSafe
 
 @NotThreadSafe
-class BrowseCloudBoards(
+class BrowseBoards(
     private val jira: WebJira,
+    private val browseBoardsPage: BrowseBoardsPage,
     private val meter: ActionMeter,
     private val kanbanBoardsMemory: Memory<BoardPage>,
     private val scrumBoardsMemory: Memory<BoardPage>,
@@ -21,7 +22,8 @@ class BrowseCloudBoards(
     override fun run() {
         val boardList = meter.measure(BROWSE_BOARDS) {
             jira.navigateTo("secure/ManageRapidViews.jspa")
-            CloudBrowseBoardsPage(jira.driver).waitForBoards()
+            browseBoardsPage
+                .waitForBoards()
         }
         val listBoards = boardList.listBoards()
         listBoards[boardList.boardNameKanban]?.let { kanbanBoardsMemory.remember(it) }

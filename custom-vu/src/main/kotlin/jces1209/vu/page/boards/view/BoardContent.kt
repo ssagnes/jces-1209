@@ -1,4 +1,4 @@
-package jces1209.vu.page.boards.cloud
+package jces1209.vu.page.boards.view
 
 interface BoardContent {
 

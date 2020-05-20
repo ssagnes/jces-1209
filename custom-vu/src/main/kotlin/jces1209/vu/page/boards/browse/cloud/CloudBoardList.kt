@@ -1,9 +1,10 @@
-package jces1209.vu.page
+package jces1209.vu.page.boards.browse.cloud
 
-import jces1209.vu.page.boards.cloud.BoardPage
-import jces1209.vu.page.boards.cloud.KanbanBoardPage
-import jces1209.vu.page.boards.cloud.NextGenBoardPage
-import jces1209.vu.page.boards.cloud.ScrumBoardPage
+import jces1209.vu.page.boards.browse.BoardList
+import jces1209.vu.page.boards.view.BoardPage
+import jces1209.vu.page.boards.view.cloud.KanbanBoardPage
+import jces1209.vu.page.boards.view.cloud.NextGenBoardPage
+import jces1209.vu.page.boards.view.cloud.ScrumBoardPage
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
@@ -12,12 +13,9 @@ import java.net.URI
 class CloudBoardList(
     private val element: WebElement,
     private val driver: WebDriver
-) {
-    public val boardNameKanban = "Kanban"
-    public val boardNameScrum = "Scrum"
-    public val boardNameNextGen = "Next-gen"
+) : BoardList() {
 
-    fun listBoards(): Map<String, Collection<BoardPage>> {
+    override fun listBoards(): Map<String, Collection<BoardPage>> {
         val columnNames = element
             .findElements(By.tagName("th"))
             .map { it.text.trim() }
@@ -37,7 +35,7 @@ class CloudBoardList(
                     boardNameNextGen -> NextGenBoardPage(driver, uri)
                     else -> throw Exception("Unknown board type: $type")
                 }
-                if(null == boards[type]) {
+                if (null == boards[type]) {
                     boards[type] = mutableListOf()
                 }
                 boards[type]?.plusAssign(page)
