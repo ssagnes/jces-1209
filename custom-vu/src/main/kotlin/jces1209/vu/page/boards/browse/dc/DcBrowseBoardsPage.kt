@@ -3,10 +3,8 @@ package jces1209.vu.page.boards.browse.dc
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.page.JiraErrors
 import com.atlassian.performance.tools.jiraactions.api.page.wait
-import jces1209.vu.page.FalliblePage
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
 import org.openqa.selenium.By
-import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
 import java.time.Duration
 
@@ -33,6 +31,6 @@ class DcBrowseBoardsPage(
         )
         jiraErrors.assertNoErrors()
 
-        return DcBoardList(jira.driver.findElement(By.className("boards-list")), jira)
+        return DcBoardList(jira)
     }
 }

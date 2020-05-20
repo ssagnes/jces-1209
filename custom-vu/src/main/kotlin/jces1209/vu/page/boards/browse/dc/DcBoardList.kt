@@ -5,31 +5,30 @@ import com.atlassian.performance.tools.jiraactions.api.page.wait
 import jces1209.vu.page.boards.browse.BoardList
 import jces1209.vu.page.boards.view.BoardPage
 import jces1209.vu.page.boards.view.dc.KanbanBoardPage
+import jces1209.vu.page.boards.view.dc.ScrumBoardPage
 import org.openqa.selenium.By
-import org.openqa.selenium.WebDriver
-import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.ExpectedConditions
-import java.net.URI
 import java.time.Duration
 
 class DcBoardList(
-    private val element: WebElement,
     private val jira: WebJira
 ) : BoardList() {
 
     override fun listBoards(): Map<String, Collection<BoardPage>> {
-        return mapOf(boardNameKanban to getKanbanBoards(), boardNameScrum to getScrumBoards())
+        return mapOf(Companion.boardNameKanban to getKanbanBoards(), boardNameScrum to getScrumBoards())
     }
 
     private fun getKanbanBoards(): Collection<BoardPage> =
-        getBoards("secure/RapidBoard.jspa?rapidView=%s")
+        getBoards()
+            .map {
+                KanbanBoardPage(jira, it)
+            }
 
-    private fun getBoards(path: String): Collection<BoardPage> =
+    private fun getBoards(): Collection<String> =
         jira.driver
             .findElements(By.cssSelector(".boards-list tr"))
             .mapNotNull {
-                val boardId = it.getAttribute("data-board-id")
-                KanbanBoardPage(jira.driver, jira.base.resolve(path.format(boardId)).toURL().toURI())
+                it.getAttribute("data-board-id")
             }
 
     private fun getScrumBoards(): Collection<BoardPage> {
@@ -55,6 +54,9 @@ class DcBoardList(
             )
         )
 
-        return getBoards("secure/RapidBoard.jspa?rapidView=%s&view=planning")
+        return getBoards()
+            .map {
+                ScrumBoardPage(jira, it)
+            }
     }
 }

@@ -84,7 +84,9 @@ class ScenarioSimilarities(
         ),
         viewBoard = ViewBoard(
             meter = meter,
-            boardMemory = kanbanBoardPages,
+            kanbanBoardMemory = kanbanBoardPages,
+            scrumBoardMemory = scrumBoardPages,
+            nextGenBoardMemory = nextGenBoardPages,
             issueKeyMemory = issueKeyMemory,
             random = seededRandom,
             viewIssueProbability = 0.50f,

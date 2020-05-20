@@ -3,17 +3,18 @@ package jces1209.vu.page.boards.view.cloud
 import jces1209.vu.page.FalliblePage
 import jces1209.vu.page.boards.view.BoardContent
 import jces1209.vu.page.boards.view.BoardPage
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
+import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
+import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
 import java.net.URI
 
 class NextGenBoardPage(
-    private val driver: WebDriver, uri: URI
+    driver: WebDriver, uri: URI
 ) : BoardPage(driver, uri) {
-    private val logger: Logger = LogManager.getLogger(this::class.java)
+    override val issueSelector = By.cssSelector("[data-test-id='platform-board-kit.ui.card.card']")
 
     private val falliblePage = FalliblePage.Builder(
         webDriver = driver,
@@ -36,14 +37,23 @@ class NextGenBoardPage(
         return NextGenBoardContent(issueCards)
     }
 
-    override fun previewIssue(): BoardPage {
-        logger.debug("Issue bento view is not implemented")
+    override fun previewIssue(): NextGenBoardPage {
+        driver
+            .wait(visibilityOfElementLocated(issueSelector))
+            .click()
+
+        driver
+            .wait(
+                ExpectedConditions.and(
+                    visibilityOfElementLocated(By.cssSelector("[role='dialog']")),
+                    visibilityOfElementLocated(By.cssSelector("[data-test-id='issue.activity.comment']"))
+                ))
+
         return this;
     }
 
     private fun findIssueCards(): List<WebElement> {
-        val issueCardLocator = By.cssSelector("[data-test-id='platform-board-kit.ui.card.card']")
-        return driver.findElements(issueCardLocator)
+        return driver.findElements(issueSelector)
     }
 
     private fun closeModals() {
