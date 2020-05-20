@@ -1,20 +1,18 @@
-package jces1209.vu.page.boards.cloud
+package jces1209.vu.page.boards.view.cloud
 
 import jces1209.vu.page.FalliblePage
+import jces1209.vu.page.boards.view.BoardContent
+import jces1209.vu.page.boards.view.BoardPage
 import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.ExpectedConditions.and
 import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
 import java.net.URI
 
-internal class ClassicBoardPage(
-    private val driver: WebDriver,
-    override val uri: URI
-) : BoardPage {
-
-    private val issueSelector = By.className("ghx-issue")
+abstract class ClassicBoardPage(
+    private val driver: WebDriver, uri: URI
+) : BoardPage(driver, uri) {
 
     private val falliblePage = FalliblePage.Builder(
         webDriver = driver,
@@ -30,14 +28,7 @@ internal class ClassicBoardPage(
 
     override fun waitForBoardPageToLoad(): BoardContent {
         falliblePage.waitForPageToLoad()
-        return KanbanBoardContent(driver)
-    }
-
-    override fun areThereIssues(): Boolean {
-        driver
-            .wait(visibilityOfElementLocated(By.className("ghx-column")))
-
-        return !driver.findElements(issueSelector).isEmpty()
+        return GeneralBoardContent(driver)
     }
 
     override fun previewIssue(): BoardPage {
@@ -53,19 +44,5 @@ internal class ClassicBoardPage(
                 ))
 
         return this;
-    }
-
-    private class KanbanBoardContent(
-        private val driver: WebDriver
-    ) : BoardContent {
-
-        private val lazyIssueKeys: Collection<String> by lazy {
-            driver
-                .findElements(By.className("ghx-issue"))
-                .map { it.getAttribute("data-issue-key") }
-        }
-
-        override fun getIssueCount(): Int = lazyIssueKeys.size
-        override fun getIssueKeys(): Collection<String> = lazyIssueKeys
     }
 }

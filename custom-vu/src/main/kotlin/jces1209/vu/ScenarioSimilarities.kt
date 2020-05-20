@@ -10,9 +10,15 @@ import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.Adaptiv
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveProjectMemory
 import com.atlassian.performance.tools.jiraactions.api.w3c.JavascriptW3cPerformanceTimeline
+import jces1209.vu.action.BrowseBoards
 import jces1209.vu.action.BrowsePopularFilters
+import jces1209.vu.action.ViewBoard
 import jces1209.vu.action.WorkAnIssue
 import jces1209.vu.page.AbstractIssuePage
+import jces1209.vu.page.JiraTips
+import jces1209.vu.page.boards.browse.BrowseBoardsPage
+import jces1209.vu.page.boards.browse.dc.DcBrowseBoardsPage
+import jces1209.vu.page.boards.view.BoardPage
 import jces1209.vu.page.filters.FiltersPage
 import org.openqa.selenium.JavascriptExecutor
 import java.net.URI
@@ -29,15 +35,17 @@ class ScenarioSimilarities(
     val issueKeyMemory = AdaptiveIssueKeyMemory(seededRandom)
     val projectMemory = AdaptiveProjectMemory(seededRandom)
     val filtersMemory = SeededMemory<URI>(seededRandom)
+    val kanbanBoardPages = SeededMemory<BoardPage>(seededRandom)
+    val scrumBoardPages = SeededMemory<BoardPage>(seededRandom)
+    val nextGenBoardPages = SeededMemory<BoardPage>(seededRandom)
 
     fun assembleScenario(
         issuePage: AbstractIssuePage,
         filtersPage: FiltersPage,
+        browseBoardsPage: BrowseBoardsPage,
         createIssue: Action,
         searchWithJql: Action,
-        browseProjects: Action,
-        browseBoards: Action,
-        viewBoard: Action
+        browseProjects: Action
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
         searchWithJql = searchWithJql,
@@ -66,8 +74,22 @@ class ScenarioSimilarities(
             filtersPage = filtersPage,
             meter = meter
         ),
-        browseBoards = browseBoards,
-        viewBoard = viewBoard
+        browseBoards = BrowseBoards(
+            jira = jira,
+            browseBoardsPage = browseBoardsPage,
+            meter = meter,
+            kanbanBoardsMemory = kanbanBoardPages,
+            scrumBoardsMemory = scrumBoardPages,
+            nextGenBoardsMemory = nextGenBoardPages
+        ),
+        viewBoard = ViewBoard(
+            meter = meter,
+            boardMemory = kanbanBoardPages,
+            issueKeyMemory = issueKeyMemory,
+            random = seededRandom,
+            viewIssueProbability = 0.50f,
+            jiraTips = JiraTips(jira.driver)
+        )
     )
 
     private fun assembleScenario(
