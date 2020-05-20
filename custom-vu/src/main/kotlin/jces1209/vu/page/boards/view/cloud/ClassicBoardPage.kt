@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLoca
 import java.net.URI
 
 abstract class ClassicBoardPage(
-    private val driver: WebDriver, uri: URI
+    driver: WebDriver, uri: URI
 ) : BoardPage(driver, uri) {
 
     private val falliblePage = FalliblePage.Builder(
@@ -28,10 +28,10 @@ abstract class ClassicBoardPage(
 
     override fun waitForBoardPageToLoad(): BoardContent {
         falliblePage.waitForPageToLoad()
-        return GeneralBoardContent(driver)
+        return GeneralBoardContent(driver, issueSelector)
     }
 
-    override fun previewIssue(): BoardPage {
+    override fun previewIssue(): ClassicBoardPage {
         driver
             .wait(visibilityOfElementLocated(issueSelector))
             .click()

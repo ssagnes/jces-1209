@@ -5,6 +5,7 @@ import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.Memory
+import jces1209.vu.page.boards.browse.BoardList
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
 import jces1209.vu.page.boards.view.BoardPage
 import net.jcip.annotations.NotThreadSafe
@@ -26,8 +27,8 @@ class BrowseBoards(
                 .waitForBoards()
         }
         val listBoards = boardList.listBoards()
-        listBoards[boardList.boardNameKanban]?.let { kanbanBoardsMemory.remember(it) }
-        listBoards[boardList.boardNameScrum]?.let { scrumBoardsMemory.remember(it) }
-        listBoards[boardList.boardNameNextGen]?.let { nextGenBoardsMemory.remember(it) }
+        listBoards[BoardList.boardNameKanban]?.let { kanbanBoardsMemory.remember(it) }
+        listBoards[BoardList.boardNameScrum]?.let { scrumBoardsMemory.remember(it) }
+        listBoards[BoardList.boardNameNextGen]?.let { nextGenBoardsMemory.remember(it) }
     }
 }

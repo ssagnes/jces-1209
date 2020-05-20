@@ -30,7 +30,7 @@ class CloudBoardList(
                 val name = cells[nameColumnIndex]!!
                 val uri = name.findElement(By.tagName("a")).getAttribute("href").let { URI(it) }
                 val page = when (type) {
-                    boardNameKanban -> KanbanBoardPage(driver, uri)
+                    Companion.boardNameKanban -> KanbanBoardPage(driver, uri)
                     boardNameScrum -> ScrumBoardPage(driver, uri)
                     boardNameNextGen -> NextGenBoardPage(driver, uri)
                     else -> throw Exception("Unknown board type: $type")

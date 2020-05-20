@@ -4,5 +4,5 @@ import org.openqa.selenium.WebDriver
 import java.net.URI
 
 class ScrumBoardPage(
-    private val driver: WebDriver, uri: URI
+    driver: WebDriver, uri: URI
 ) : ClassicBoardPage(driver, uri)
