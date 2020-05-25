@@ -15,18 +15,17 @@ import jces1209.BenchmarkQuality
 import jces1209.QuickAndDirty
 import jces1209.SlowAndMeaningful
 import jces1209.log.LogConfigurationFactory
-import jces1209.vu.JiraCloudScenario
-import jces1209.vu.JiraDcScenario
+import jces1209.vu.CloudProjectIssueNavigatorScenario
+import jces1209.vu.DcProjectIssueNavigatorScenario
 import org.apache.logging.log4j.core.config.ConfigurationFactory
 import org.junit.Test
-import java.io.File
 import java.nio.file.Paths
 import java.time.Duration
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors.newCachedThreadPool
 
-class JiraPerformanceComparisonIT {
+class JiraPerformanceComparisonProjectIssueNavigatorIT {
 
     private val workspace = RootWorkspace(Paths.get("build")).currentTask
     private val quality: BenchmarkQuality = SlowAndMeaningful.Builder().build()
@@ -39,8 +38,8 @@ class JiraPerformanceComparisonIT {
     fun shouldComparePerformance() {
         val results: List<EdibleResult> = AbruptExecutorService(newCachedThreadPool()).use { pool ->
             listOf(
-                benchmark("a.properties", JiraDcScenario::class.java, quality, pool),
-                benchmark("b.properties", JiraCloudScenario::class.java, quality, pool)
+                benchmark("a.properties", DcProjectIssueNavigatorScenario::class.java, quality, pool),
+                benchmark("b.properties", CloudProjectIssueNavigatorScenario::class.java, quality, pool)
                 // feel free to add more, e.g. benchmark("c.properties", ...
             )
                 .map { it.get() }

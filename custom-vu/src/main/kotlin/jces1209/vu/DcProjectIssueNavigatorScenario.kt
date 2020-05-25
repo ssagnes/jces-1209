@@ -3,22 +3,15 @@ package jces1209.vu
 import com.atlassian.performance.tools.jiraactions.api.SeededRandom
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.Action
-import com.atlassian.performance.tools.jiraactions.api.action.BrowseProjectsAction
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.scenario.JiraCoreScenario
 import com.atlassian.performance.tools.jiraactions.api.scenario.Scenario
-import jces1209.vu.action.*
-import jces1209.vu.page.DcIssuePage
-import jces1209.vu.page.JiraTips
-import jces1209.vu.page.boards.browse.dc.DcBrowseBoardsPage
-import jces1209.vu.page.boards.view.BoardPage
-import jces1209.vu.page.filters.ServerFiltersPage
+import jces1209.vu.action.ProjectIssueNavigatorAction
 import jces1209.vu.page.issue.DcProjectIssueNavigatorPage
-import org.openqa.selenium.By
 import org.openqa.selenium.TakesScreenshot
 
-class JiraDcScenario : Scenario {
+class DcProjectIssueNavigatorScenario : Scenario {
 
     override fun getLogInAction(
         jira: WebJira,
@@ -40,25 +33,14 @@ class JiraDcScenario : Scenario {
                 ).build())
             .build()
         val similarities = ScenarioSimilarities(jira, seededRandom, meter)
-        return similarities.assembleScenario(
-            issuePage = DcIssuePage(jira.driver),
-            filtersPage = ServerFiltersPage(jira, jira.driver),
-            browseBoardsPage = DcBrowseBoardsPage(jira),
-            createIssue = CreateAnIssue(
+        return similarities.assembleScenarioProjectIssueNavigator(
+
+            projectIssueNavigatorAction = ProjectIssueNavigatorAction(
                 jira = jira,
                 meter = meter,
                 projectMemory = similarities.projectMemory,
-                createIssueButton = By.id("create_link")
-            ),
-            searchWithJql = SearchServerFilter(
-                jira = jira,
-                meter = meter,
-                filters = similarities.filtersMemory
-            ),
-            browseProjects = BrowseProjectsAction(
-                jira = jira,
-                meter = meter,
-                projectMemory = similarities.projectMemory
+                projectIssueNavigatorPage = DcProjectIssueNavigatorPage(jira.driver),
+                numberOfProject= "3"
             )
         )
     }
