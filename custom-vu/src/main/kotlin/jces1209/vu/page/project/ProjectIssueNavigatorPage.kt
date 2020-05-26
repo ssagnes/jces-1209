@@ -1,25 +1,15 @@
-package jces1209.vu.page.issue
+package jces1209.vu.page.project
 
 import com.atlassian.performance.tools.jiraactions.api.page.wait
-import jces1209.vu.page.issue.AbstractProjectIssueNavigatorPage
-import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
 import java.time.Duration
 
-class DcProjectIssueNavigatorPage(
-    private val driver: WebDriver
-) : AbstractProjectIssueNavigatorPage {
-    override fun openProjectByIndex(numberOfProject: String) {
-        driver
-            .wait(ExpectedConditions
-                .elementToBeClickable(By.xpath("(//*[@id='projects']//a)[$numberOfProject]")))
-            .click()
-        waitForProjectIssueNavigator()
-    }
+interface ProjectIssueNavigatorPage{
 
-    fun waitForProjectIssueNavigator() {
+    fun openProjectByIndex(index: Int)
+    fun waitForProjectIssueNavigator(driver: WebDriver) {
 
         driver.wait(
             Duration.ofSeconds(30),

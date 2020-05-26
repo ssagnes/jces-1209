@@ -1,6 +1,5 @@
 package jces1209.vu.page.boards.view
 
-import com.atlassian.performance.tools.jiraactions.api.WebJira
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import java.net.URI

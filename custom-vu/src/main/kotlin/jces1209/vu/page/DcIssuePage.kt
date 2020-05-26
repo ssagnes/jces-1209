@@ -6,7 +6,8 @@ import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.interactions.Actions
 import org.openqa.selenium.support.ui.ExpectedConditions
-import org.openqa.selenium.support.ui.ExpectedConditions.*
+import org.openqa.selenium.support.ui.ExpectedConditions.or
+import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
 
 class DcIssuePage(
     private val driver: WebDriver

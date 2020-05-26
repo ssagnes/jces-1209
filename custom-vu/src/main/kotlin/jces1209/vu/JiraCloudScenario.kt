@@ -6,13 +6,11 @@ import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.scenario.Scenario
-import jces1209.vu.action.BrowseCloudProjects
-import jces1209.vu.action.CreateAnIssue
-import jces1209.vu.action.LogInWithAtlassianId
-import jces1209.vu.action.SearchCloudFilter
+import jces1209.vu.action.*
 import jces1209.vu.page.CloudIssuePage
 import jces1209.vu.page.boards.browse.cloud.CloudBrowseBoardsPage
 import jces1209.vu.page.filters.CloudFiltersPage
+import jces1209.vu.page.project.CloudProjectIssueNavigatorPage
 import org.openqa.selenium.By
 import org.openqa.selenium.TakesScreenshot
 
@@ -61,6 +59,13 @@ class JiraCloudScenario : Scenario {
                 jira = jira,
                 meter = meter,
                 projectMemory = similarities.projectMemory
+            ),
+            projectIssueNavigatorAction = ProjectIssueNavigatorAction(
+                jira = jira,
+                meter = meter,
+                projectMemory = similarities.projectMemory,
+                projectIssueNavigatorPage = CloudProjectIssueNavigatorPage(jira.driver),
+                numberOfProject = 5
             )
         )
     }

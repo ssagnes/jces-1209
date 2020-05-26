@@ -39,7 +39,8 @@ class ScenarioSimilarities(
         browseBoardsPage: BrowseBoardsPage,
         createIssue: Action,
         searchWithJql: Action,
-        browseProjects: Action
+        browseProjects: Action,
+        projectIssueNavigatorAction: ProjectIssueNavigatorAction
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
         searchWithJql = searchWithJql,
@@ -86,7 +87,8 @@ class ScenarioSimilarities(
             random = seededRandom,
             viewIssueProbability = 0.50f,
             jiraTips = JiraTips(jira.driver)
-        )
+        ),
+        projectIssueNavigator = projectIssueNavigatorAction
 
     )
 
@@ -99,7 +101,9 @@ class ScenarioSimilarities(
         browseProjects: Action,
         browseFilters: Action,
         browseBoards: Action,
-        viewBoard: Action
+        viewBoard: Action,
+        projectIssueNavigator: Action
+
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
@@ -110,19 +114,7 @@ class ScenarioSimilarities(
             browseProjects to 5,
             viewDashboard to 0, // 10 when TODO fix the page objects for Cloud
             browseBoards to 5,
-            viewBoard to 30
-        )
-            .map { (action, proportion) -> Collections.nCopies(proportion, action) }
-            .flatten()
-            .shuffled(seededRandom.random)
-        return exploreData + spreadOut
-    }
-
-    private fun assembleScenarioProjectIssues(
-        projectIssueNavigator: Action
-    ): List<Action> {
-        val exploreData = listOf(projectIssueNavigator)
-        val spreadOut = mapOf(
+            viewBoard to 30,
             projectIssueNavigator to 5
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
@@ -131,10 +123,4 @@ class ScenarioSimilarities(
         return exploreData + spreadOut
     }
 
-
-    fun assembleScenarioProjectIssueNavigator(
-        projectIssueNavigatorAction: ProjectIssueNavigatorAction
-    ): List<Action> = assembleScenarioProjectIssues(
-        projectIssueNavigator = projectIssueNavigatorAction
-    )
 }

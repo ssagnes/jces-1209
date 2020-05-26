@@ -1,11 +1,11 @@
 package jces1209.vu.page
 
+import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.interactions.Actions
 import org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable
-import jces1209.vu.wait
 
 class BentoCommenting(
     private val driver: WebDriver

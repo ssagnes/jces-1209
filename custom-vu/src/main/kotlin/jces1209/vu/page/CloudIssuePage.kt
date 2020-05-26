@@ -2,12 +2,10 @@ package jces1209.vu.page
 
 import jces1209.vu.wait
 import org.openqa.selenium.By
-import org.openqa.selenium.Keys
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.interactions.Actions
-import org.openqa.selenium.support.ui.ExpectedCondition
-import org.openqa.selenium.support.ui.ExpectedConditions
-import org.openqa.selenium.support.ui.ExpectedConditions.*
+import org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfAllElements
+import org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated
 
 class CloudIssuePage(
     private val driver: WebDriver

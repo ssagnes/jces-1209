@@ -2,9 +2,7 @@ package jces1209.vu.page
 
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.support.ui.ExpectedConditions.and
-import org.openqa.selenium.support.ui.ExpectedConditions.or
-import org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated
+import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration
 
 class CloudIssueNavigator(
