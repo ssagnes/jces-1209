@@ -16,7 +16,7 @@ class DcProjectIssueNavigatorPage(
             .wait(ExpectedConditions
                 .elementToBeClickable(By.xpath("(//*[@id='projects']//a)[$numberOfProject]")))
             .click()
-       // waitForProjectIssueNavigator()
+        waitForProjectIssueNavigator()
     }
 
     fun waitForProjectIssueNavigator() {

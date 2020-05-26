@@ -16,7 +16,7 @@ class CloudProjectIssueNavigatorPage(
             .wait(ExpectedConditions
                 .elementToBeClickable(By.xpath("(//*[@data-testid='Content']//a)[$numberOfProject]")))
             .click()
-      //  waitForProjectIssueNavigator()
+        waitForProjectIssueNavigator()
     }
 
     fun waitForProjectIssueNavigator() {
