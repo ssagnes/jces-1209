@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions.and
 import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
 import java.net.URI
 
-abstract class ClassicBoardPage(
+abstract class CloudClassicBoardPage(
     driver: WebDriver, uri: URI
 ) : BoardPage(driver, uri) {
 
@@ -31,7 +31,7 @@ abstract class ClassicBoardPage(
         return GeneralBoardContent(driver, issueSelector)
     }
 
-    override fun previewIssue(): ClassicBoardPage {
+    override fun previewIssue(): CloudClassicBoardPage {
         driver
             .wait(visibilityOfElementLocated(issueSelector))
             .click()

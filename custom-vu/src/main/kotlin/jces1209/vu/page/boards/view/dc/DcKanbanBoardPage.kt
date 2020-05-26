@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLoca
 import java.net.URI
 import java.time.Duration
 
-class KanbanBoardPage(
+class DcKanbanBoardPage(
     jira: WebJira,
     boardId: String
 ) : DcBoardPage(

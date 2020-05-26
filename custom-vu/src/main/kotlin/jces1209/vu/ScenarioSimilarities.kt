@@ -9,18 +9,13 @@ import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveProjectMemory
-import com.atlassian.performance.tools.jiraactions.api.w3c.JavascriptW3cPerformanceTimeline
-import jces1209.vu.action.BrowseBoards
-import jces1209.vu.action.BrowsePopularFilters
-import jces1209.vu.action.ViewBoard
-import jces1209.vu.action.WorkAnIssue
+import jces1209.vu.action.*
+import jces1209.vu.memory.BoardPagesMemory
+import jces1209.vu.memory.SeededMemory
 import jces1209.vu.page.AbstractIssuePage
 import jces1209.vu.page.JiraTips
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
-import jces1209.vu.page.boards.browse.dc.DcBrowseBoardsPage
-import jces1209.vu.page.boards.view.BoardPage
 import jces1209.vu.page.filters.FiltersPage
-import org.openqa.selenium.JavascriptExecutor
 import java.net.URI
 import java.util.Collections
 
@@ -35,9 +30,7 @@ class ScenarioSimilarities(
     val issueKeyMemory = AdaptiveIssueKeyMemory(seededRandom)
     val projectMemory = AdaptiveProjectMemory(seededRandom)
     val filtersMemory = SeededMemory<URI>(seededRandom)
-    val kanbanBoardPages = SeededMemory<BoardPage>(seededRandom)
-    val scrumBoardPages = SeededMemory<BoardPage>(seededRandom)
-    val nextGenBoardPages = SeededMemory<BoardPage>(seededRandom)
+    val boardsMemory = BoardPagesMemory(seededRandom)
 
     fun assembleScenario(
         issuePage: AbstractIssuePage,
@@ -78,19 +71,19 @@ class ScenarioSimilarities(
             jira = jira,
             browseBoardsPage = browseBoardsPage,
             meter = meter,
-            kanbanBoardsMemory = kanbanBoardPages,
-            scrumBoardsMemory = scrumBoardPages,
-            nextGenBoardsMemory = nextGenBoardPages
+            boardsMemory = boardsMemory
         ),
         viewBoard = ViewBoard(
             meter = meter,
-            kanbanBoardMemory = kanbanBoardPages,
-            scrumBoardMemory = scrumBoardPages,
-            nextGenBoardMemory = nextGenBoardPages,
+            boardsMemory = boardsMemory,
             issueKeyMemory = issueKeyMemory,
             random = seededRandom,
             viewIssueProbability = 0.50f,
             jiraTips = JiraTips(jira.driver)
+        ),
+        workOnSprint = WorkOnSprint(
+            meter = meter,
+            scrumBoardsMemory = boardsMemory.scrum
         )
     )
 
@@ -103,7 +96,8 @@ class ScenarioSimilarities(
         browseProjects: Action,
         browseFilters: Action,
         browseBoards: Action,
-        viewBoard: Action
+        viewBoard: Action,
+        workOnSprint: WorkOnSprint
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
@@ -114,7 +108,8 @@ class ScenarioSimilarities(
             browseProjects to 5,
             viewDashboard to 0, // 10 when TODO fix the page objects for Cloud
             browseBoards to 5,
-            viewBoard to 30
+            viewBoard to 30,
+            workOnSprint to 10
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()

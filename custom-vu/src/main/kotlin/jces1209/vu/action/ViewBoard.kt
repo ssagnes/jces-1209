@@ -9,6 +9,7 @@ import com.atlassian.performance.tools.jiraactions.api.memories.IssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.Memory
 import com.atlassian.performance.tools.jiraactions.api.observation.IssuesOnBoard
 import jces1209.vu.MeasureType
+import jces1209.vu.memory.BoardPagesMemory
 import jces1209.vu.page.JiraTips
 import jces1209.vu.page.boards.browse.BoardList
 import jces1209.vu.page.boards.view.BoardPage
@@ -17,9 +18,7 @@ import org.apache.logging.log4j.Logger
 
 class ViewBoard(
     private val meter: ActionMeter,
-    private val kanbanBoardMemory: Memory<BoardPage>,
-    private val scrumBoardMemory: Memory<BoardPage>,
-    private val nextGenBoardMemory: Memory<BoardPage>,
+    private val boardsMemory: BoardPagesMemory,
     private val issueKeyMemory: IssueKeyMemory,
     private val random: SeededRandom,
     private val viewIssueProbability: Float,
@@ -28,11 +27,7 @@ class ViewBoard(
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
     override fun run() {
-        for ((boardType, boardMemory) in mapOf(
-            BoardList.boardNameKanban to kanbanBoardMemory,
-            BoardList.boardNameScrum to scrumBoardMemory,
-            BoardList.boardNameNextGen to nextGenBoardMemory)) {
-
+        for ((boardType, boardMemory) in boardsMemory.getMap()) {
             val board = boardMemory.recall()
             if (board == null) {
                 logger.debug("I cannot recall [$boardType] board, skipping...")
