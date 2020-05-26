@@ -5,4 +5,5 @@ public interface IssueLinking {
     fun openEditor()
     fun searchAndChooseIssue(issuePrefix: String)
     fun submitIssue()
+    fun isLinkButtonPresent(): Boolean
 }
