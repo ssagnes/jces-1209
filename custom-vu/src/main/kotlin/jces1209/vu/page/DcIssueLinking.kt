@@ -11,14 +11,16 @@ class DcIssueLinking(
 ) : IssueLinking {
 
     private val linkIssueSearchDialog = By.id("link-issue-dialog")
+    private val moreOperationsButtonLocator = By.cssSelector("[aria-controls='opsbar-operations_more_drop']")
+    private val linkOperationLocator = By.id("link-issue")
 
     override fun openEditor() {
         driver
-            .wait(visibilityOfElementLocated(By.cssSelector("[aria-controls='opsbar-operations_more_drop']")))
+            .wait(visibilityOfElementLocated(moreOperationsButtonLocator))
             .click()
 
         driver
-            .wait(visibilityOfElementLocated(By.id("link-issue")))
+            .wait(visibilityOfElementLocated(linkOperationLocator))
             .click()
 
         driver
@@ -64,5 +66,19 @@ class DcIssueLinking(
                     invisibilityOfElementLocated(linkIssueSearchDialog),
                     visibilityOfElementLocated(By.id("aui-flag-container"))
                 ))
+    }
+
+    override fun isLinkButtonPresent(): Boolean {
+        val moreOperationsButton = driver
+            .wait(visibilityOfElementLocated(moreOperationsButtonLocator))
+        moreOperationsButton.click()
+
+        val isLinkButtonPresent = driver
+            .findElements(linkOperationLocator)
+            .isNotEmpty()
+
+        moreOperationsButton.click()
+
+        return isLinkButtonPresent
     }
 }

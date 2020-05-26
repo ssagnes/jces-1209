@@ -63,16 +63,20 @@ class WorkAnIssue(
 
     private fun linkIssue(issuePage: AbstractIssuePage, issuePrefixSearch: String) {
         val issueLinking = issuePage.linkIssue()
-        meter.measure(ISSUE_LINK) {
-            meter.measure(ISSUE_LINK_LOAD_FORM) {
-                issueLinking.openEditor()
+        if (issueLinking.isLinkButtonPresent()) {
+            meter.measure(ISSUE_LINK) {
+                meter.measure(ISSUE_LINK_LOAD_FORM) {
+                    issueLinking.openEditor()
+                }
+                meter.measure(ISSUE_LINK_SEARCH_CHOOSE) {
+                    issueLinking.searchAndChooseIssue(issuePrefixSearch)
+                }
+                meter.measure(ISSUE_LINK_SUBMIT) {
+                    issueLinking.submitIssue()
+                }
             }
-            meter.measure(ISSUE_LINK_SEARCH_CHOOSE) {
-                issueLinking.searchAndChooseIssue(issuePrefixSearch)
-            }
-            meter.measure(ISSUE_LINK_SUBMIT) {
-                issueLinking.submitIssue()
-            }
+        } else {
+            logger.debug("Issue doesn't have link button")
         }
     }
 
