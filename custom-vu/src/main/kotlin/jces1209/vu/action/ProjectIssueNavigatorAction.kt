@@ -27,7 +27,7 @@ class ProjectIssueNavigatorAction(
         }
         meter.measure(BROWSE_PROJECTS) {
             jira.goToBrowseProjects(1).getProjects()
-            projectIssueNavigatorPage.openProjectByIndex(numberOfProject)
+            projectIssueNavigatorPage.openProjectByIndex(projectIndex)
         }
     }
 
