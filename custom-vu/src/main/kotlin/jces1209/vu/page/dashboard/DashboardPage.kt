@@ -9,13 +9,15 @@ abstract class DashboardPage(
     protected val uri: URI
 ) {
 
-    fun openDashboardsPage(): DashboardPage {
+    open fun openDashboardsPage(): DashboardPage {
         driver.navigate().to(uri.toURL())
         return this
     }
 
     abstract fun waitForDashboards()
-
+    abstract fun createDashboard()
+    abstract fun loadGadget()
+    abstract fun createGadget()
 
     protected class GeneralDashboardContent(
         private val driver: WebDriver,
@@ -28,7 +30,7 @@ abstract class DashboardPage(
                 .map { it.getAttribute("data-issue-key") }
         }
 
-        override fun getDashboarsCount(): Int = lazyIssueKeys.size
+        override fun getDashboardsCount(): Int = lazyIssueKeys.size
         override fun getDashboardsKeys(): Collection<String> = lazyIssueKeys
 
     }
