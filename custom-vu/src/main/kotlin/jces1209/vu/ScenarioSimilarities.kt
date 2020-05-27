@@ -102,7 +102,7 @@ class ScenarioSimilarities(
         browseFilters: Action,
         browseBoards: Action,
         viewBoard: Action,
-        projectIssueNavigator: Action
+        browseProjectIssues: Action
 
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
