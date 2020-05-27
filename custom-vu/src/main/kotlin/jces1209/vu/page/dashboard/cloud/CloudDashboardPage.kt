@@ -1,11 +1,10 @@
-package jces1209.vu.page.dashboard
+package jces1209.vu.page.dashboard.cloud
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
-import org.openqa.selenium.By
-import org.openqa.selenium.WebDriver
+import jces1209.vu.page.dashboard.DashboardPage
 
 class CloudDashboardPage(
-    private val driver: WebDriver,
+
     private val jira: WebJira
 ) : DashboardPage {
 
@@ -14,15 +13,9 @@ class CloudDashboardPage(
         jira.navigateTo("/secure/ConfigurePortalPages!default.jspa")
    }
 
-    override fun createDashboard() {
-        driver.findElement(By.xpath(""))
-    }
-
-    override fun createGadget() {
+    override fun waitForDashboards() {
         TODO("Not yet implemented")
     }
 
-    override fun loadGadget() {
-        TODO("Not yet implemented")
-    }
+
 }

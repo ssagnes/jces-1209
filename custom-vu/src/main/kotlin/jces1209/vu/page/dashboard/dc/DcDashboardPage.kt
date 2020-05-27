@@ -1,26 +1,18 @@
-package jces1209.vu.page.dashboard
+package jces1209.vu.page.dashboard.dc
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
-import org.openqa.selenium.WebDriver
+import jces1209.vu.page.dashboard.DashboardPage
 
 class DcDashboardPage(
-    private val driver: WebDriver,
     private val jira: WebJira
-) : DashboardPage {
-    override fun openDashboardsPage() {
-        jira.navigateTo("/secure/ConfigurePortalPages!default.jspa")
-    }
+) : DashboardPage(
+    driver = jira.driver,
+    uri = jira.base.resolve("/secure/ConfigurePortalPages!default.jspa")) {
 
-    override fun createDashboard() {
+
+    override fun waitForDashboards() {
         TODO("Not yet implemented")
     }
 
-    override fun createGadget() {
-        TODO("Not yet implemented")
-    }
-
-    override fun loadGadget() {
-        TODO("Not yet implemented")
-    }
 
 }
