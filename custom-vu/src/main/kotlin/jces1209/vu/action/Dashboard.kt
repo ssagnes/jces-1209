@@ -5,6 +5,7 @@ import com.atlassian.performance.tools.jiraactions.api.VIEW_DASHBOARD
 import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.Memory
+import jces1209.vu.MeasureType
 import jces1209.vu.page.dashboard.DashboardPage
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger

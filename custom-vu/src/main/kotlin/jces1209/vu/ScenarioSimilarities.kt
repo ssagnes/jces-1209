@@ -10,15 +10,13 @@ import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.Adaptiv
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveProjectMemory
 import com.atlassian.performance.tools.jiraactions.api.w3c.JavascriptW3cPerformanceTimeline
-import jces1209.vu.action.BrowseBoards
-import jces1209.vu.action.BrowsePopularFilters
-import jces1209.vu.action.ViewBoard
-import jces1209.vu.action.WorkAnIssue
+import jces1209.vu.action.*
 import jces1209.vu.page.AbstractIssuePage
 import jces1209.vu.page.JiraTips
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
 import jces1209.vu.page.boards.browse.dc.DcBrowseBoardsPage
 import jces1209.vu.page.boards.view.BoardPage
+import jces1209.vu.page.dashboard.DashboardPage
 import jces1209.vu.page.filters.FiltersPage
 import org.openqa.selenium.JavascriptExecutor
 import java.net.URI
@@ -38,6 +36,7 @@ class ScenarioSimilarities(
     val kanbanBoardPages = SeededMemory<BoardPage>(seededRandom)
     val scrumBoardPages = SeededMemory<BoardPage>(seededRandom)
     val nextGenBoardPages = SeededMemory<BoardPage>(seededRandom)
+    val dashboardPage = SeededMemory<DashboardPage>(seededRandom)
 
     fun assembleScenario(
         issuePage: AbstractIssuePage,
@@ -91,6 +90,10 @@ class ScenarioSimilarities(
             random = seededRandom,
             viewIssueProbability = 0.50f,
             jiraTips = JiraTips(jira.driver)
+        ),
+        dashboard = Dashboard(
+            meter = meter,
+            dashboardMemory = dashboardPage
         )
     )
 
@@ -103,7 +106,8 @@ class ScenarioSimilarities(
         browseProjects: Action,
         browseFilters: Action,
         browseBoards: Action,
-        viewBoard: Action
+        viewBoard: Action,
+        dashboard: Action
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
@@ -114,7 +118,8 @@ class ScenarioSimilarities(
             browseProjects to 5,
             viewDashboard to 0, // 10 when TODO fix the page objects for Cloud
             browseBoards to 5,
-            viewBoard to 30
+            viewBoard to 30,
+            dashboard to 5
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()
