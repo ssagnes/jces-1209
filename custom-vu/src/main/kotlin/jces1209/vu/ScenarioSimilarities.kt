@@ -40,7 +40,7 @@ class ScenarioSimilarities(
         createIssue: Action,
         searchWithJql: Action,
         browseProjects: Action,
-        projectIssueNavigatorAction: ProjectIssueNavigatorAction
+        projectIssueNavigatorAction: Action
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
         searchWithJql = searchWithJql,
