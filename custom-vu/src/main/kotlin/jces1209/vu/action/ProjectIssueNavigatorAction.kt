@@ -9,7 +9,7 @@ import jces1209.vu.page.project.ProjectIssueNavigatorPage
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class ProjectIssueNavigatorAction(
+class BrowseProjectIssues(
     private val jira: WebJira,
     private val meter: ActionMeter,
     private val projectMemory: ProjectMemory,
