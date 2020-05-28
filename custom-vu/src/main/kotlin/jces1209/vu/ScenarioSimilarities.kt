@@ -35,6 +35,7 @@ class ScenarioSimilarities(
     val nextGenBoardPages = SeededMemory<BoardPage>(seededRandom)
     val dashboardMemory = SeededMemory<DashboardPage>(seededRandom)
 
+
     fun assembleScenario(
         issuePage: AbstractIssuePage,
         filtersPage: FiltersPage,
@@ -43,6 +44,7 @@ class ScenarioSimilarities(
         searchWithJql: Action,
         browseProjects: Action,
         dashboardPage: DashboardPage
+
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
         searchWithJql = searchWithJql,
@@ -143,4 +145,6 @@ class ScenarioSimilarities(
             .shuffled(seededRandom.random)
         return exploreData + spreadOut
     }
+
+
 }

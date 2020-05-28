@@ -45,12 +45,14 @@ class WorkOnDashboard(
             }
         )
     }
-private fun getProjectKey():String{
-    jira.driver.navigate().to("/projects")
-    val projectList = JiraCloudProjectList(jira.driver)
-    val progectKey = projectList.listProjects().last().key
-    return progectKey
-}
+
+    private fun getProjectKey(): String {
+        jira.driver.navigate().to("/projects")
+        val projectList = JiraCloudProjectList(jira.driver)
+        val progectKey = projectList.listProjects().last().key
+        return progectKey
+    }
+
     private fun createDashboard(dashboard: DashboardPage) {
         dashboard
             .openDashboardsPage()
