@@ -13,7 +13,6 @@ import jces1209.vu.page.dashboard.cloud.CloudDashboardPage
 import jces1209.vu.page.filters.CloudFiltersPage
 import org.openqa.selenium.By
 import org.openqa.selenium.TakesScreenshot
-import java.net.URI
 
 class JiraCloudScenario : Scenario {
 
@@ -61,7 +60,12 @@ class JiraCloudScenario : Scenario {
                 meter = meter,
                 projectMemory = similarities.projectMemory
             ),
+            createDashboard = WorkOnDashboard(
+                jira = jira,
+                meter = meter,
+                projectMemory = similarities.projectMemory,
                 dashboardPage = CloudDashboardPage(jira)
+            )
 
         )
     }

@@ -8,13 +8,12 @@ import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.scenario.JiraCoreScenario
 import com.atlassian.performance.tools.jiraactions.api.scenario.Scenario
+import jces1209.vu.action.BrowseCloudProjects
 import jces1209.vu.action.CreateAnIssue
-import jces1209.vu.action.SearchServerFilter
 import jces1209.vu.action.WorkOnDashboard
+import jces1209.vu.action.SearchServerFilter
 import jces1209.vu.page.DcIssuePage
 import jces1209.vu.page.boards.browse.dc.DcBrowseBoardsPage
-import jces1209.vu.page.dashboard.DashboardPage
-import jces1209.vu.page.dashboard.cloud.CloudDashboardPage
 import jces1209.vu.page.dashboard.dc.DcDashboardPage
 import jces1209.vu.page.filters.ServerFiltersPage
 import org.openqa.selenium.By
@@ -62,8 +61,12 @@ class JiraDcScenario : Scenario {
                 meter = meter,
                 projectMemory = similarities.projectMemory
             ),
-            dashboardPage = DcDashboardPage(jira)
-
+            createDashboard = WorkOnDashboard(
+                jira = jira,
+                meter = meter,
+                projectMemory = similarities.projectMemory,
+                dashboardPage = DcDashboardPage(jira)
+            )
         )
     }
 }

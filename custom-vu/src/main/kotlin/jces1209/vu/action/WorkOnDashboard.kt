@@ -6,6 +6,7 @@ import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.Memory
+import com.atlassian.performance.tools.jiraactions.api.memories.ProjectMemory
 import jces1209.vu.MeasureType.Companion.CREATE_DASHBOARD
 import jces1209.vu.MeasureType.Companion.CREATE_GADGET
 import jces1209.vu.MeasureType.Companion.LOAD_GADGET
@@ -17,27 +18,26 @@ import org.apache.logging.log4j.Logger
 class WorkOnDashboard(
     private val jira: WebJira,
     private val meter: ActionMeter,
-    private val dashboardMemory: Memory<DashboardPage>,
     private val dashboardPage: DashboardPage
 
 ) : Action {
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
     override fun run() {
-        val dashboard = dashboardMemory.recall()
-        if (dashboard == null) {
-            logger.debug("I cannot recall dashboard, skipping...")
-            return
-        }
+       // val projectMemory = projectMemory.recall()
+       // if (dashboard == null) {
+       //     logger.debug("I cannot recall dashboard, skipping...")
+       //     return
+      //  }
 
 
-        val dashboardContent = meter.measure(
+        val veiwDashboard = meter.measure(
             key = VIEW_DASHBOARD,
             action = {
                 meter.measure(
                     key = ActionType("View dashboards") { Unit },
                     action = {
-                        dashboard
+                        dashboardPage
                             .openDashboardsPage()
                             .waitForDashboards()
                     }

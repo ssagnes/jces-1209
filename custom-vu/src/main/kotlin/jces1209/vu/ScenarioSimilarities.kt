@@ -43,7 +43,7 @@ class ScenarioSimilarities(
         createIssue: Action,
         searchWithJql: Action,
         browseProjects: Action,
-        dashboardPage: DashboardPage
+        createDashboard: Action
 
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
@@ -91,24 +91,30 @@ class ScenarioSimilarities(
             viewIssueProbability = 0.50f,
             jiraTips = JiraTips(jira.driver)
         ),
-        createDashboard = WorkOnDashboard(
-            jira = jira,
-            meter = meter,
-            dashboardMemory = dashboardMemory,
-            dashboardPage = dashboardPage
-        ),
         createGadget = WorkOnDashboard(
-            jira = jira,
+           jira = jira,
             meter = meter,
-            dashboardMemory = dashboardMemory,
-            dashboardPage = dashboardPage
-        ),
-        loadGadget = WorkOnDashboard(
-            jira = jira,
-            meter = meter,
-            dashboardMemory = dashboardMemory,
-            dashboardPage = dashboardPage
-        )
+            dashboardPage = DashboardPage(jira.driver)
+       )
+
+//        createDashboard = WorkOnDashboard(
+//            jira = jira,
+//            meter = meter,
+//            dashboardMemory = dashboardMemory,
+//            dashboardPage = dashboardPage
+//        )
+//        createGadget = WorkOnDashboard(
+//            jira = jira,
+//            meter = meter,
+//            dashboardMemory = dashboardMemory,
+//            dashboardPage = dashboardPage
+//        ),
+//        loadGadget = WorkOnDashboard(
+//            jira = jira,
+//            meter = meter,
+//            dashboardMemory = dashboardMemory,
+//            dashboardPage = dashboardPage
+//        )
     )
 
     private fun assembleScenario(
