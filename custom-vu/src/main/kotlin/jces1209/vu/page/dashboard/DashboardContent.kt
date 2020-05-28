@@ -4,4 +4,5 @@ interface DashboardContent {
 
     fun getDashboardsCount(): Int
     fun getDashboardsKeys(): Collection<String>
+
 }

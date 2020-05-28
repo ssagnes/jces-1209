@@ -6,18 +6,15 @@ import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.Memory
-import com.atlassian.performance.tools.jiraactions.api.page.wait
 import jces1209.vu.MeasureType.Companion.CREATE_DASHBOARD
 import jces1209.vu.MeasureType.Companion.CREATE_GADGET
 import jces1209.vu.MeasureType.Companion.LOAD_GADGET
+import jces1209.vu.page.JiraCloudProjectList
 import jces1209.vu.page.dashboard.DashboardPage
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.openqa.selenium.By
-import org.openqa.selenium.support.ui.ExpectedConditions
-import java.time.Duration
 
-class Dashboard(
+class WorkOnDashboard(
     private val jira: WebJira,
     private val meter: ActionMeter,
     private val dashboardMemory: Memory<DashboardPage>,
@@ -48,7 +45,12 @@ class Dashboard(
             }
         )
     }
-
+private fun getProjectKey():String{
+    jira.driver.navigate().to("/projects")
+    val projectList = JiraCloudProjectList(jira.driver)
+    val progectKey = projectList.listProjects().last().key
+    return progectKey
+}
     private fun createDashboard(dashboard: DashboardPage) {
         dashboard
             .openDashboardsPage()
@@ -62,20 +64,15 @@ class Dashboard(
     }
 
     private fun createGadget(dashboard: DashboardPage) {
+        val projectKey = getProjectKey()
+        dashboardPage.createDashboard()
         val createGadget = meter.measure(
             key = CREATE_GADGET,
             action = {
                 meter.measure(
                     key = ActionType("Create gadget") { Unit },
                     action = {
-                        jira.driver.wait(
-                            condition = ExpectedConditions.elementToBeClickable(By.id("create-issue-submit")),
-                            timeout = Duration.ofSeconds(50)
-                        ).click()
-                        jira.driver.wait(
-                            condition = ExpectedConditions.invisibilityOfElementLocated(By.className("aui-blanket")),
-                            timeout = Duration.ofSeconds(30)
-                        )
+                        dashboard.createGadget(projectKey)
                     }
                 )
             }
@@ -92,7 +89,7 @@ class Dashboard(
                 meter.measure(
                     key = ActionType("Load gadget") { Unit },
                     action = {
-
+                        dashboard.loadGadget()
                     }
                 )
             }

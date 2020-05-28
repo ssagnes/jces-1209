@@ -17,7 +17,7 @@ abstract class DashboardPage(
     abstract fun waitForDashboards()
     abstract fun createDashboard()
     abstract fun loadGadget()
-    abstract fun createGadget()
+    abstract fun createGadget(projectName : String)
 
     protected class GeneralDashboardContent(
         private val driver: WebDriver,
