@@ -63,7 +63,6 @@ class JiraDcScenario : Scenario {
             projectIssueNavigatorAction = ProjectIssueNavigatorAction(
                 jira = jira,
                 meter = meter,
-                projectMemory = similarities.projectMemory,
                 projectIssueNavigatorPage = DcProjectIssueNavigatorPage(jira.driver),
                 numberOfProject= 3
             )

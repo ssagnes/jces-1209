@@ -63,7 +63,6 @@ class JiraCloudScenario : Scenario {
             projectIssueNavigatorAction = ProjectIssueNavigatorAction(
                 jira = jira,
                 meter = meter,
-                projectMemory = similarities.projectMemory,
                 projectIssueNavigatorPage = CloudProjectIssueNavigatorPage(jira.driver),
                 numberOfProject = 5
             )
