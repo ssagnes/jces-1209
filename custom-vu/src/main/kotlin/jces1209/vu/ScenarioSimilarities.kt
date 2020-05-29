@@ -9,15 +9,17 @@ import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveProjectMemory
-import jces1209.vu.action.*
+import jces1209.vu.action.BrowseBoards
+import jces1209.vu.action.BrowsePopularFilters
+import jces1209.vu.action.ViewBoard
+import jces1209.vu.action.WorkAnIssue
 import jces1209.vu.page.AbstractIssuePage
 import jces1209.vu.page.JiraTips
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
 import jces1209.vu.page.boards.view.BoardPage
-import jces1209.vu.page.dashboard.DashboardPage
 import jces1209.vu.page.filters.FiltersPage
 import java.net.URI
-import java.util.Collections
+import java.util.*
 
 class ScenarioSimilarities(
     private val jira: WebJira,
@@ -33,7 +35,6 @@ class ScenarioSimilarities(
     val kanbanBoardPages = SeededMemory<BoardPage>(seededRandom)
     val scrumBoardPages = SeededMemory<BoardPage>(seededRandom)
     val nextGenBoardPages = SeededMemory<BoardPage>(seededRandom)
-    val dashboardMemory = SeededMemory<DashboardPage>(seededRandom)
 
 
     fun assembleScenario(
@@ -43,10 +44,11 @@ class ScenarioSimilarities(
         createIssue: Action,
         searchWithJql: Action,
         browseProjects: Action,
-        createDashboard: Action
+        workOnDashboard: Action
 
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
+        workOnDashboard = workOnDashboard,
         searchWithJql = searchWithJql,
         workAnIssue = WorkAnIssue(
             issuePage = issuePage,
@@ -90,31 +92,9 @@ class ScenarioSimilarities(
             random = seededRandom,
             viewIssueProbability = 0.50f,
             jiraTips = JiraTips(jira.driver)
-        ),
-        createGadget = WorkOnDashboard(
-           jira = jira,
-            meter = meter,
-            dashboardPage = DashboardPage(jira.driver)
-       )
+        )
 
-//        createDashboard = WorkOnDashboard(
-//            jira = jira,
-//            meter = meter,
-//            dashboardMemory = dashboardMemory,
-//            dashboardPage = dashboardPage
-//        )
-//        createGadget = WorkOnDashboard(
-//            jira = jira,
-//            meter = meter,
-//            dashboardMemory = dashboardMemory,
-//            dashboardPage = dashboardPage
-//        ),
-//        loadGadget = WorkOnDashboard(
-//            jira = jira,
-//            meter = meter,
-//            dashboardMemory = dashboardMemory,
-//            dashboardPage = dashboardPage
-//        )
+
     )
 
     private fun assembleScenario(
@@ -127,9 +107,8 @@ class ScenarioSimilarities(
         browseFilters: Action,
         browseBoards: Action,
         viewBoard: Action,
-        createDashboard: Action,
-        createGadget: Action,
-        loadGadget: Action
+        workOnDashboard: Action
+
 
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
@@ -142,9 +121,7 @@ class ScenarioSimilarities(
             viewDashboard to 0, // 10 when TODO fix the page objects for Cloud
             browseBoards to 5,
             viewBoard to 30,
-            createDashboard to 5,
-            createGadget to 5,
-            loadGadget to 5
+            workOnDashboard to 5
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()

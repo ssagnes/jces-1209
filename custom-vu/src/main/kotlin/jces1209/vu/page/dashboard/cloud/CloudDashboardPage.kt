@@ -41,7 +41,7 @@ class CloudDashboardPage(
         ).click()
     }
 
-    override fun createGadget(projectKey:String) {
+    override fun createGadget(projectKey: String) {
         jira.driver.wait(
             condition = ExpectedConditions.elementToBeClickable(By.id("add-gadget")),
             timeout = Duration.ofSeconds(50)

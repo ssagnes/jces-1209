@@ -5,8 +5,6 @@ import com.atlassian.performance.tools.jiraactions.api.VIEW_DASHBOARD
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
-import com.atlassian.performance.tools.jiraactions.api.memories.Memory
-import com.atlassian.performance.tools.jiraactions.api.memories.ProjectMemory
 import jces1209.vu.MeasureType.Companion.CREATE_DASHBOARD
 import jces1209.vu.MeasureType.Companion.CREATE_GADGET
 import jces1209.vu.MeasureType.Companion.LOAD_GADGET
@@ -24,14 +22,7 @@ class WorkOnDashboard(
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
     override fun run() {
-       // val projectMemory = projectMemory.recall()
-       // if (dashboard == null) {
-       //     logger.debug("I cannot recall dashboard, skipping...")
-       //     return
-      //  }
-
-
-        val veiwDashboard = meter.measure(
+        meter.measure(
             key = VIEW_DASHBOARD,
             action = {
                 meter.measure(
@@ -44,6 +35,9 @@ class WorkOnDashboard(
                 )
             }
         )
+        createDashboard(dashboardPage)
+        createGadget(dashboardPage)
+        loadGadget(dashboardPage)
     }
 
     private fun getProjectKey(): String {
@@ -57,7 +51,7 @@ class WorkOnDashboard(
         dashboard
             .openDashboardsPage()
             .waitForDashboards()
-        val createDashboard = meter.measure(
+        meter.measure(
             key = CREATE_DASHBOARD,
             action = {
                 dashboardPage.createDashboard()
@@ -67,8 +61,8 @@ class WorkOnDashboard(
 
     private fun createGadget(dashboard: DashboardPage) {
         val projectKey = getProjectKey()
-        dashboardPage.createDashboard()
-        val createGadget = meter.measure(
+        dashboard.createDashboard()
+        meter.measure(
             key = CREATE_GADGET,
             action = {
                 meter.measure(
@@ -85,7 +79,7 @@ class WorkOnDashboard(
         dashboard
             .openDashboardsPage()
             .waitForDashboards()
-        val loadGadget = meter.measure(
+        meter.measure(
             key = LOAD_GADGET,
             action = {
                 meter.measure(
