@@ -36,7 +36,7 @@ class DcDashboardPage(
         openDashboardsPage()
         jira.driver.wait(
             condition = ExpectedConditions.elementToBeClickable(
-                By.xpath("//a[]contains(@href,'/secure/Dashboard.jspa?selectPageId')")),
+                By.cssSelector(".favourite-item > a")),
             timeout = Duration.ofSeconds(50)
         ).click()
     }
