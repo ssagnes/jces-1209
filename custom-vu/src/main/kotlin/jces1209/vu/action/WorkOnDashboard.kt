@@ -1,6 +1,5 @@
 package jces1209.vu.action
 
-import com.atlassian.performance.tools.jiraactions.api.ActionType
 import com.atlassian.performance.tools.jiraactions.api.VIEW_DASHBOARD
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.Action
@@ -22,22 +21,22 @@ class WorkOnDashboard(
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
     override fun run() {
+
         meter.measure(
             key = VIEW_DASHBOARD,
             action = {
-                meter.measure(
-                    key = ActionType("View dashboards") { Unit },
-                    action = {
-                        dashboardPage
-                            .openDashboardsPage()
-                            .waitForDashboards()
-                    }
-                )
+                openDashboardsPage().waitForDashboards()
             }
         )
+
         createDashboard(dashboardPage)
         createGadget(dashboardPage)
         loadGadget(dashboardPage)
+    }
+
+    private fun openDashboardsPage(): DashboardPage {
+        jira.driver.navigate().to("/secure/Dashboard.jspa")
+        return dashboardPage
     }
 
     private fun getProjectKey(): String {
@@ -48,9 +47,7 @@ class WorkOnDashboard(
     }
 
     private fun createDashboard(dashboard: DashboardPage) {
-        dashboard
-            .openDashboardsPage()
-            .waitForDashboards()
+        openDashboardsPage().waitForDashboards()
         meter.measure(
             key = CREATE_DASHBOARD,
             action = {
@@ -65,31 +62,21 @@ class WorkOnDashboard(
         meter.measure(
             key = CREATE_GADGET,
             action = {
-                meter.measure(
-                    key = ActionType("Create gadget") { Unit },
-                    action = {
-                        dashboard.createGadget(projectKey)
-                    }
-                )
+                dashboard.createGadget(projectKey)
             }
         )
     }
 
+
     private fun loadGadget(dashboard: DashboardPage) {
-        dashboard
-            .openDashboardsPage()
-            .waitForDashboards()
+        openDashboardsPage().waitForDashboards()
         meter.measure(
             key = LOAD_GADGET,
             action = {
-                meter.measure(
-                    key = ActionType("Load gadget") { Unit },
-                    action = {
-                        dashboard.loadGadget()
-                    }
-                )
+                dashboard.loadGadget()
             }
         )
-    }
-}
 
+    }
+
+}
