@@ -17,7 +17,7 @@ class DcDashboardPage(
     override fun waitForDashboards() {
         jira.driver.wait(
             condition = ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[contains(@href,'/secure/Dashboard.jspa?selectPageId')]")),
+                By.cssSelector(".favourite-item")),
             timeout = Duration.ofSeconds(50)
         )
     }
