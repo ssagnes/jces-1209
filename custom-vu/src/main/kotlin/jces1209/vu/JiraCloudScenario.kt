@@ -64,7 +64,7 @@ class JiraCloudScenario : Scenario {
                 jira = jira,
                 meter = meter,
                 projectIssueNavigatorPage = CloudProjectIssueNavigatorPage(jira.driver),
-                numberOfProject = 5
+                projectIndex = 5
             )
         )
     }

@@ -64,7 +64,7 @@ class JiraDcScenario : Scenario {
                 jira = jira,
                 meter = meter,
                 projectIssueNavigatorPage = DcProjectIssueNavigatorPage(jira.driver),
-                numberOfProject = 3
+                projectIndex = 3
             )
         )
     }
