@@ -8,7 +8,7 @@ import jces1209.vu.page.project.ProjectIssueNavigatorPage
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class ProjectIssueNavigatorAction(
+class BrowseProjectIssues(
     private val jira: WebJira,
     private val meter: ActionMeter,
     private val projectIssueNavigatorPage: ProjectIssueNavigatorPage,
@@ -21,7 +21,7 @@ class ProjectIssueNavigatorAction(
 
         meter.measure(BROWSE_PROJECTS) {
             jira.goToBrowseProjects(1).getProjects()
-            projectIssueNavigatorPage.openProjectByIndex(numberOfProject)
+            projectIssueNavigatorPage.openProjectByIndex(projectIndex)
         }
     }
 
