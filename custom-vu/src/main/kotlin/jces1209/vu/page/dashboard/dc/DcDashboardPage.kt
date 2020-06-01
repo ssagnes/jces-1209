@@ -7,9 +7,7 @@ class DcDashboardPage(
     private val jira: WebJira
 ) : DashboardPage(
     driver = jira.driver,
-    uri = jira.base.resolve("/secure/ConfigurePortalPages!default.jspa")) {
-
-
+    uri = jira.base.resolve("/secure/ConfigurePortalPages.jspa?view=popular")) {
 }
 
 
