@@ -43,7 +43,7 @@ class DcDashboardPage(
 
     override fun createGadget(projectName : String) {
 
-        jira.driver.wait(
+        driver.wait(
             condition = ExpectedConditions.elementToBeClickable(By.id("add-gadget")),
             timeout = Duration.ofSeconds(50)
         ).click()
