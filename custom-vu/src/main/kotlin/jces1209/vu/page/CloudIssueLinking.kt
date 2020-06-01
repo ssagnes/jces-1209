@@ -11,11 +11,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions.*
 class CloudIssueLinking(
     private val driver: WebDriver
 ) : IssueLinking {
+    private val issueLinkButtonLocator = By.cssSelector("[data-test-id='issue.issue-view.views.issue-base.foundation.quick-add.quick-add-item.link-issue']")
 
     override fun openEditor() {
         driver
-            .wait(visibilityOfElementLocated(
-                By.cssSelector("[data-test-id='issue.issue-view.views.issue-base.foundation.quick-add.quick-add-item.link-issue']")))
+            .findElement(issueLinkButtonLocator)
             .click();
 
         driver
@@ -57,7 +57,7 @@ class CloudIssueLinking(
 
         val submitButton = driver
             .wait(
-                visibilityOfElementLocated(By
+                elementToBeClickable(By
                     .cssSelector("[data-test-id='issue.issue-view.views.issue-base.content.issue-links.add.issue-links-add-view.link-button']")))
 
         submitButton.click()
@@ -79,4 +79,9 @@ class CloudIssueLinking(
                     }
                 ))
     }
+
+    override fun isLinkButtonPresent() = driver
+        .findElements(issueLinkButtonLocator)
+        .isNotEmpty()
+
 }

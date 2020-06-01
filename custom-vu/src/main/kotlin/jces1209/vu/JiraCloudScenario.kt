@@ -48,7 +48,7 @@ class JiraCloudScenario : Scenario {
                 jira = jira,
                 meter = meter,
                 projectMemory = similarities.projectMemory,
-                createIssueButton = By.id("createGlobalItem")
+                createIssueButtons = listOf(By.id("createGlobalItem"), By.id("createGlobalItemIconButton"))
             ),
             searchWithJql = SearchCloudFilter(
                 jira = jira,
@@ -65,6 +65,7 @@ class JiraCloudScenario : Scenario {
                 meter = meter,
                 projectIssueNavigatorPage = CloudProjectIssueNavigatorPage(jira.driver),
                 projectIndex = 5
+
             )
         )
     }

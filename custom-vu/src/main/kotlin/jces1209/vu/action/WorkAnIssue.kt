@@ -24,7 +24,9 @@ class WorkAnIssue(
     private val random: SeededRandom,
     private val editProbability: Float,
     private val commentProbability: Float,
-    private val linkIssueProbability: Float
+    private val linkIssueProbability: Float,
+    private val changeAssigneeProbability: Float,
+    private val mentionUserProbability: Float
 ) : Action {
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
@@ -45,6 +47,12 @@ class WorkAnIssue(
         if (random.random.nextFloat() < commentProbability) {
             comment(loadedIssuePage)
         }
+        if (random.random.nextFloat() < changeAssigneeProbability) {
+            changeAssignee(loadedIssuePage)
+        }
+        if (random.random.nextFloat() < mentionUserProbability) {
+            mentionUser(loadedIssuePage)
+        }
     }
 
     private fun read(
@@ -63,16 +71,20 @@ class WorkAnIssue(
 
     private fun linkIssue(issuePage: AbstractIssuePage, issuePrefixSearch: String) {
         val issueLinking = issuePage.linkIssue()
-        meter.measure(ISSUE_LINK) {
-            meter.measure(ISSUE_LINK_LOAD_FORM) {
-                issueLinking.openEditor()
+        if (issueLinking.isLinkButtonPresent()) {
+            meter.measure(ISSUE_LINK) {
+                meter.measure(ISSUE_LINK_LOAD_FORM) {
+                    issueLinking.openEditor()
+                }
+                meter.measure(ISSUE_LINK_SEARCH_CHOOSE) {
+                    issueLinking.searchAndChooseIssue(issuePrefixSearch)
+                }
+                meter.measure(ISSUE_LINK_SUBMIT) {
+                    issueLinking.submitIssue()
+                }
             }
-            meter.measure(ISSUE_LINK_SEARCH_CHOOSE) {
-                issueLinking.searchAndChooseIssue(issuePrefixSearch)
-            }
-            meter.measure(ISSUE_LINK_SUBMIT) {
-                issueLinking.submitIssue()
-            }
+        } else {
+            logger.debug("Issue doesn't have link button")
         }
     }
 
@@ -85,6 +97,25 @@ class WorkAnIssue(
                 commenting.saveComment()
                 commenting.waitForTheNewComment()
             }
+        }
+    }
+
+    private fun mentionUser(issuePage: AbstractIssuePage) {
+        val commenting = issuePage.comment()
+        meter.measure(ActionType("Mention a user") { Unit }) {
+            commenting.openEditor()
+            commenting.typeIn("abc def ")
+            commenting.mentionUser()
+            meter.measure(ADD_COMMENT_SUBMIT) {
+                commenting.saveComment()
+                commenting.waitForTheNewComment()
+            }
+        }
+    }
+
+    private fun changeAssignee(issuePage: AbstractIssuePage) {
+        meter.measure(ActionType("Change Assignee") { Unit }) {
+            issuePage.changeAssignee()
         }
     }
 }

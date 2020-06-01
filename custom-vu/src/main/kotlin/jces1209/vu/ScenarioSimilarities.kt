@@ -9,7 +9,10 @@ import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveProjectMemory
-import jces1209.vu.action.*
+import jces1209.vu.action.BrowseBoards
+import jces1209.vu.action.BrowsePopularFilters
+import jces1209.vu.action.ViewBoard
+import jces1209.vu.action.WorkAnIssue
 import jces1209.vu.page.AbstractIssuePage
 import jces1209.vu.page.JiraTips
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
@@ -52,8 +55,9 @@ class ScenarioSimilarities(
             random = seededRandom,
             editProbability = 0.00f, // 0.10f if we can mutate data
             commentProbability = 0.00f, // 0.04f if we can mutate data
-            linkIssueProbability = 0.00f // 0.10f if we can mutate data
-
+            linkIssueProbability = 0.00f, // 0.10f if we can mutate data
+            changeAssigneeProbability = 0.00f,
+            mentionUserProbability = 0.00f
         ),
         projectSummary = ProjectSummaryAction(
             jira = jira,
@@ -89,7 +93,6 @@ class ScenarioSimilarities(
             jiraTips = JiraTips(jira.driver)
         ),
         projectIssueNavigator = projectIssueNavigatorAction
-
     )
 
     private fun assembleScenario(
@@ -102,8 +105,7 @@ class ScenarioSimilarities(
         browseFilters: Action,
         browseBoards: Action,
         viewBoard: Action,
-        browseProjectIssues: Action
-
+        projectIssueNavigator: Action
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
@@ -122,5 +124,4 @@ class ScenarioSimilarities(
             .shuffled(seededRandom.random)
         return exploreData + spreadOut
     }
-
 }
