@@ -47,7 +47,6 @@ class WorkOnDashboard(
     }
 
     private fun createDashboard(dashboard: DashboardPage) {
-        openDashboardsPage().waitForDashboards()
         meter.measure(
             key = CREATE_DASHBOARD,
             action = {
