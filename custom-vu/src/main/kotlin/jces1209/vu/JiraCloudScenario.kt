@@ -65,7 +65,6 @@ class JiraCloudScenario : Scenario {
                 meter = meter,
                 dashboardPage = CloudDashboardPage(jira)
             )
-
         )
     }
 }

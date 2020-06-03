@@ -9,8 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions
 class DcDashboardPage(
     private val jira: WebJira
 ) : DashboardPage(
-    driver = jira.driver)
-{
+    driver = jira.driver) {
     override fun createDashboard() {
         driver.findElement(By.className("aui-button aui-dropdown2-trigger " +
             "aui-dropdown2-trigger-arrowless " +

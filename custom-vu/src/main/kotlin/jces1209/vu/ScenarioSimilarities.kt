@@ -26,7 +26,6 @@ class ScenarioSimilarities(
     private val seededRandom: SeededRandom,
     private val meter: ActionMeter
 ) {
-
     val jqlMemory = AdaptiveJqlMemory(seededRandom)
         .also { it.remember(listOf("order by created DESC")) } // work around https://ecosystem.atlassian.net/browse/JPERF-573
     val issueKeyMemory = AdaptiveIssueKeyMemory(seededRandom)
@@ -36,7 +35,6 @@ class ScenarioSimilarities(
     val scrumBoardPages = SeededMemory<BoardPage>(seededRandom)
     val nextGenBoardPages = SeededMemory<BoardPage>(seededRandom)
 
-
     fun assembleScenario(
         issuePage: AbstractIssuePage,
         filtersPage: FiltersPage,
@@ -45,7 +43,6 @@ class ScenarioSimilarities(
         searchWithJql: Action,
         browseProjects: Action,
         workOnDashboard: Action
-
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
         workOnDashboard = workOnDashboard,
@@ -93,8 +90,6 @@ class ScenarioSimilarities(
             viewIssueProbability = 0.50f,
             jiraTips = JiraTips(jira.driver)
         )
-
-
     )
 
     private fun assembleScenario(
@@ -108,8 +103,6 @@ class ScenarioSimilarities(
         browseBoards: Action,
         viewBoard: Action,
         workOnDashboard: Action
-
-
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
