@@ -1,17 +1,16 @@
 package jces1209.vu.page.project
 
-import com.atlassian.performance.tools.jiraactions.api.page.wait
-import jces1209.vu.page.CommonIssueNavigator
+import jces1209.vu.page.CloudIssueNavigator
 import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
-import java.time.Duration
 
 
 class CloudProjectIssueNavigatorPage(
     private val driver: WebDriver
-) : ProjectIssueNavigatorPage, CommonIssueNavigator() {
+) : ProjectIssueNavigatorPage {
+
     override fun openProjectByIndex(index: Int) {
         driver
             .wait(ExpectedConditions
@@ -21,8 +20,6 @@ class CloudProjectIssueNavigatorPage(
     }
 
     override fun waitForProjectIssueNavigator(driver: WebDriver) {
-        driver.wait(
-            Duration.ofSeconds(30),
-            expectedConditionsList())
+        CloudIssueNavigator(driver).waitForNavigator()
     }
 }
