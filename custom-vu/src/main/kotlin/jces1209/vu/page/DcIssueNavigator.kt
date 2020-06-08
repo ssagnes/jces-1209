@@ -20,7 +20,7 @@ class DcIssueNavigator(
             presenceOfElementLocated(By.className("issue-body-content"))
         )
     )
-        .cloudErrors()
+        .serverErrors()
         .timeout(Duration.ofSeconds(30))
         .build()
 
