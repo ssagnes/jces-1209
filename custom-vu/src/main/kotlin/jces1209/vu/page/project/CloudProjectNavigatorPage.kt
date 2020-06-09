@@ -18,7 +18,7 @@ class CloudProjectNavigatorPage(
                 .elementToBeClickable(
                     By.xpath(
                         "//*[@data-test-id='global-pages.directories.directory-base.content.table.container']" +
-                            "//*[text()='$projectKey']")))
+                            "//*[@href='/browse/$projectKey']")))
             .click()
         waitForNavigator(driver)
     }

@@ -14,7 +14,7 @@ class DcProjectNavigatorPage(
         driver
             .wait(ExpectedConditions
                 .elementToBeClickable(
-                    By.xpath("(//*[@class='aui-page-panel-content']//*[text()='$projectKey'])")))
+                    By.xpath("(//*[@class='aui-page-panel-content']//*[@href='/browse/$projectKey'])")))
             .click()
         waitForNavigator(driver)
     }
