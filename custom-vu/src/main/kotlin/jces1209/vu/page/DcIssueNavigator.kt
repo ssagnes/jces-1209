@@ -7,7 +7,7 @@ import java.time.Duration
 
 class DcIssueNavigator(
     driver: WebDriver
-) {
+) : IssueNavigator {
     private val falliblePage = FalliblePage.Builder(
         driver,
         and(
@@ -24,7 +24,7 @@ class DcIssueNavigator(
         .timeout(Duration.ofSeconds(30))
         .build()
 
-    fun waitForNavigator() {
+    override fun waitForNavigator() {
         falliblePage.waitForPageToLoad()
     }
 }

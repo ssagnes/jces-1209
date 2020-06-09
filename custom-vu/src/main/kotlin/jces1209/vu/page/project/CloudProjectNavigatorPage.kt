@@ -7,19 +7,19 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
 
 
-class CloudProjectIssueNavigatorPage(
+class CloudProjectNavigatorPage(
     private val driver: WebDriver
-) : ProjectIssueNavigatorPage {
+) : ProjectNavigatorPage {
 
-    override fun openProjectByIndex(index: Int) {
+    override fun openProject(projectKey: Int) {
         driver
             .wait(ExpectedConditions
-                .elementToBeClickable(By.xpath("(//*[@data-testid='Content']//a)[$index]")))
+                .elementToBeClickable(By.xpath("(//*[@data-testid='Content']//a)[$projectKey]")))
             .click()
-        waitForProjectIssueNavigator(driver)
+        waitForNavigator(driver)
     }
 
-    override fun waitForProjectIssueNavigator(driver: WebDriver) {
+    override fun waitForNavigator(driver: WebDriver) {
         CloudIssueNavigator(driver).waitForNavigator()
     }
 }

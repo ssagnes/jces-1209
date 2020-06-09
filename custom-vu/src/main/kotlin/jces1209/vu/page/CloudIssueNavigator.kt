@@ -7,33 +7,33 @@ import java.time.Duration
 
 class CloudIssueNavigator(
     driver: WebDriver
-) {
-    private val page = FalliblePage.Builder(
-            driver,
-            or(
-                and(
-                    or(
-                        presenceOfElementLocated(By.cssSelector("ol.issue-list")),
-                        presenceOfElementLocated(By.id("issuetable")),
-                        presenceOfElementLocated(By.id("issue-content"))
-                    ),
-                    or(
-                        presenceOfElementLocated(By.id("jira-issue-header")),
-                        presenceOfElementLocated(By.id("key-val"))
-                    ),
-                    or(
-                        presenceOfElementLocated(By.id("new-issue-body-container")),
-                        presenceOfElementLocated(By.className("issue-body-content"))
-                    )
+) : IssueNavigator {
+    private val falliblePage = FalliblePage.Builder(
+        driver,
+        or(
+            and(
+                or(
+                    presenceOfElementLocated(By.cssSelector("ol.issue-list")),
+                    presenceOfElementLocated(By.id("issuetable")),
+                    presenceOfElementLocated(By.id("issue-content"))
                 ),
-                presenceOfElementLocated(By.className("no-results-hint")) // TODO is it too optimistic like in SearchServerFilter.waitForIssueNavigator ?
-            )
+                or(
+                    presenceOfElementLocated(By.id("jira-issue-header")),
+                    presenceOfElementLocated(By.id("key-val"))
+                ),
+                or(
+                    presenceOfElementLocated(By.id("new-issue-body-container")),
+                    presenceOfElementLocated(By.className("issue-body-content"))
+                )
+            ),
+            presenceOfElementLocated(By.className("no-results-hint")) // TODO is it too optimistic like in SearchServerFilter.waitForIssueNavigator ?
         )
+    )
         .cloudErrors()
         .timeout(Duration.ofSeconds(30))
         .build()
 
-    fun waitForNavigator() {
-        page.waitForPageToLoad()
+    override fun waitForNavigator() {
+        falliblePage.waitForPageToLoad()
     }
 }

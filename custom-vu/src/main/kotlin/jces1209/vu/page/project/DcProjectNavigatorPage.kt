@@ -6,18 +6,18 @@ import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
 
-class DcProjectIssueNavigatorPage(
+class DcProjectNavigatorPage(
     private val driver: WebDriver
-) : ProjectIssueNavigatorPage {
-    override fun openProjectByIndex(index: Int) {
+) : ProjectNavigatorPage {
+    override fun openProject(projectKey: Int) {
         driver
             .wait(ExpectedConditions
-                .elementToBeClickable(By.xpath("(//*[@id='projects']//a)[$index]")))
+                .elementToBeClickable(By.xpath("(//*[@id='projects']//a)[$projectKey]")))
             .click()
-        waitForProjectIssueNavigator(driver)
+        waitForNavigator(driver)
     }
 
-    override fun waitForProjectIssueNavigator(driver: WebDriver) {
+    override fun waitForNavigator(driver: WebDriver) {
         DcIssueNavigator(driver).waitForNavigator()
     }
 }

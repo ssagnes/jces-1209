@@ -5,13 +5,15 @@ import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.ProjectMemory
 import jces1209.vu.MeasureType.Companion.BROWSE_PROJECT_ISSUES
+import jces1209.vu.page.project.ProjectNavigatorPage
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 class BrowseProjectIssues(
     private val jira: WebJira,
     private val meter: ActionMeter,
-    private val projectKeyMemory: ProjectMemory
+    private val projectKeyMemory: ProjectMemory,
+    private val browseProjectPage: ProjectNavigatorPage
 ) : Action {
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
@@ -22,7 +24,8 @@ class BrowseProjectIssues(
             return
         }
         meter.measure(BROWSE_PROJECT_ISSUES) {
-            jira.driver.navigate().to("/projects/" + projectKey.key + "/issues")
+            browseProjectPage.openProject((projectKey.key).toInt())
+            browseProjectPage.waitForNavigator(jira.driver)
         }
     }
 }

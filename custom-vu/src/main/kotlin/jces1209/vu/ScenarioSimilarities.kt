@@ -9,7 +9,10 @@ import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveProjectMemory
-import jces1209.vu.action.*
+import jces1209.vu.action.BrowseBoards
+import jces1209.vu.action.BrowsePopularFilters
+import jces1209.vu.action.ViewBoard
+import jces1209.vu.action.WorkAnIssue
 import jces1209.vu.page.AbstractIssuePage
 import jces1209.vu.page.JiraTips
 import jces1209.vu.page.boards.browse.BrowseBoardsPage

@@ -10,6 +10,7 @@ import jces1209.vu.action.*
 import jces1209.vu.page.CloudIssuePage
 import jces1209.vu.page.boards.browse.cloud.CloudBrowseBoardsPage
 import jces1209.vu.page.filters.CloudFiltersPage
+import jces1209.vu.page.project.CloudProjectNavigatorPage
 import org.openqa.selenium.By
 import org.openqa.selenium.TakesScreenshot
 
@@ -61,7 +62,8 @@ class JiraCloudScenario : Scenario {
             browseProjectIssues = BrowseProjectIssues(
                 jira = jira,
                 meter = meter,
-                projectKeyMemory = similarities.projectMemory
+                projectKeyMemory = similarities.projectMemory,
+                browseProjectPage = CloudProjectNavigatorPage(jira.driver)
             )
         )
     }
