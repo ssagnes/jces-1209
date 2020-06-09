@@ -11,10 +11,14 @@ class CloudProjectNavigatorPage(
     private val driver: WebDriver
 ) : ProjectNavigatorPage {
 
-    override fun openProject(projectKey: Int) {
+    override fun openProject(projectKey: String) {
+        driver.navigate().to("/projects/")
         driver
             .wait(ExpectedConditions
-                .elementToBeClickable(By.xpath("(//*[@data-testid='Content']//a)[$projectKey]")))
+                .elementToBeClickable(
+                    By.xpath(
+                        "//*[@data-test-id='global-pages.directories.directory-base.content.table.container']" +
+                            "//*[text()='$projectKey']")))
             .click()
         waitForNavigator(driver)
     }

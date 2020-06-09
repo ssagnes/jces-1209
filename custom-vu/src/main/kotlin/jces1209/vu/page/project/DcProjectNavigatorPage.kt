@@ -9,10 +9,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions
 class DcProjectNavigatorPage(
     private val driver: WebDriver
 ) : ProjectNavigatorPage {
-    override fun openProject(projectKey: Int) {
+    override fun openProject(projectKey: String) {
+        driver.navigate().to("/projects/")
         driver
             .wait(ExpectedConditions
-                .elementToBeClickable(By.xpath("(//*[@id='projects']//a)[$projectKey]")))
+                .elementToBeClickable(
+                    By.xpath("(//*[@class='aui-page-panel-content']//*[text()='$projectKey'])")))
             .click()
         waitForNavigator(driver)
     }

@@ -4,6 +4,6 @@ import org.openqa.selenium.WebDriver
 
 interface ProjectNavigatorPage {
 
-    fun openProject(projectKey: Int)
+    fun openProject(projectKey: String)
     fun waitForNavigator(driver: WebDriver)
 }

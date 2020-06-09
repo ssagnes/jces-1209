@@ -24,7 +24,7 @@ class BrowseProjectIssues(
             return
         }
         meter.measure(BROWSE_PROJECT_ISSUES) {
-            browseProjectPage.openProject((projectKey.key).toInt())
+            browseProjectPage.openProject(projectKey.key)
             browseProjectPage.waitForNavigator(jira.driver)
         }
     }
