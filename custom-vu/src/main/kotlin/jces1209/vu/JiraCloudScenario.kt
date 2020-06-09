@@ -58,7 +58,7 @@ class JiraCloudScenario : Scenario {
                 meter = meter,
                 projectMemory = similarities.projectMemory
             ),
-            projectIssueNavigatorAction = ProjectIssueNavigatorAction(
+            browseProjectIssues = BrowseProjectIssues(
                 jira = jira,
                 meter = meter,
                 projectKeyMemory = similarities.projectMemory

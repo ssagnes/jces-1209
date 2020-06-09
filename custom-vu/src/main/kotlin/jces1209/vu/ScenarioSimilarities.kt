@@ -14,7 +14,6 @@ import jces1209.vu.page.AbstractIssuePage
 import jces1209.vu.page.JiraTips
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
 import jces1209.vu.page.boards.view.BoardPage
-import jces1209.vu.page.customizecolumns.ColumnsEditor
 import jces1209.vu.page.filters.FiltersPage
 import java.net.URI
 import java.util.*
@@ -41,7 +40,7 @@ class ScenarioSimilarities(
         createIssue: Action,
         searchWithJql: Action,
         browseProjects: Action,
-        projectIssueNavigatorAction: Action
+        browseProjectIssues: Action
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
         searchWithJql = searchWithJql,
@@ -90,7 +89,7 @@ class ScenarioSimilarities(
             viewIssueProbability = 0.50f,
             jiraTips = JiraTips(jira.driver)
         ),
-        projectIssueNavigator = projectIssueNavigatorAction
+        browseProjectIssues = browseProjectIssues
     )
 
     private fun assembleScenario(
@@ -103,7 +102,7 @@ class ScenarioSimilarities(
         browseFilters: Action,
         browseBoards: Action,
         viewBoard: Action,
-        projectIssueNavigator: Action
+        browseProjectIssues: Action
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
@@ -115,7 +114,7 @@ class ScenarioSimilarities(
             viewDashboard to 0, // 10 when TODO fix the page objects for Cloud
             browseBoards to 5,
             viewBoard to 30,
-            projectIssueNavigator to 5
+            browseProjectIssues to 5
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()
