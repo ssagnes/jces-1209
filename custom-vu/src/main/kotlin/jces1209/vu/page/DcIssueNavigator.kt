@@ -8,7 +8,7 @@ import java.time.Duration
 class DcIssueNavigator(
     driver: WebDriver
 ) {
-    private val page = FalliblePage.Builder(
+    private val falliblePage = FalliblePage.Builder(
         driver,
         and(
             or(
@@ -25,6 +25,6 @@ class DcIssueNavigator(
         .build()
 
     fun waitForNavigator() {
-        page.waitForPageToLoad()
+        falliblePage.waitForPageToLoad()
     }
 }
