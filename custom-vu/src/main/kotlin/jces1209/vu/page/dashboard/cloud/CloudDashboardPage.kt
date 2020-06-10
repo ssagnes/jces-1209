@@ -10,7 +10,7 @@ class CloudDashboardPage(
     driver = jira.driver) {
     override fun createDashboard() {
         driver.findElement(
-            By.xpath("(//button[@data-test-id='directory.dashboards-v2.create-button'])")).click()
+            By.xpath("//*[@data-test-id='directory.dashboards-v2.create-button']")).click()
         driver.findElement(
             By.id("shareable-entity-dialog.input-name"))
             .sendKeys("TestDasboard" + System.currentTimeMillis())
