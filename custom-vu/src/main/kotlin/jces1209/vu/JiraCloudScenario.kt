@@ -63,6 +63,7 @@ class JiraCloudScenario : Scenario {
             workOnDashboard = WorkOnDashboard(
                 jira = jira,
                 meter = meter,
+                projectKeyMemory = similarities.projectMemory,
                 dashboardPage = CloudDashboardPage(jira)
             )
         )

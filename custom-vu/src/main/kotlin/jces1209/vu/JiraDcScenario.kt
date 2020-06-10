@@ -63,6 +63,7 @@ class JiraDcScenario : Scenario {
             workOnDashboard = WorkOnDashboard(
                 jira = jira,
                 meter = meter,
+                projectKeyMemory = similarities.projectMemory,
                 dashboardPage = DcDashboardPage(jira)
             )
         )

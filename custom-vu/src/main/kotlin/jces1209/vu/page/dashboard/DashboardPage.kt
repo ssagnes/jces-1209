@@ -7,11 +7,10 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
 import java.time.Duration
 
-
 abstract class DashboardPage(
     protected val driver: WebDriver
 ) {
-
+    abstract fun createDashboard()
 
     fun waitForDashboards() {
         driver.wait(
@@ -20,8 +19,6 @@ abstract class DashboardPage(
             timeout = Duration.ofSeconds(50)
         )
     }
-
-    abstract fun createDashboard()
 
     fun loadGadget() {
         driver.wait(
@@ -39,7 +36,6 @@ abstract class DashboardPage(
     }
 
     fun createGadget(projectName: String) {
-
         driver.wait(
             condition = ExpectedConditions.elementToBeClickable(By.id("add-gadget")),
             timeout = Duration.ofSeconds(50)
@@ -55,7 +51,6 @@ abstract class DashboardPage(
                 By.className("aui-button aui-button-link button-close-gadgets-dialog")),
             timeout = Duration.ofSeconds(50)
         ).click()
-
         driver.findElement(By.xpath("(//input[@placeholder='Search'])"))
             .sendKeys(projectName)
         driver.wait(
@@ -68,8 +63,5 @@ abstract class DashboardPage(
             condition = ExpectedConditions.presenceOfAllElementsLocatedBy(By.className("bubble-chart-component-plot")),
             timeout = Duration.ofSeconds(50)
         )
-
     }
-
-
 }
