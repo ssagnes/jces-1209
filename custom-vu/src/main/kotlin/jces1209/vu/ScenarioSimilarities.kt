@@ -16,7 +16,9 @@ import jces1209.vu.action.WorkAnIssue
 import jces1209.vu.page.AbstractIssuePage
 import jces1209.vu.page.JiraTips
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
-import jces1209.vu.page.boards.view.BoardPage
+import jces1209.vu.action.*
+import jces1209.vu.memory.BoardPagesMemory
+import jces1209.vu.memory.SeededMemory
 import jces1209.vu.page.filters.FiltersPage
 import java.net.URI
 import java.util.*
@@ -31,9 +33,7 @@ class ScenarioSimilarities(
     val issueKeyMemory = AdaptiveIssueKeyMemory(seededRandom)
     val projectMemory = AdaptiveProjectMemory(seededRandom)
     val filtersMemory = SeededMemory<URI>(seededRandom)
-    val kanbanBoardPages = SeededMemory<BoardPage>(seededRandom)
-    val scrumBoardPages = SeededMemory<BoardPage>(seededRandom)
-    val nextGenBoardPages = SeededMemory<BoardPage>(seededRandom)
+    val boardsMemory = BoardPagesMemory(seededRandom)
 
     fun assembleScenario(
         issuePage: AbstractIssuePage,
@@ -42,9 +42,11 @@ class ScenarioSimilarities(
         createIssue: Action,
         searchWithJql: Action,
         browseProjects: Action,
-        workOnDashboard: Action
+        workOnDashboard: Action,
+        customizeColumns: Action
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
+        customizeColums = customizeColumns,
         workOnDashboard = workOnDashboard,
         searchWithJql = searchWithJql,
         workAnIssue = WorkAnIssue(
@@ -55,7 +57,10 @@ class ScenarioSimilarities(
             random = seededRandom,
             editProbability = 0.00f, // 0.10f if we can mutate data
             commentProbability = 0.00f, // 0.04f if we can mutate data
-            linkIssueProbability = 0.00f // 0.10f if we can mutate data
+            linkIssueProbability = 0.00f, // 0.10f if we can mutate data
+            changeAssigneeProbability = 0.00f,
+            mentionUserProbability = 0.00f,
+            contextOperationProbability = 0.05f
         ),
         projectSummary = ProjectSummaryAction(
             jira = jira,
@@ -76,24 +81,28 @@ class ScenarioSimilarities(
             jira = jira,
             browseBoardsPage = browseBoardsPage,
             meter = meter,
-            kanbanBoardsMemory = kanbanBoardPages,
-            scrumBoardsMemory = scrumBoardPages,
-            nextGenBoardsMemory = nextGenBoardPages
+            boardsMemory = boardsMemory
         ),
         viewBoard = ViewBoard(
+            driver = jira.driver,
             meter = meter,
-            kanbanBoardMemory = kanbanBoardPages,
-            scrumBoardMemory = scrumBoardPages,
-            nextGenBoardMemory = nextGenBoardPages,
+            boardsMemory = boardsMemory.all,
             issueKeyMemory = issueKeyMemory,
             random = seededRandom,
             viewIssueProbability = 0.50f,
+            configureBoardProbability = 0.05f,
+            contextOperationProbability = 0.05f
+        ),
+        workOnSprint = WorkOnSprint(
+            meter = meter,
+            scrumBoardsMemory = boardsMemory.scrum,
             jiraTips = JiraTips(jira.driver)
         )
     )
 
     private fun assembleScenario(
         createIssue: Action,
+        customizeColums: Action,
         searchWithJql: Action,
         workAnIssue: Action,
         projectSummary: Action,
@@ -102,11 +111,13 @@ class ScenarioSimilarities(
         browseFilters: Action,
         browseBoards: Action,
         viewBoard: Action,
-        workOnDashboard: Action
+        workOnDashboard: Action,
+        workOnSprint: WorkOnSprint
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
             createIssue to 0, // 5 if we can mutate data
+            customizeColums to 30,
             searchWithJql to 20,
             workAnIssue to 55,
             projectSummary to 5,
@@ -114,13 +125,12 @@ class ScenarioSimilarities(
             viewDashboard to 0, // 10 when TODO fix the page objects for Cloud
             browseBoards to 5,
             viewBoard to 30,
-            workOnDashboard to 5
+            workOnDashboard to 5,
+            workOnSprint to 10
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()
             .shuffled(seededRandom.random)
         return exploreData + spreadOut
     }
-
-
 }
