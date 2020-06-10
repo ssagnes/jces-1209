@@ -5,7 +5,7 @@ import jces1209.vu.page.dashboard.DashboardPage
 import org.openqa.selenium.By
 
 class CloudDashboardPage(
-    private val jira: WebJira
+    jira: WebJira
 ) : DashboardPage(
     driver = jira.driver) {
     override fun createDashboard() {

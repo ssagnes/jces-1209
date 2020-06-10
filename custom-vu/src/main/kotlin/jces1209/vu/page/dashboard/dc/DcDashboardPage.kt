@@ -7,7 +7,7 @@ import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.ExpectedConditions
 
 class DcDashboardPage(
-    private val jira: WebJira
+    jira: WebJira
 ) : DashboardPage(
     driver = jira.driver) {
     override fun createDashboard() {
