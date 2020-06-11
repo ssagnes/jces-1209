@@ -1,5 +1,6 @@
 package jces1209.vu.page
 
+import jces1209.vu.page.mediaviewmodal.CloudMediaViewModal
 import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.Keys
@@ -28,5 +29,22 @@ class CloudAddScreenShot(
             "//*[@data-testid='media-file-card-view']"),
             "data-test-status",
             "complete")
+    }
+
+    override fun openScreenShot(): CloudMediaViewModal {
+        val screenShots = getScreenShots()
+        val mediaViewModal = CloudMediaViewModal(driver)
+        if (screenShots.isNotEmpty()) {
+            screenShots
+                .first()
+                .click()
+            driver.wait(
+                visibilityOfAllElementsLocatedBy(
+                    By.xpath("//*[contains(@data-testid,'media-viewer')]")))
+            return mediaViewModal
+        } else {
+            logger.debug("There are no screenshots to open")
+            throw InterruptedException("There are no screenshots to open")
+        }
     }
 }
