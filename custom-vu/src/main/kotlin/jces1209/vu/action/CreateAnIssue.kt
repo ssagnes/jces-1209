@@ -48,6 +48,7 @@ class CreateAnIssue(
 
     private fun openDialog(): IssueForm {
         val driver = jira.driver
+        meter.measure(CREATE_ISSUE_MODAL) {
         driver
             .wait(
                 condition = or(*createIssueButtons.map { elementToBeClickable(it) }.toTypedArray()),
@@ -57,8 +58,9 @@ class CreateAnIssue(
         createIssueButtons
             .flatMap { driver.findElements(it) }
             .filter { it.isDisplayed }
-            .forEach { it.click() }
-        meter.measure(CREATE_ISSUE_MODAL) {
+            .first()
+            .click()
+            
             driver.wait(
                 condition = visibilityOfElementLocated(By.id("create-issue-dialog")),
                 timeout = Duration.ofSeconds(30)
