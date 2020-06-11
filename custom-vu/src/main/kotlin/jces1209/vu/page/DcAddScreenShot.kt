@@ -31,9 +31,16 @@ class DcAddScreenShot(
     }
 
     override fun openScreenShot() {
-        getFirstScreenShot()?.click()
-        driver.wait(
-            visibilityOfAllElementsLocatedBy(
-                By.xpath("//*[contains(@class,'cp-image-container')]")))
+        val screenShots = getScreenShots()
+        if (screenShots.isNotEmpty()) {
+            screenShots
+                .first()
+                .click()
+            driver.wait(
+                visibilityOfAllElementsLocatedBy(
+                    By.xpath("//*[contains(@class,'cp-image-container')]")))
+        } else {
+            logger.debug("There are no screenshots to open")
+        }
     }
 }

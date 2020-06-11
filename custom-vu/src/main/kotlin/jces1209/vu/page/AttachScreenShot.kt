@@ -1,12 +1,15 @@
 package jces1209.vu.page
 
 import jces1209.vu.wait
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.openqa.selenium.*
 import org.openqa.selenium.support.ui.ExpectedConditions
 
 abstract class AttachScreenShot(
     protected val driver: WebDriver
 ) {
+    protected val logger: Logger = LogManager.getLogger(this::class.java)
     abstract val screenShotLocator: By
 
     fun makeScreenShot() {
@@ -29,10 +32,8 @@ abstract class AttachScreenShot(
 
     abstract fun openScreenShot()
 
-    protected fun getFirstScreenShot(): WebElement? {
-        if (getScreenShotsCount() > 0) {
-            return driver.findElement(screenShotLocator)
-        } else
-            return null
+    protected fun getScreenShots(): List<WebElement> {
+        return driver.findElements(screenShotLocator)
     }
+
 }

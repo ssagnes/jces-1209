@@ -31,9 +31,16 @@ class CloudAddScreenShot(
     }
 
     override fun openScreenShot() {
-        getFirstScreenShot()?.click()
-        driver.wait(
-            visibilityOfAllElementsLocatedBy(
-                By.xpath("//*[contains(@data-testid,'media-viewer')]")))
+        val screenShots = getScreenShots()
+        if (screenShots.isNotEmpty()) {
+            screenShots
+                .first()
+                .click()
+            driver.wait(
+                visibilityOfAllElementsLocatedBy(
+                    By.xpath("//*[contains(@data-testid,'media-viewer')]")))
+        } else {
+            logger.debug("There are no screenshots to open")
+        }
     }
 }
