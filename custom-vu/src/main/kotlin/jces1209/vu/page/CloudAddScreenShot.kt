@@ -29,4 +29,11 @@ class CloudAddScreenShot(
             "data-test-status",
             "complete")
     }
+
+    override fun openScreenShot() {
+        getFirstScreenShot()?.click()
+        driver.wait(
+            visibilityOfAllElementsLocatedBy(
+                By.xpath("//*[contains(@data-testid,'media-viewer')]")))
+    }
 }

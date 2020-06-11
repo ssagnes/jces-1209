@@ -1,10 +1,7 @@
 package jces1209.vu.page
 
 import jces1209.vu.wait
-import org.openqa.selenium.By
-import org.openqa.selenium.OutputType
-import org.openqa.selenium.TakesScreenshot
-import org.openqa.selenium.WebDriver
+import org.openqa.selenium.*
 import org.openqa.selenium.support.ui.ExpectedConditions
 
 abstract class AttachScreenShot(
@@ -28,5 +25,14 @@ abstract class AttachScreenShot(
 
     protected fun getScreenShotsCount(): Int {
         return driver.findElements(screenShotLocator).size
+    }
+
+    abstract fun openScreenShot()
+
+    protected fun getFirstScreenShot(): WebElement? {
+        if (getScreenShotsCount() > 0) {
+            return driver.findElement(screenShotLocator)
+        } else
+            return null
     }
 }

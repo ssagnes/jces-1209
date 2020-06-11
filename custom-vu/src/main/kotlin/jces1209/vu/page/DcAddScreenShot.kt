@@ -29,4 +29,11 @@ class DcAddScreenShot(
             "data-attachment-thumbnail",
             "true")
     }
+
+    override fun openScreenShot() {
+        getFirstScreenShot()?.click()
+        driver.wait(
+            visibilityOfAllElementsLocatedBy(
+                By.xpath("//*[contains(@class,'cp-image-container')]")))
+    }
 }
