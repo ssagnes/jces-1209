@@ -55,5 +55,8 @@ class MeasureType {
 
         @JvmField
         val CONFIGURE_BOARD = ActionType("Configure board") { Unit }
+
+        @JvmField
+        val CREATE_ISSUE_MODAL = ActionType("Create Issue Modal") { Unit }
     }
 }
