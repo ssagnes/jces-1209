@@ -8,6 +8,7 @@ interface AbstractIssuePage {
     fun comment(): Commenting
     fun editDescription(description: String): AbstractIssuePage
     fun linkIssue(): IssueLinking
+    fun addAttachment(): AttachScreenShot
     fun changeAssignee(): AbstractIssuePage
     fun contextOperation(): ContextOperationIssue
 }

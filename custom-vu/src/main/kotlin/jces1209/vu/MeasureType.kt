@@ -12,7 +12,7 @@ class MeasureType {
         val CONTEXT_OPERATION_ISSUE = ActionType("Context operation (Issue)") { Unit }
 
         @JvmField
-        val CUSTOMIZE_COLUMNS= ActionType("Customize columns") { Unit }
+        val CUSTOMIZE_COLUMNS = ActionType("Customize columns") { Unit }
 
         @JvmField
         val ISSUE_PREVIEW_BOARD = ActionType("Preview issue (Board)") { Unit }
@@ -54,9 +54,18 @@ class MeasureType {
         val SPRINT_START_SPRINT_SUBMIT = ActionType("Sprint (Start sprint (submit))") { Unit }
 
         @JvmField
+        val ATTACH_SCREENSHOT= ActionType("Attach screenshot") { Unit }
+
+        @JvmField
         val CONFIGURE_BOARD = ActionType("Configure board") { Unit }
 
         @JvmField
         val CREATE_ISSUE_MODAL = ActionType("Create Issue Modal") { Unit }
+
+        @JvmField
+        val SWITCH_BETWEEN_ISSUES_IN_SEARCH_RESULTS = ActionType("Switch between issues in search results") { Unit }
+
+        @JvmField
+        var TOP_BAR_QUICK_SEARCH = ActionType("Quick search top bar") { Unit }
     }
 }

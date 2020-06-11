@@ -1,6 +1,5 @@
 package jces1209.vu.page
 
-import jces1209.vu.page.contextoperation.ContextOperation
 import jces1209.vu.page.contextoperation.ContextOperationIssue
 import jces1209.vu.wait
 import org.apache.logging.log4j.LogManager
@@ -63,6 +62,10 @@ class CloudIssuePage(
 
     override fun linkIssue(): CloudIssueLinking {
         return CloudIssueLinking(driver)
+    }
+
+    override fun addAttachment(): CloudAddScreenShot {
+        return CloudAddScreenShot(driver)
     }
 
     override fun changeAssignee(): CloudIssuePage {

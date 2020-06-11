@@ -1,7 +1,6 @@
 package jces1209.vu.page
 
 import com.atlassian.performance.tools.jiraactions.api.page.JiraErrors
-import jces1209.vu.page.contextoperation.ContextOperation
 import jces1209.vu.page.contextoperation.ContextOperationIssue
 import jces1209.vu.wait
 import org.apache.logging.log4j.LogManager
@@ -11,7 +10,6 @@ import org.openqa.selenium.Keys
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.interactions.Actions
 import org.openqa.selenium.support.ui.ExpectedConditions
-import org.openqa.selenium.support.ui.ExpectedConditions.*
 import org.openqa.selenium.support.ui.ExpectedConditions.or
 import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
 
@@ -60,6 +58,10 @@ class DcIssuePage(
                 .invisibilityOfAllElements(descriptionForm)
         )
         return this
+    }
+
+    override fun addAttachment(): DcAddScreenShot {
+        return DcAddScreenShot(driver)
     }
 
     override fun linkIssue(): DcIssueLinking {
