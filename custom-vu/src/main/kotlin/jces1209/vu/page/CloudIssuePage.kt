@@ -1,5 +1,6 @@
 package jces1209.vu.page
 
+import jces1209.vu.page.contextoperation.ContextOperationIssue
 import jces1209.vu.wait
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -65,6 +66,10 @@ class CloudIssuePage(
         return CloudIssueLinking(driver)
     }
 
+    override fun addAttachment(): CloudAddScreenShot {
+        return CloudAddScreenShot(driver)
+    }
+
     override fun changeAssignee(): CloudIssuePage {
         driver
             .findElement(By.cssSelector("[data-test-id = 'issue.views.field.user.assignee']"))
@@ -93,6 +98,10 @@ class CloudIssuePage(
         )
 
         return this;
+    }
+
+    override fun contextOperation(): ContextOperationIssue {
+        return ContextOperationIssue(driver)
     }
 
     private fun isCommentingClassic(): Boolean = driver
