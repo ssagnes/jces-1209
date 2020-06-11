@@ -60,6 +60,9 @@ class MeasureType {
         val CONFIGURE_BOARD = ActionType("Configure board") { Unit }
 
         @JvmField
+        val CREATE_ISSUE_MODAL = ActionType("Create Issue Modal") { Unit }
+
+        @JvmField
         val SWITCH_BETWEEN_ISSUES_IN_SEARCH_RESULTS = ActionType("Switch between issues in search results") { Unit }
 
         @JvmField
