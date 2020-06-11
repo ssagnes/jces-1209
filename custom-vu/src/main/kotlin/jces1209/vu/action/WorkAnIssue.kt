@@ -128,6 +128,7 @@ class WorkAnIssue(
         meter.measure(OPEN_MEDIA_VIEWER) {
             issuePage.addAttachment().openScreenShot()
         }
+            .closeMediaViewModal()
     }
     private fun mentionUser(issuePage: AbstractIssuePage) {
         val commenting = issuePage.comment()

@@ -1,5 +1,6 @@
 package jces1209.vu.page
 
+import jces1209.vu.page.mediaviewmodal.MediaViewModal
 import jces1209.vu.wait
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -30,8 +31,7 @@ abstract class AttachScreenShot(
         return driver.findElements(screenShotLocator).size
     }
 
-    abstract fun openScreenShot()
-
+    abstract fun openScreenShot(): MediaViewModal
     protected fun getScreenShots(): List<WebElement> {
         return driver.findElements(screenShotLocator)
     }
