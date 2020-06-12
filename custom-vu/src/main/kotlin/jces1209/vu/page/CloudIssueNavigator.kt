@@ -14,7 +14,7 @@ import java.util.*
 class CloudIssueNavigator(
     private val driver: WebDriver
 ): IssueNavigator {
-    private val page = FalliblePage.Builder(
+    private val falliblePage = FalliblePage.Builder(
         driver,
         or(
             and(
@@ -40,7 +40,7 @@ class CloudIssueNavigator(
         .build()
 
     override fun waitForNavigator() {
-        page.waitForPageToLoad()
+        falliblePage.waitForPageToLoad()
     }
 
     override fun selectIssue() {

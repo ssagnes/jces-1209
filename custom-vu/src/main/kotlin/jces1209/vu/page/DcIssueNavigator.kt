@@ -4,26 +4,33 @@ import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.support.ui.ExpectedCondition
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration
 import java.util.*
 
-
 class DcIssueNavigator(
     private val driver: WebDriver
-): IssueNavigator {
-    private val page = FalliblePage.Builder(
+) : IssueNavigator {
+    private val falliblePage = FalliblePage.Builder(
         driver,
-        presenceOfElementLocated(By.xpath("//*[@data-id = 'project']"))
+        and(
+            or(
+                presenceOfElementLocated(By.xpath("//*[@data-id = 'project']")),
+                presenceOfElementLocated(By.cssSelector("ol.issue-list")),
+                presenceOfElementLocated(By.id("issuetable")),
+                presenceOfElementLocated(By.id("issue-content"))
+            ),
+            presenceOfElementLocated(By.id("key-val")),
+            presenceOfElementLocated(By.className("issue-body-content"))
+        )
     )
         .timeout(Duration.ofSeconds(30))
         .serverErrors()
         .build()
 
     override fun waitForNavigator() {
-        page.waitForPageToLoad()
+        falliblePage.waitForPageToLoad()
     }
 
     override fun selectIssue() {

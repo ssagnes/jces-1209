@@ -69,6 +69,9 @@ class MeasureType {
         var TOP_BAR_QUICK_SEARCH = ActionType("Quick search top bar") { Unit }
 
         @JvmField
+        val BROWSE_PROJECT_ISSUES= ActionType("Browse project issues") { Unit }
+
+        @JvmField
         var OPEN_MEDIA_VIEWER = ActionType("Quick search top bar") { Unit }
     }
 }

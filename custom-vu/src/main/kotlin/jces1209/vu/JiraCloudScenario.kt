@@ -13,11 +13,11 @@ import jces1209.vu.page.bars.topBar.cloud.CloudTopBar
 import jces1209.vu.page.boards.browse.cloud.CloudBrowseBoardsPage
 import jces1209.vu.page.customizecolumns.CloudColumnsEditor
 import jces1209.vu.page.filters.CloudFiltersPage
+import jces1209.vu.page.project.CloudProjectNavigatorPage
 import org.openqa.selenium.By
 import org.openqa.selenium.TakesScreenshot
 
 class JiraCloudScenario : Scenario {
-
     override fun getLogInAction(
         jira: WebJira,
         meter: ActionMeter,
@@ -61,6 +61,12 @@ class JiraCloudScenario : Scenario {
                 jira = jira,
                 meter = meter,
                 projectMemory = similarities.projectMemory
+            ),
+            browseProjectIssues = BrowseProjectIssues(
+                jira = jira,
+                meter = meter,
+                projectKeyMemory = similarities.projectMemory,
+                browseProjectPage = CloudProjectNavigatorPage(jira.driver)
             ),
             customizeColumns = CustomizeColumns(
                 jira = jira,

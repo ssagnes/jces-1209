@@ -45,6 +45,7 @@ class ScenarioSimilarities(
         createIssue: Action,
         searchWithJql: Action,
         browseProjects: Action,
+        browseProjectIssues: Action,
         customizeColumns: Action,
         issueNavigator: IssueNavigator,
         topBar: TopBar
@@ -108,6 +109,7 @@ class ScenarioSimilarities(
             sprintsMemory = boardsMemory.sprint,
             jiraTips = JiraTips(jira.driver)
         ),
+        browseProjectIssues = browseProjectIssues,
         workOnTopBar = WorkOnTopBar(
             topBar=topBar,
             jira = jira,
@@ -126,6 +128,7 @@ class ScenarioSimilarities(
         browseFilters: Action,
         browseBoards: Action,
         viewBoard: Action,
+        browseProjectIssues: Action,
         workOnSprint: WorkOnSprint,
         workOnSearchResults: Action,
         workOnTopBar: Action
@@ -133,7 +136,6 @@ class ScenarioSimilarities(
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
             createIssue to 0, // 5 if we can mutate data
-            customizeColums to 30,
             searchWithJql to 20,
             workAnIssue to 55,
             projectSummary to 5,
@@ -141,6 +143,8 @@ class ScenarioSimilarities(
             viewDashboard to 0, // 10 when TODO fix the page objects for Cloud
             browseBoards to 5,
             viewBoard to 30,
+            customizeColums to 30,
+            browseProjectIssues to 5,
             workOnSprint to 10,
             workOnSearchResults to 10,
             workOnTopBar to 5
