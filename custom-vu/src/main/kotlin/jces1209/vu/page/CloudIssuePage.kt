@@ -1,6 +1,5 @@
 package jces1209.vu.page
 
-import jces1209.vu.page.contextoperation.ContextOperation
 import jces1209.vu.page.contextoperation.ContextOperationIssue
 import jces1209.vu.wait
 import org.apache.logging.log4j.LogManager
@@ -8,6 +7,8 @@ import org.apache.logging.log4j.Logger
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.interactions.Actions
+import org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfAllElements
+import org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 
@@ -63,6 +64,10 @@ class CloudIssuePage(
 
     override fun linkIssue(): CloudIssueLinking {
         return CloudIssueLinking(driver)
+    }
+
+    override fun addAttachment(): CloudAddScreenShot {
+        return CloudAddScreenShot(driver)
     }
 
     override fun changeAssignee(): CloudIssuePage {

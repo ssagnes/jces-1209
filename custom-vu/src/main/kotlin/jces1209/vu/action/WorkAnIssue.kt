@@ -4,13 +4,16 @@ import com.atlassian.performance.tools.jiraactions.api.*
 import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.IssueKeyMemory
+import jces1209.vu.MeasureType.Companion.ATTACH_SCREENSHOT
 import jces1209.vu.MeasureType.Companion.CONTEXT_OPERATION_ISSUE
 import jces1209.vu.MeasureType.Companion.ISSUE_EDIT_DESCRIPTION
 import jces1209.vu.MeasureType.Companion.ISSUE_LINK
 import jces1209.vu.MeasureType.Companion.ISSUE_LINK_LOAD_FORM
 import jces1209.vu.MeasureType.Companion.ISSUE_LINK_SEARCH_CHOOSE
 import jces1209.vu.MeasureType.Companion.ISSUE_LINK_SUBMIT
+import jces1209.vu.MeasureType.Companion.OPEN_MEDIA_VIEWER
 import jces1209.vu.page.AbstractIssuePage
+import jces1209.vu.page.AttachScreenShot
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -26,6 +29,7 @@ class WorkAnIssue(
     private val editProbability: Float,
     private val commentProbability: Float,
     private val linkIssueProbability: Float,
+    private val attachScreenShotProbability: Float,
     private val changeAssigneeProbability: Float,
     private val mentionUserProbability: Float,
     private val contextOperationProbability: Float
@@ -49,6 +53,10 @@ class WorkAnIssue(
         if (random.random.nextFloat() < commentProbability) {
             comment(loadedIssuePage)
         }
+        if (roll(attachScreenShotProbability)) {
+            attachScreenShot(loadedIssuePage)
+            openScreenShot()
+        }
         if (random.random.nextFloat() < changeAssigneeProbability) {
             changeAssignee(loadedIssuePage)
         }
@@ -59,6 +67,10 @@ class WorkAnIssue(
             contextOperation(loadedIssuePage)
         }
     }
+
+    private fun roll(
+        probability: Float
+    ): Boolean = (random.random.nextFloat() < probability)
 
     private fun read(
         issueKey: String
@@ -105,6 +117,19 @@ class WorkAnIssue(
         }
     }
 
+    private fun attachScreenShot(issuePage: AbstractIssuePage) {
+        val attachScreenShot = issuePage.addAttachment()
+        attachScreenShot.makeScreenShot()
+        meter.measure(ATTACH_SCREENSHOT) {
+            attachScreenShot.pasteScreenShot()
+        }
+    }
+    private fun openScreenShot() {
+        meter.measure(OPEN_MEDIA_VIEWER) {
+            issuePage.addAttachment().openScreenShot()
+        }
+            .closeMediaViewModal()
+    }
     private fun mentionUser(issuePage: AbstractIssuePage) {
         val commenting = issuePage.comment()
         meter.measure(ActionType("Mention a user") { Unit }) {
