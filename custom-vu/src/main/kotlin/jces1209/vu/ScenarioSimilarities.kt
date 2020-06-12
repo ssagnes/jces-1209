@@ -143,6 +143,7 @@ class ScenarioSimilarities(
             viewDashboard to 0, // 10 when TODO fix the page objects for Cloud
             browseBoards to 5,
             viewBoard to 30,
+            customizeColums to 30,
             browseProjectIssues to 5,
             workOnSprint to 10,
             workOnSearchResults to 10,
