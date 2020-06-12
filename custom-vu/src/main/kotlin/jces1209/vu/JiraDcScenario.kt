@@ -8,15 +8,16 @@ import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.scenario.JiraCoreScenario
 import com.atlassian.performance.tools.jiraactions.api.scenario.Scenario
-import jces1209.vu.action.BrowseProjectIssues
 import jces1209.vu.action.CreateAnIssue
 import jces1209.vu.action.CustomizeColumns
 import jces1209.vu.action.SearchServerFilter
+import jces1209.vu.action.*
 import jces1209.vu.page.DcIssueNavigator
 import jces1209.vu.page.DcIssuePage
 import jces1209.vu.page.bars.topBar.dc.DcTopBar
 import jces1209.vu.page.boards.browse.dc.DcBrowseBoardsPage
 import jces1209.vu.page.customizecolumns.DcColumnsEditor
+import jces1209.vu.page.dashboard.dc.DcDashboardPage
 import jces1209.vu.page.filters.ServerFiltersPage
 import jces1209.vu.page.project.DcProjectNavigatorPage
 import org.openqa.selenium.By
@@ -63,6 +64,12 @@ class JiraDcScenario : Scenario {
                 jira = jira,
                 meter = meter,
                 projectMemory = similarities.projectMemory
+            ),
+            workOnDashboard = WorkOnDashboard(
+                jira = jira,
+                meter = meter,
+                projectKeyMemory = similarities.projectMemory,
+                dashboardPage = DcDashboardPage(jira)
             ),
             browseProjectIssues = BrowseProjectIssues(
                 jira = jira,

@@ -12,6 +12,7 @@ import jces1209.vu.page.CloudIssuePage
 import jces1209.vu.page.bars.topBar.cloud.CloudTopBar
 import jces1209.vu.page.boards.browse.cloud.CloudBrowseBoardsPage
 import jces1209.vu.page.customizecolumns.CloudColumnsEditor
+import jces1209.vu.page.dashboard.cloud.CloudDashboardPage
 import jces1209.vu.page.filters.CloudFiltersPage
 import jces1209.vu.page.project.CloudProjectNavigatorPage
 import org.openqa.selenium.By
@@ -62,6 +63,12 @@ class JiraCloudScenario : Scenario {
                 meter = meter,
                 projectMemory = similarities.projectMemory
             ),
+            workOnDashboard = WorkOnDashboard(
+                jira = jira,
+                meter = meter,
+                projectKeyMemory = similarities.projectMemory,
+                dashboardPage = CloudDashboardPage(jira)
+            ),
             browseProjectIssues = BrowseProjectIssues(
                 jira = jira,
                 meter = meter,
@@ -78,3 +85,4 @@ class JiraCloudScenario : Scenario {
         )
     }
 }
+

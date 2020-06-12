@@ -30,7 +30,6 @@ class ScenarioSimilarities(
     private val seededRandom: SeededRandom,
     private val meter: ActionMeter
 ) {
-
     val jqlMemory = AdaptiveJqlMemory(seededRandom)
         .also { it.remember(listOf("order by created DESC")) } // work around https://ecosystem.atlassian.net/browse/JPERF-573
     val issueKeyMemory = AdaptiveIssueKeyMemory(seededRandom)
@@ -45,6 +44,7 @@ class ScenarioSimilarities(
         createIssue: Action,
         searchWithJql: Action,
         browseProjects: Action,
+        workOnDashboard: Action,
         browseProjectIssues: Action,
         customizeColumns: Action,
         issueNavigator: IssueNavigator,
@@ -52,6 +52,7 @@ class ScenarioSimilarities(
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
         customizeColums = customizeColumns,
+        workOnDashboard = workOnDashboard,
         searchWithJql = searchWithJql,
         workAnIssue = WorkAnIssue(
             issuePage = issuePage,
@@ -111,7 +112,7 @@ class ScenarioSimilarities(
         ),
         browseProjectIssues = browseProjectIssues,
         workOnTopBar = WorkOnTopBar(
-            topBar=topBar,
+            topBar = topBar,
             jira = jira,
             meter = meter
         )
@@ -128,14 +129,16 @@ class ScenarioSimilarities(
         browseFilters: Action,
         browseBoards: Action,
         viewBoard: Action,
-        browseProjectIssues: Action,
+        workOnDashboard: Action,
         workOnSprint: WorkOnSprint,
+        browseProjectIssues: Action,
         workOnSearchResults: Action,
         workOnTopBar: Action
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
             createIssue to 0, // 5 if we can mutate data
+            customizeColums to 30,
             searchWithJql to 20,
             workAnIssue to 55,
             projectSummary to 5,
@@ -143,9 +146,9 @@ class ScenarioSimilarities(
             viewDashboard to 0, // 10 when TODO fix the page objects for Cloud
             browseBoards to 5,
             viewBoard to 30,
-            customizeColums to 30,
-            browseProjectIssues to 5,
+            workOnDashboard to 5,
             workOnSprint to 10,
+            browseProjectIssues to 5,
             workOnSearchResults to 10,
             workOnTopBar to 5
         )

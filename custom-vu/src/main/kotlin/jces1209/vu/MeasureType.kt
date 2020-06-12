@@ -30,6 +30,15 @@ class MeasureType {
         val ISSUE_LINK_SEARCH_CHOOSE = ActionType("Link Issue(Search issue and choose)") { Unit }
 
         @JvmField
+        val CREATE_DASHBOARD = ActionType("Create Dashboard") { Unit }
+
+        @JvmField
+        val CREATE_GADGET = ActionType("Create Gadget") { Unit }
+
+        @JvmField
+        val LOAD_GADGET = ActionType("Load Gadget") { Unit }
+
+        @JvmField
         val ISSUE_LINK_SUBMIT = ActionType("Link Issue(Submit)") { Unit }
 
         @JvmField
