@@ -9,7 +9,6 @@ import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveProjectMemory
-import com.atlassian.performance.tools.jiraactions.api.page.IssueNavigatorPage
 import jces1209.vu.action.*
 import jces1209.vu.memory.BoardPagesMemory
 import jces1209.vu.memory.SeededMemory
@@ -60,8 +59,9 @@ class ScenarioSimilarities(
             linkIssueProbability = 0.00f, // 0.10f if we can mutate data
             attachScreenShotProbability = 0.05f,
             changeAssigneeProbability = 0.00f,
-            mentionUserProbability = 0.01f,
-            contextOperationProbability = 0.01f
+            mentionUserProbability = 0.00f,
+            transitionProbability = 0.00f,
+            contextOperationProbability = 0.05f
         ),
         projectSummary = ProjectSummaryAction(
             jira = jira,
