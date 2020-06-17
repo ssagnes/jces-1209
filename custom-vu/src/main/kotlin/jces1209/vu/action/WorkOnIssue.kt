@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger
 /**
  * Works for both Cloud and Data Center.
  */
-class WorkAnIssue(
+class WorkOnIssue(
     private val issuePage: AbstractIssuePage,
     private val jira: WebJira,
     private val meter: ActionMeter,

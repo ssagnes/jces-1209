@@ -9,18 +9,16 @@ import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveProjectMemory
-import jces1209.vu.action.BrowseBoards
-import jces1209.vu.action.BrowsePopularFilters
-import jces1209.vu.action.ViewBoard
-import jces1209.vu.action.WorkAnIssue
+import com.atlassian.performance.tools.jiraactions.api.page.IssueNavigatorPage
+import jces1209.vu.action.*
+import jces1209.vu.memory.BoardPagesMemory
+import jces1209.vu.memory.SeededMemory
 import jces1209.vu.page.AbstractIssuePage
 import jces1209.vu.page.IssueNavigator
 import jces1209.vu.page.JiraTips
 import jces1209.vu.page.bars.topBar.TopBar
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
-import jces1209.vu.action.*
-import jces1209.vu.memory.BoardPagesMemory
-import jces1209.vu.memory.SeededMemory
+import jces1209.vu.page.customizecolumns.ColumnsEditor
 import jces1209.vu.page.filters.FiltersPage
 import java.net.URI
 import java.util.*
@@ -42,19 +40,16 @@ class ScenarioSimilarities(
         filtersPage: FiltersPage,
         browseBoardsPage: BrowseBoardsPage,
         createIssue: Action,
-        searchWithJql: Action,
         browseProjects: Action,
         workOnDashboard: Action,
         browseProjectIssues: Action,
-        customizeColumns: Action,
         issueNavigator: IssueNavigator,
+        columnsEditor: ColumnsEditor,
         topBar: TopBar
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
-        customizeColums = customizeColumns,
         workOnDashboard = workOnDashboard,
-        searchWithJql = searchWithJql,
-        workAnIssue = WorkAnIssue(
+        workAnIssue = WorkOnIssue(
             issuePage = issuePage,
             jira = jira,
             meter = meter,
@@ -63,10 +58,10 @@ class ScenarioSimilarities(
             editProbability = 0.00f, // 0.10f if we can mutate data
             commentProbability = 0.00f, // 0.04f if we can mutate data
             linkIssueProbability = 0.00f, // 0.10f if we can mutate data
-            attachScreenShotProbability = 0.00f,
+            attachScreenShotProbability = 0.05f,
             changeAssigneeProbability = 0.00f,
-            mentionUserProbability = 0.00f,
-            contextOperationProbability = 0.05f
+            mentionUserProbability = 0.01f,
+            contextOperationProbability = 0.01f
         ),
         projectSummary = ProjectSummaryAction(
             jira = jira,
@@ -99,11 +94,6 @@ class ScenarioSimilarities(
             configureBoardProbability = 0.05f,
             contextOperationProbability = 0.05f
         ),
-        workOnSearchResults = WorkOnSearchResults(
-            issueNavigator = issueNavigator,
-            jira = jira,
-            meter = meter
-        ),
         workOnSprint = WorkOnSprint(
             meter = meter,
             backlogsMemory = boardsMemory.backlog,
@@ -115,13 +105,26 @@ class ScenarioSimilarities(
             topBar = topBar,
             jira = jira,
             meter = meter
+        ),
+        workOnSearch = WorkOnSearch(
+            issueNavigator = issueNavigator,
+            jira = jira,
+            meter = meter,
+            columnsEditor = columnsEditor,
+            random = seededRandom,
+            filters = filtersMemory,
+            jqlMemory = jqlMemory,
+            issueKeyMemory = issueKeyMemory,
+            searchFilterProbability = 0.50f,
+            searchJclProbability = 0.05f,
+            globalSearchProbability = 0.05f,
+            customizeColumnsProbability = 0.05f,
+            switchBetweenIssuesProbability = 0.05f
         )
     )
 
     private fun assembleScenario(
         createIssue: Action,
-        customizeColums: Action,
-        searchWithJql: Action,
         workAnIssue: Action,
         projectSummary: Action,
         viewDashboard: Action,
@@ -132,14 +135,12 @@ class ScenarioSimilarities(
         workOnDashboard: Action,
         workOnSprint: WorkOnSprint,
         browseProjectIssues: Action,
-        workOnSearchResults: Action,
+        workOnSearch: Action,
         workOnTopBar: Action
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
             createIssue to 0, // 5 if we can mutate data
-            customizeColums to 30,
-            searchWithJql to 20,
             workAnIssue to 55,
             projectSummary to 5,
             browseProjects to 5,
@@ -149,8 +150,8 @@ class ScenarioSimilarities(
             workOnDashboard to 5,
             workOnSprint to 10,
             browseProjectIssues to 5,
-            workOnSearchResults to 10,
-            workOnTopBar to 5
+            workOnTopBar to 5,
+            workOnSearch to 5
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()

@@ -82,5 +82,8 @@ class MeasureType {
 
         @JvmField
         var OPEN_MEDIA_VIEWER = ActionType("Quick search top bar") { Unit }
+
+        @JvmField
+        var OPEN_GLOBAL_SEARCH = ActionType("Quick search top bar") { Unit }
     }
 }

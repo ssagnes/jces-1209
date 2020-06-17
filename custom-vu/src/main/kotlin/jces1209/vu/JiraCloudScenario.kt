@@ -11,7 +11,7 @@ import jces1209.vu.page.CloudIssueNavigator
 import jces1209.vu.page.CloudIssuePage
 import jces1209.vu.page.bars.topBar.cloud.CloudTopBar
 import jces1209.vu.page.boards.browse.cloud.CloudBrowseBoardsPage
-import jces1209.vu.page.customizecolumns.CloudColumnsEditor
+import jces1209.vu.page.customizecolumns.DcColumnsEditor
 import jces1209.vu.page.dashboard.cloud.CloudDashboardPage
 import jces1209.vu.page.filters.CloudFiltersPage
 import jces1209.vu.page.project.CloudProjectNavigatorPage
@@ -53,11 +53,6 @@ class JiraCloudScenario : Scenario {
                 projectMemory = similarities.projectMemory,
                 createIssueButtons = listOf(By.id("createGlobalItem"), By.id("createGlobalItemIconButton"))
             ),
-            searchWithJql = SearchCloudFilter(
-                jira = jira,
-                meter = meter,
-                filters = similarities.filtersMemory
-            ),
             browseProjects = BrowseCloudProjects(
                 jira = jira,
                 meter = meter,
@@ -75,12 +70,8 @@ class JiraCloudScenario : Scenario {
                 projectKeyMemory = similarities.projectMemory,
                 browseProjectPage = CloudProjectNavigatorPage(jira.driver)
             ),
-            customizeColumns = CustomizeColumns(
-                jira = jira,
-                meter = meter,
-                columnsEditor = CloudColumnsEditor(jira.driver)
-            ),
             issueNavigator = CloudIssueNavigator(jira.driver),
+            columnsEditor = DcColumnsEditor(jira.driver),
             topBar = CloudTopBar(jira.driver)
         )
     }

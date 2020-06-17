@@ -8,10 +8,9 @@ import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.scenario.JiraCoreScenario
 import com.atlassian.performance.tools.jiraactions.api.scenario.Scenario
+import jces1209.vu.action.BrowseProjectIssues
 import jces1209.vu.action.CreateAnIssue
-import jces1209.vu.action.CustomizeColumns
-import jces1209.vu.action.SearchServerFilter
-import jces1209.vu.action.*
+import jces1209.vu.action.WorkOnDashboard
 import jces1209.vu.page.DcIssueNavigator
 import jces1209.vu.page.DcIssuePage
 import jces1209.vu.page.bars.topBar.dc.DcTopBar
@@ -55,11 +54,6 @@ class JiraDcScenario : Scenario {
                 projectMemory = similarities.projectMemory,
                 createIssueButtons = listOf(By.id("create_link"))
             ),
-            searchWithJql = SearchServerFilter(
-                jira = jira,
-                meter = meter,
-                filters = similarities.filtersMemory
-            ),
             browseProjects = BrowseProjectsAction(
                 jira = jira,
                 meter = meter,
@@ -77,12 +71,8 @@ class JiraDcScenario : Scenario {
                 projectKeyMemory = similarities.projectMemory,
                 browseProjectPage = DcProjectNavigatorPage(jira.driver)
             ),
-            customizeColumns = CustomizeColumns(
-                jira = jira,
-                meter = meter,
-                columnsEditor = DcColumnsEditor(jira.driver)
-            ),
             issueNavigator = DcIssueNavigator(jira.driver),
+            columnsEditor = DcColumnsEditor(jira.driver),
             topBar = DcTopBar(jira.driver)
         )
     }
