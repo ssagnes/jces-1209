@@ -11,7 +11,7 @@ import jces1209.vu.page.CloudIssueNavigator
 import jces1209.vu.page.CloudIssuePage
 import jces1209.vu.page.bars.topBar.cloud.CloudTopBar
 import jces1209.vu.page.boards.browse.cloud.CloudBrowseBoardsPage
-import jces1209.vu.page.customizecolumns.DcColumnsEditor
+import jces1209.vu.page.customizecolumns.CloudColumnsEditor
 import jces1209.vu.page.dashboard.cloud.CloudDashboardPage
 import jces1209.vu.page.filters.CloudFiltersPage
 import jces1209.vu.page.project.CloudProjectNavigatorPage
@@ -71,7 +71,7 @@ class JiraCloudScenario : Scenario {
                 browseProjectPage = CloudProjectNavigatorPage(jira.driver)
             ),
             issueNavigator = CloudIssueNavigator(jira.driver),
-            columnsEditor = DcColumnsEditor(jira.driver),
+            columnsEditor = CloudColumnsEditor(jira.driver),
             topBar = CloudTopBar(jira.driver)
         )
     }
