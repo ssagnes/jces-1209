@@ -5,6 +5,7 @@ import jces1209.vu.page.boards.configure.ConfigureBoard
 import jces1209.vu.page.boards.configure.DcConfigureBoard
 import jces1209.vu.page.boards.view.BoardContent
 import jces1209.vu.page.boards.view.KanbanBoardPage
+import jces1209.vu.page.boards.view.MovingIssue
 
 class DcKanbanBoardPage(
     jira: WebJira,
@@ -14,6 +15,10 @@ class DcKanbanBoardPage(
     uri = jira.base.resolve("secure/RapidBoard.jspa?rapidView=$boardId")
 ) {
     private val dcBoardPage = DcBoardPage(driver, issueSelector)
+
+    override fun movingIssue(): MovingIssue {
+        return MovingIssue(driver)
+    }
 
     override fun waitForBoardPageToLoad(): BoardContent {
         return dcBoardPage.waitForBoardPageToLoad()

@@ -12,6 +12,7 @@ import jces1209.vu.memory.SeededMemory
 import jces1209.vu.page.JiraTips
 import jces1209.vu.page.boards.view.BoardContent
 import jces1209.vu.page.boards.view.BoardPage
+import jces1209.vu.page.boards.view.KanbanBoardPage
 import jces1209.vu.page.contextoperation.ContextOperationBoard
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -25,7 +26,8 @@ class ViewBoard(
     private val random: SeededRandom,
     private val viewIssueProbability: Float,
     private val configureBoardProbability: Float,
-    private val contextOperationProbability: Float
+    private val contextOperationProbability: Float,
+    private val changeIssueStatusProbability: Float
 ) : Action {
     private val logger: Logger = LogManager.getLogger(this::class.java)
     private val jiraTips = JiraTips(driver)
@@ -49,6 +51,7 @@ class ViewBoard(
         }
         jiraTips.closeTips()
         configureBoard(boardType, board)
+        changeIssueStatus(board)
     }
 
     private fun viewBoard(boardType: String, board: BoardPage): BoardContent {
@@ -100,6 +103,38 @@ class ViewBoard(
                     board
                         .configureBoard()
                         .waitForLoadPage()
+                }
+            }
+        }
+    }
+
+    private fun changeIssueStatus(board: BoardPage) {
+        if (random.random.nextFloat() < changeIssueStatusProbability) {
+            if (board is KanbanBoardPage) {
+                meter.measure(MeasureType.MOVE_ISSUE_STATUS_BOARD) {
+                    val movingIssue = board.movingIssue()
+
+                    val issue = movingIssue.moveIssueToOtherColumn()
+                    if (movingIssue.isModalWindowDisplayed()) {
+                        if (movingIssue.isContinueButtonEnabled()) {
+                            meter.measure(MeasureType.MOVE_ISSUE_STATUS_BOARD_SUBMIT_WINDOW) {
+                                movingIssue.clickContinueButton(issue)
+                                if (movingIssue.isModalWindowDisplayed()) {
+                                    movingIssue.closeWindows()
+
+                                    val errorMessage = "Failed to submit issue transition [${issue.key}]"
+                                    logger.debug(errorMessage)
+                                    throw InterruptedException(errorMessage)
+                                }
+                            }
+                        } else {
+                            movingIssue.closeWindows()
+
+                            val errorMessage = "Issue [${issue.key}] can't be moved to other column"
+                            logger.debug(errorMessage)
+                            throw InterruptedException(errorMessage)
+                        }
+                    }
                 }
             }
         }

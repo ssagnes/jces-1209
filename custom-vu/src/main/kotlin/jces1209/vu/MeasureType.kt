@@ -61,9 +61,15 @@ class MeasureType {
 
         @JvmField
         val SPRINT_START_SPRINT_SUBMIT = ActionType("Sprint (Start sprint (submit))") { Unit }
+        
+        @JvmField
+        val MOVE_ISSUE_STATUS_BOARD = ActionType("Move Issue Status on Board") { Unit }
 
         @JvmField
-        val ATTACH_SCREENSHOT= ActionType("Attach screenshot") { Unit }
+        val MOVE_ISSUE_STATUS_BOARD_SUBMIT_WINDOW = ActionType("Move Issue Status on Board (Submit modal window)") { Unit }
+
+        @JvmField
+        val ATTACH_SCREENSHOT = ActionType("Attach screenshot") { Unit }
 
         @JvmField
         val CONFIGURE_BOARD = ActionType("Configure board") { Unit }
@@ -84,7 +90,7 @@ class MeasureType {
         val TRANSITION_FILL_IN_TIME_SPENT_FORM = ActionType("Transition (Fill in Time Spent form)") { Unit }
 
         @JvmField
-        val BROWSE_PROJECT_ISSUES= ActionType("Browse project issues") { Unit }
+        val BROWSE_PROJECT_ISSUES = ActionType("Browse project issues") { Unit }
 
         @JvmField
         var OPEN_MEDIA_VIEWER = ActionType("Quick search top bar") { Unit }
