@@ -7,8 +7,7 @@ import jces1209.vu.page.boards.view.ScrumBacklogPage
 import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.support.ui.ExpectedConditions
-import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
+import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.net.URI
 
 class CloudScrumBacklogPage(
@@ -35,9 +34,15 @@ class CloudScrumBacklogPage(
 
         driver
             .wait(
-                ExpectedConditions.and(
-                    visibilityOfElementLocated(By.cssSelector("[data-test-id='issue.views.issue-base.context.context-items.primary-items']")),
-                    visibilityOfElementLocated(By.cssSelector("[data-test-id='issue-activity-feed.heading']"))
+                or(
+                    and(
+                        visibilityOfElementLocated(By.cssSelector("[data-test-id='issue.views.issue-base.context.context-items.primary-items']")),
+                        visibilityOfElementLocated(By.cssSelector("[data-test-id='issue-activity-feed.heading']"))
+                    ),
+                    and(
+                        visibilityOfElementLocated(By.id("ghx-detail-issue")),
+                        presenceOfElementLocated(By.className("issue-drop-zone"))
+                    )
                 ))
         return this
     }
