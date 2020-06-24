@@ -1,5 +1,6 @@
 package jces1209.vu.page.project
 
+import com.atlassian.performance.tools.jiraactions.api.WebJira
 import jces1209.vu.page.CloudIssueNavigator
 import jces1209.vu.wait
 import org.openqa.selenium.By
@@ -8,21 +9,21 @@ import org.openqa.selenium.support.ui.ExpectedConditions
 
 
 class CloudProjectNavigatorPage(
-    private val driver: WebDriver
+    private val jira: WebJira
 ) : ProjectNavigatorPage {
 
     override fun openProject(projectKey: String) {
-        driver.navigate().to("/projects/")
-        driver
+        jira.navigateTo("projects")
+        jira.driver
             .wait(ExpectedConditions
-                .elementToBeClickable(
+                .visibilityOfElementLocated(
                     By.xpath(
                         "//*[@data-test-id='global-pages.directories.directory-base.content.table.container']" +
-                            "//*[@href='/browse/$projectKey']")))
-            .click()
-        waitForNavigator(driver)
+                            "//*[contains(@href,'/browse/')]")))
+        jira.navigateTo("projects/$projectKey/issues")
+        waitForNavigator(jira.driver)
     }
-
+//global-pages.directories.directory-base.content.table.container
     override fun waitForNavigator(driver: WebDriver) {
         CloudIssueNavigator(driver).waitForNavigator()
     }

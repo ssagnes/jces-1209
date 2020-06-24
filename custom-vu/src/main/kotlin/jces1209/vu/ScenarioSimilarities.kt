@@ -60,13 +60,13 @@ class ScenarioSimilarities(
             meter = meter,
             issueKeyMemory = issueKeyMemory,
             random = seededRandom,
-            editProbability = 0.00f, // 0.10f if we can mutate data
-            commentProbability = 0.00f, // 0.04f if we can mutate data
-            linkIssueProbability = 0.00f, // 0.10f if we can mutate data
-            attachScreenShotProbability = 0.00f,
-            changeAssigneeProbability = 0.00f,
-            mentionUserProbability = 0.00f,
-            transitionProbability = 0.00f,
+            editProbability = 0.05f, // 0.10f if we can mutate data
+            commentProbability = 0.05f, // 0.04f if we can mutate data
+            linkIssueProbability = 0.05f, // 0.10f if we can mutate data
+            attachScreenShotProbability = 0.05f,
+            changeAssigneeProbability = 0.05f,
+            mentionUserProbability = 0.05f,
+            transitionProbability = 0.05f,
             contextOperationProbability = 0.05f
         ),
         projectSummary = ProjectSummaryAction(
@@ -96,9 +96,9 @@ class ScenarioSimilarities(
             boardsMemory = boardsMemory.all,
             issueKeyMemory = issueKeyMemory,
             random = seededRandom,
-            viewIssueProbability = 0.50f,
-            configureBoardProbability = 0.05f,
-            contextOperationProbability = 0.05f
+            viewIssueProbability = 0.1f,
+            configureBoardProbability = 0.0f,
+            contextOperationProbability = 0.0f
         ),
         workOnSearchResults = WorkOnSearchResults(
             issueNavigator = issueNavigator,
@@ -139,19 +139,19 @@ class ScenarioSimilarities(
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
             createIssue to 0, // 5 if we can mutate data
-            customizeColums to 30,
-            searchWithJql to 20,
-            workAnIssue to 55,
-            projectSummary to 5,
-            browseProjects to 5,
-            viewDashboard to 0, // 10 when TODO fix the page objects for Cloud
-            browseBoards to 5,
-            viewBoard to 30,
-            workOnDashboard to 5,
-            workOnSprint to 10,
-            browseProjectIssues to 5,
-            workOnSearchResults to 10,
-            workOnTopBar to 5
+            customizeColums to 0,
+            searchWithJql to 0,
+            workAnIssue to 0,
+            projectSummary to 0,
+            browseProjects to 0,
+            viewDashboard to 20, // 10 when TODO fix the page objects for Cloud
+            browseBoards to 20,//20
+            viewBoard to 20,//20
+            workOnDashboard to 20,//20
+            workOnSprint to 0,
+            browseProjectIssues to 20,
+            workOnSearchResults to 0,
+            workOnTopBar to 0
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()

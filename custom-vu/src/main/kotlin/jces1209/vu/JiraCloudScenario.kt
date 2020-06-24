@@ -73,7 +73,7 @@ class JiraCloudScenario : Scenario {
                 jira = jira,
                 meter = meter,
                 projectKeyMemory = similarities.projectMemory,
-                browseProjectPage = CloudProjectNavigatorPage(jira.driver)
+                browseProjectPage = CloudProjectNavigatorPage(jira)
             ),
             customizeColumns = CustomizeColumns(
                 jira = jira,

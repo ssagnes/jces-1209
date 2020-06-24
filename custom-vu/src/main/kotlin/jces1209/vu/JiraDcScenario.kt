@@ -75,7 +75,7 @@ class JiraDcScenario : Scenario {
                 jira = jira,
                 meter = meter,
                 projectKeyMemory = similarities.projectMemory,
-                browseProjectPage = DcProjectNavigatorPage(jira.driver)
+                browseProjectPage = DcProjectNavigatorPage(jira)
             ),
             customizeColumns = CustomizeColumns(
                 jira = jira,

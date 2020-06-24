@@ -38,7 +38,7 @@ class WorkOnDashboard(
     }
 
     private fun openDashboardsPage(): DashboardPage {
-        jira.driver.navigate().to("/secure/Dashboard.jspa")
+        jira.navigateTo("/secure/ConfigurePortalPages!default.jspa?name=")
         return dashboardPage
     }
 
