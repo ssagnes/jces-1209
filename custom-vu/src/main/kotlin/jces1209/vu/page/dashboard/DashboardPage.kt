@@ -5,6 +5,8 @@ import jces1209.vu.page.FalliblePage
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.ExpectedConditions.or
+import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
 import java.time.Duration
 
 abstract class DashboardPage(
@@ -14,8 +16,10 @@ abstract class DashboardPage(
 
     fun waitForDashboards() {
         driver.wait(
-            condition = ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//a[contains(@href,'/secure/Dashboard.jspa?selectPageId')]")),
+            condition = or(
+                visibilityOfElementLocated(By.xpath("//a[contains(@href,'/secure/Dashboard.jspa?selectPageId')]")),
+                visibilityOfElementLocated(By.xpath("//*[@id='pp_favourite']/tbody/tr/td[text()='You have no favorite dashboards.']"))
+            ),
             timeout = Duration.ofSeconds(50)
         )
     }
@@ -54,7 +58,7 @@ abstract class DashboardPage(
         driver.findElement(By.xpath("(//input[@placeholder='Search'])"))
             .sendKeys(projectName)
         driver.wait(
-            condition = ExpectedConditions.visibilityOfElementLocated(
+            condition = visibilityOfElementLocated(
                 By.className("aui-list-item-link aui-indented-link")),
             timeout = Duration.ofSeconds(50)
         ).click()
