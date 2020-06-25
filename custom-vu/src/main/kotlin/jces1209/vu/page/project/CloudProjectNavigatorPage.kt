@@ -23,7 +23,7 @@ class CloudProjectNavigatorPage(
         jira.navigateTo("projects/$projectKey/issues")
         waitForNavigator(jira.driver)
     }
-//global-pages.directories.directory-base.content.table.container
+
     override fun waitForNavigator(driver: WebDriver) {
         CloudIssueNavigator(driver).waitForNavigator()
     }
