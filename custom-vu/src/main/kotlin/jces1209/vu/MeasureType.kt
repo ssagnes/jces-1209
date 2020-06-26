@@ -87,6 +87,9 @@ class MeasureType {
         val BROWSE_PROJECT_ISSUES= ActionType("Browse project issues") { Unit }
 
         @JvmField
-        var OPEN_MEDIA_VIEWER = ActionType("Quick search top bar") { Unit }
+        var OPEN_MEDIA_VIEWER = ActionType("Open Media Viewer") { Unit }
+
+        @JvmField
+        var OPEN_GLOBAL_SEARCH = ActionType("Global Issue Navigator") { Unit }
     }
 }
