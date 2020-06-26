@@ -21,7 +21,7 @@ class DcDashboardPage(
         driver
             .wait(
                 ExpectedConditions.elementToBeClickable(By.id("create_dashboard"))
-            )
+            ).click()
         driver.findElement(
             By.id("edit-entity-dashboard-name"))
             .sendKeys("TestDasboard" + System.currentTimeMillis())
