@@ -60,14 +60,14 @@ class ScenarioSimilarities(
             meter = meter,
             issueKeyMemory = issueKeyMemory,
             random = seededRandom,
-            editProbability = 0.05f, // 0.10f if we can mutate data
-            commentProbability = 0.05f, // 0.04f if we can mutate data
-            linkIssueProbability = 0.05f, // 0.10f if we can mutate data
-            attachScreenShotProbability = 0.05f,
-            changeAssigneeProbability = 0.05f,
-            mentionUserProbability = 0.05f,
-            transitionProbability = 0.05f,
-            contextOperationProbability = 0.05f
+            editProbability = 0.0f, // 0.10f if we can mutate data
+            commentProbability = 0.0f, // 0.04f if we can mutate data
+            linkIssueProbability = 0.0f, // 0.10f if we can mutate data
+            attachScreenShotProbability = 0.0f,
+            changeAssigneeProbability = 0.0f,
+            mentionUserProbability = 0.0f,
+            transitionProbability = 0.0f,
+            contextOperationProbability = 0.0f
         ),
         projectSummary = ProjectSummaryAction(
             jira = jira,
@@ -141,13 +141,13 @@ class ScenarioSimilarities(
             createIssue to 0, // 5 if we can mutate data
             customizeColums to 0,
             searchWithJql to 0,
-            workAnIssue to 0,
+            workAnIssue to 10,
             projectSummary to 0,
             browseProjects to 0,
             viewDashboard to 20, // 10 when TODO fix the page objects for Cloud
-            browseBoards to 20,//20
+            browseBoards to 10,//20
             viewBoard to 20,//20
-            workOnDashboard to 20,//20
+            workOnDashboard to 0,//20
             workOnSprint to 0,
             browseProjectIssues to 20,
             workOnSearchResults to 0,
