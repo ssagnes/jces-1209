@@ -8,6 +8,7 @@ import com.atlassian.performance.tools.jiraactions.api.memories.ProjectMemory
 import jces1209.vu.MeasureType.Companion.CREATE_DASHBOARD
 import jces1209.vu.MeasureType.Companion.CREATE_GADGET
 import jces1209.vu.MeasureType.Companion.LOAD_GADGET
+import jces1209.vu.MeasureType.Companion.VIEW_DASHBOARDS_LIST
 import jces1209.vu.page.dashboard.DashboardPage
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -27,7 +28,7 @@ class WorkOnDashboard(
             return
         }
         meter.measure(
-            key = VIEW_DASHBOARD,
+            key = VIEW_DASHBOARDS_LIST,
             action = {
                 openDashboardsPage().waitForDashboards()
             }
