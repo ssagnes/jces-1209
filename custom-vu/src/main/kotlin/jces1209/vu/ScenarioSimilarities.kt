@@ -74,10 +74,6 @@ class ScenarioSimilarities(
             meter = meter,
             projectMemory = projectMemory
         ),
-        viewDashboard = ViewDashboardAction(
-            jira = jira,
-            meter = meter
-        ),
         browseProjects = browseProjects,
         browseFilters = BrowsePopularFilters(
             filters = filtersMemory,
@@ -125,7 +121,6 @@ class ScenarioSimilarities(
         searchWithJql: Action,
         workAnIssue: Action,
         projectSummary: Action,
-        viewDashboard: Action,
         browseProjects: Action,
         browseFilters: Action,
         browseBoards: Action,
@@ -144,7 +139,6 @@ class ScenarioSimilarities(
             workAnIssue to 55,
             projectSummary to 5,
             browseProjects to 5,
-            viewDashboard to 0, // 10 when TODO fix the page objects for Cloud
             browseBoards to 5,
             viewBoard to 30,
             workOnDashboard to 5,
