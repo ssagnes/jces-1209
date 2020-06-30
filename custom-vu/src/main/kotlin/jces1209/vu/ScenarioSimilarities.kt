@@ -115,11 +115,11 @@ class ScenarioSimilarities(
             filters = filtersMemory,
             jqlMemory = jqlMemory,
             issueKeyMemory = issueKeyMemory,
-            searchFilterProbability = 0.50f,
-            searchJclProbability = 0.05f,
-            globalSearchProbability = 0.05f,
-            customizeColumnsProbability = 0.05f,
-            switchBetweenIssuesProbability = 0.05f
+            searchFilterProbability = 0.0f,
+            searchJclProbability = 0.0f,
+            globalSearchProbability = 0.9f,
+            customizeColumnsProbability = 0.0f,
+            switchBetweenIssuesProbability = 0.0f
         )
     )
 
@@ -141,17 +141,17 @@ class ScenarioSimilarities(
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
             createIssue to 0, // 5 if we can mutate data
-            workAnIssue to 55,
-            projectSummary to 5,
-            browseProjects to 5,
-            viewDashboard to 0, // 10 when TODO fix the page objects for Cloud
-            browseBoards to 5,
-            viewBoard to 30,
-            workOnDashboard to 5,
-            workOnSprint to 10,
-            browseProjectIssues to 5,
-            workOnTopBar to 5,
-            workOnSearch to 5
+            workAnIssue to 10,
+            projectSummary to 0,
+            browseProjects to 0,
+            viewDashboard to 20, // 10 when TODO fix the page objects for Cloud
+            browseBoards to 20,
+            viewBoard to 20,
+            workOnDashboard to 0,
+            workOnSprint to 0,
+            browseProjectIssues to 0,
+            workOnTopBar to 0,
+            workOnSearch to 30
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()

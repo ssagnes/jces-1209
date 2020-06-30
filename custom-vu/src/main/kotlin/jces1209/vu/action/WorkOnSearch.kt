@@ -70,7 +70,7 @@ class WorkOnSearch(
         meter.measure(
             key = MeasureType.OPEN_GLOBAL_SEARCH,
             action = {
-                jira.driver.navigate().to("/issues/")
+                jira.navigateTo("/issues/?jql=ORDER%20BY%20lastViewed%20DESC")
                 issueNavigator.waitForNavigator()
             }
         )
