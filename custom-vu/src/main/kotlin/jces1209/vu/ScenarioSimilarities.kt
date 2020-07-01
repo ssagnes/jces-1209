@@ -4,7 +4,6 @@ import com.atlassian.performance.tools.jiraactions.api.SeededRandom
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.action.ProjectSummaryAction
-import com.atlassian.performance.tools.jiraactions.api.action.ViewDashboardAction
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
@@ -68,10 +67,6 @@ class ScenarioSimilarities(
             meter = meter,
             projectMemory = projectMemory
         ),
-        viewDashboard = ViewDashboardAction(
-            jira = jira,
-            meter = meter
-        ),
         browseProjects = browseProjects,
         browseFilters = BrowsePopularFilters(
             filters = filtersMemory,
@@ -127,7 +122,6 @@ class ScenarioSimilarities(
         createIssue: Action,
         workAnIssue: Action,
         projectSummary: Action,
-        viewDashboard: Action,
         browseProjects: Action,
         browseFilters: Action,
         browseBoards: Action,
@@ -144,14 +138,13 @@ class ScenarioSimilarities(
             workAnIssue to 10,
             projectSummary to 0,
             browseProjects to 0,
-            viewDashboard to 20, // 10 when TODO fix the page objects for Cloud
             browseBoards to 20,
             viewBoard to 20,
-            workOnDashboard to 0,
-            workOnSprint to 0,
-            browseProjectIssues to 0,
-            workOnTopBar to 0,
-            workOnSearch to 30
+            workOnDashboard to 5,
+            workOnSprint to 10,
+            browseProjectIssues to 5,
+            workOnSearch to 30,
+            workOnTopBar to 0
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()

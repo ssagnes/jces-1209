@@ -36,9 +36,6 @@ class MeasureType {
         val CREATE_GADGET = ActionType("Create Gadget") { Unit }
 
         @JvmField
-        val LOAD_GADGET = ActionType("Load Gadget") { Unit }
-
-        @JvmField
         val ISSUE_LINK_SUBMIT = ActionType("Link Issue(Submit)") { Unit }
 
         @JvmField
@@ -87,12 +84,15 @@ class MeasureType {
         val BROWSE_PROJECT_ISSUES= ActionType("Browse project issues") { Unit }
 
         @JvmField
-        var OPEN_MEDIA_VIEWER = ActionType("Open Media Viewer") { Unit }
-
-        @JvmField
         var OPEN_GLOBAL_SEARCH = ActionType("Global Issue Navigator") { Unit }
 
         @JvmField
-        var VIEW_DASHBOARDS_LIST = ActionType("View Dashboards List") { Unit }
+        var OPEN_MEDIA_VIEWER = ActionType("Quick search top bar") { Unit }
+
+        @JvmField
+        var VIEW_DASHBOARDS = ActionType("View Dasboards List") { Unit }
+
+        @JvmField
+        var VIEW_DASHBOARD = ActionType("View Dasboard") { Unit }
     }
 }

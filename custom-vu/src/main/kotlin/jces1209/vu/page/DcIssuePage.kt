@@ -83,7 +83,7 @@ class DcIssuePage(
             .findElement(By.id("assignee-val"))
             .click();
 
-        val userPicker = driver
+        driver
             .wait(
                 ExpectedConditions.presenceOfElementLocated(By.id("assignee-form"))
             )
