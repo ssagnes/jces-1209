@@ -47,15 +47,22 @@ class CloudClassicBoardPage(
 
         driver
             .wait(
-                and(
-                    visibilityOfElementLocated(By.cssSelector("[role='dialog']")),
-                    visibilityOfElementLocated(By.cssSelector("[data-test-id='issue-activity-feed.heading']"))
+                or(
+                    and(
+                        visibilityOfElementLocated(By.cssSelector("[role='dialog']")),
+                        visibilityOfElementLocated(By.cssSelector("[data-test-id='issue-activity-feed.heading']"))
+                    ),
+                    and(
+                        visibilityOfElementLocated(By.id("ghx-detail-contents")),
+                        presenceOfElementLocated(By.className("issue-drop-zone")),
+                        invisibilityOfElementLocated(By.cssSelector("aui-iconfont-edit"))
+                    )
                 ))
     }
 
     fun closePreviewIssue() {
         val closeButton = driver
-            .wait(elementToBeClickable(By.cssSelector("[aria-label='Close']")))
+            .wait(elementToBeClickable(By.cssSelector("[aria-label='Close'], .aui-iconfont-close-dialog")))
         closeButton.click()
 
         driver.wait(invisibilityOf(closeButton))
