@@ -53,11 +53,6 @@ class JiraCloudScenario : Scenario {
                 projectMemory = similarities.projectMemory,
                 createIssueButtons = listOf(By.id("createGlobalItem"), By.id("createGlobalItemIconButton"))
             ),
-            searchWithJql = SearchCloudFilter(
-                jira = jira,
-                meter = meter,
-                filters = similarities.filtersMemory
-            ),
             browseProjects = BrowseCloudProjects(
                 jira = jira,
                 meter = meter,
@@ -75,12 +70,8 @@ class JiraCloudScenario : Scenario {
                 projectKeyMemory = similarities.projectMemory,
                 browseProjectPage = CloudProjectNavigatorPage(jira.driver)
             ),
-            customizeColumns = CustomizeColumns(
-                jira = jira,
-                meter = meter,
-                columnsEditor = CloudColumnsEditor(jira.driver)
-            ),
             issueNavigator = CloudIssueNavigator(jira.driver),
+            columnsEditor = CloudColumnsEditor(jira.driver),
             topBar = CloudTopBar(jira.driver)
         )
     }
