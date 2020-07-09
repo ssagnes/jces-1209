@@ -43,29 +43,15 @@ class JiraPerformanceComparisonIT {
         val results: List<EdibleResult> = AbruptExecutorService(newCachedThreadPool()).use { pool ->
             listOf(
                 benchmark("a.properties", JiraDcScenario::class.java, quality, pool),
-                benchmark("b.properties", JiraCloudScenario::class.java, quality, pool)
+                benchmark("elsevier.properties", JiraCloudScenario::class.java, quality, pool)
                 // feel free to add more, e.g. benchmark("c.properties", ...
             )
                 .map { it.get() }
                 .map { it.prepareForJudgement(FullTimeline()) }
         }
         FullReport().dump(results, workspace.isolateTest("Compare"))
-        results.forEach { result ->
-            val actionMetrics = result.actionMetrics
-            val cohortWorkspace = workspace.directory.resolve(result.cohort)
-           val report= PlaintextReport(
-                ActionMetricStatistics(result.actionMetrics)
-            ).generate()
-            logger.info("Plain text report:\n$report")
-           SearchJqlReport(
-                allMetrics = actionMetrics
-            ).report(cohortWorkspace)
-
-            WaterfallHighlightReport().report(
-                metrics = actionMetrics,
-                workspace = TestWorkspace(cohortWorkspace.resolve("WaterfallHighlight").ensureDirectory())
-            )
-        }
+        planeTextReport(results,50)
+        planeTextReport(results,90)
         dumpMegaSlowWaterfalls(results)
     }
 
@@ -78,6 +64,24 @@ class JiraPerformanceComparisonIT {
         val properties = CohortProperties.load(secretsName)
         return pool.submitWithLogContext(properties.cohort) {
             benchmark(properties, scenario, quality)
+        }
+    }
+    private fun planeTextReport(results: List<EdibleResult>, persentile: Int){
+        results.forEach { result ->
+            val actionMetrics = result.actionMetrics
+            val cohortWorkspace = workspace.directory.resolve(result.cohort)
+            val report= PlaintextReport(
+                ActionMetricStatistics(result.actionMetrics)
+            ).generate(persentile)
+            logger.info("Plain text report "+result.cohort+":\n$report")
+            SearchJqlReport(
+                allMetrics = actionMetrics
+            ).report(cohortWorkspace)
+
+            WaterfallHighlightReport().report(
+                metrics = actionMetrics,
+                workspace = TestWorkspace(cohortWorkspace.resolve("WaterfallHighlight").ensureDirectory())
+            )
         }
     }
 

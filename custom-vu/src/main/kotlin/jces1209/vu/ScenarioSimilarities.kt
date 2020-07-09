@@ -140,10 +140,10 @@ class ScenarioSimilarities(
             browseProjects to 0,
             browseBoards to 20,
             viewBoard to 20,
-            workOnDashboard to 5,
+            workOnDashboard to 10,
             workOnSprint to 10,
             browseProjectIssues to 5,
-            workOnSearch to 30,
+            workOnSearch to 20,
             workOnTopBar to 0
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }

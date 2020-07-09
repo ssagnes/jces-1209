@@ -8,14 +8,14 @@ import java.util.*
 class PlaintextReport(
     val actionMetricStatistics: ActionMetricStatistics
 ) {
-    fun generate(): String {
-        val p95 = actionMetricStatistics.percentile(90)
+    fun generate(percentile: Int): String {
+        val p95 = actionMetricStatistics.percentile(percentile)
         val report = StringBuilder()
         val formatter = Formatter(report)
         val lineFormat = "| %-25s | %-13d | %-8d | %-20d |\n"
         formatter.format("\n")
         formatter.format("+---------------------------+---------------+----------+----------------------+\n")
-        formatter.format("| Action name               | sample size   | errors   |  p90 percentile [ms] |\n")
+        formatter.format("| Action name               | sample size   | errors   |  p"+percentile+" percentile [ms] |\n")
         formatter.format("+---------------------------+---------------+----------+----------------------+\n")
 
         actionMetricStatistics

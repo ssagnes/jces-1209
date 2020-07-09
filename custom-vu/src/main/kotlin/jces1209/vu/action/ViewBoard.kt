@@ -92,9 +92,9 @@ class ViewBoard(
         meter.measure(MeasureType.ISSUE_PREVIEW_BOARD) {
             var message: String
             if (boardType == "Backlog") {
-                    message = "Bento issue view $boardType"
+                    message = "Old issue view $boardType"
                 } else {
-                    message = "Bento issue view $boardType board"
+                    message = "Old issue view $boardType board"
                 }
             meter.measure(ActionType(message) { Unit }) {
                 board.previewIssue()
