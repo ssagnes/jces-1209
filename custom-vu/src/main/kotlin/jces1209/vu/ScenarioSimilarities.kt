@@ -23,6 +23,7 @@ import jces1209.vu.page.admin.workflow.BrowseWorkflowsPage
 import jces1209.vu.page.bars.side.SideBar
 import jces1209.vu.page.bars.topBar.TopBar
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
+import jces1209.vu.page.bulkOperation.BulkOperation
 import jces1209.vu.page.customizecolumns.ColumnsEditor
 import jces1209.vu.page.dashboard.DashboardPage
 import jces1209.vu.page.filters.FiltersPage
@@ -57,6 +58,7 @@ class ScenarioSimilarities(
         columnsEditor: ColumnsEditor,
         manageProjectsPage: ManageProjectsPage,
         topBar: TopBar,
+        bulkOperation: BulkOperation,
         sideBar: SideBar,
         projectNavigatorPage: ProjectNavigatorPage,
         browseProjectRolesPage: BrowseProjectRolesPage
@@ -146,6 +148,12 @@ class ScenarioSimilarities(
             customizeColumnsProbability = 0.05f,
             switchBetweenIssuesProbability = 0.15f
         ),
+        bulkEdit = BulkEdit(
+            issueNavigator = issueNavigator,
+            bulkOperation = bulkOperation,
+            jira = jira,
+            meter = meter
+        ),
         workOnTransition = WorkOnTransition(
             measure = measure,
             boardsMemory = boardsMemory.sprint,
@@ -189,6 +197,7 @@ class ScenarioSimilarities(
         browseProjectIssues: Action,
         workOnSearch: Action,
         workOnTopBar: Action,
+        bulkEdit: Action,
         workOnTransition: Action,
         browseWorkflows: Action,
         browseFieldScreens: Action,
@@ -210,6 +219,7 @@ class ScenarioSimilarities(
             browseProjectIssues to 5,
             workOnSearch to 5,
             workOnTopBar to 5,
+            bulkEdit to 5,
             workOnTransition to 5,
             browseWorkflows to 5,
             browseFieldScreens to 5,

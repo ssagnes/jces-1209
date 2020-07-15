@@ -1,6 +1,7 @@
 package jces1209.vu.page
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
+import jces1209.vu.page.bulkOperation.BulkOperation
 import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.ExpectedConditions
@@ -19,6 +20,8 @@ abstract class IssueNavigator(
 
     abstract fun waitForNavigator()
     abstract fun selectIssue()
+    abstract fun clickOnTools()
+    abstract fun selectCurrentPageToolsItem(): BulkOperation
 
 
     fun openChangeViewPopup(): IssueNavigator {

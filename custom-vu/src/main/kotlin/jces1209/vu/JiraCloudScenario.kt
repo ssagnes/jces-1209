@@ -19,6 +19,7 @@ import jces1209.vu.page.admin.workflow.CloudBrowseWorkflowsPage
 import jces1209.vu.page.bars.side.CloudSideBar
 import jces1209.vu.page.bars.topBar.dc.DcTopBar
 import jces1209.vu.page.boards.browse.cloud.CloudBrowseBoardsPage
+import jces1209.vu.page.bulkOperation.cloud.CloudBulkOperation
 import jces1209.vu.page.customizecolumns.CloudColumnsEditor
 import jces1209.vu.page.dashboard.cloud.CloudDashboardPage
 import jces1209.vu.page.filters.CloudFiltersPage
@@ -76,6 +77,7 @@ class JiraCloudScenario : Scenario {
             columnsEditor = CloudColumnsEditor(jira.driver),
             topBar = DcTopBar(jira.driver),
             browseProjectRolesPage = CloudBrowseProjectRolesPage(jira),
+            bulkOperation = CloudBulkOperation(jira.driver),
             sideBar = CloudSideBar(jira)
         )
     }
