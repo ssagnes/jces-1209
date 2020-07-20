@@ -97,5 +97,8 @@ class MeasureType {
 
         @JvmField
         var TRANSITION_VIEW_BOARD = ActionType("View Board (Transition)") { Unit }
+
+        @JvmField
+        var TRANSITION_ISSUE_NAVIGATOR = ActionType("Issue Navigator (Transition)") { Unit }
     }
 }

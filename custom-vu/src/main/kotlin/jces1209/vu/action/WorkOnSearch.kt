@@ -55,8 +55,9 @@ class WorkOnSearch(
     ): Boolean = (random.random.nextFloat() < probability)
 
     private fun switchBetweenIssues() {
-        jira.goToIssueNavigator("resolution = Unresolved ORDER BY priority DESC")
-        issueNavigator.waitForNavigator()
+        issueNavigator
+            .openNavigator()
+            .waitForNavigator()
 
         meter.measure(
             key = SWITCH_BETWEEN_ISSUES_IN_SEARCH_RESULTS,

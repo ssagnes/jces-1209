@@ -1,6 +1,7 @@
 package jces1209.vu.page.bars.side
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
+import jces1209.vu.page.IssueNavigator
 import jces1209.vu.page.boards.view.KanbanBoardPage
 import jces1209.vu.page.boards.view.ScrumBacklogPage
 import jces1209.vu.page.boards.view.ScrumSprintPage
@@ -18,4 +19,7 @@ abstract class SideBar(
 
     abstract fun isSelectBoardPresent(): Boolean
     abstract fun selectOtherBoard(): KanbanBoardPage
+
+    abstract fun clickOpenIssues(): IssueNavigator
+    abstract fun clickAllIssues(): IssueNavigator
 }

@@ -1,6 +1,8 @@
 package jces1209.vu.page.bars.side
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
+import jces1209.vu.page.CloudIssueNavigator
+import jces1209.vu.page.IssueNavigator
 import jces1209.vu.page.boards.view.KanbanBoardPage
 import jces1209.vu.page.boards.view.ScrumBacklogPage
 import jces1209.vu.page.boards.view.ScrumSprintPage
@@ -16,8 +18,8 @@ import java.net.URI
 class CloudSideBar(
     jira: WebJira
 ) : SideBar(jira) {
-    val backlogLocator = By.xpath("//a[@data-testid='NavigationItem' and //div[text()='Backlog']]")
-    val sprintLocator = By.xpath("//a[@data-testid='NavigationItem' and //div[text()='Active sprints']]")
+    val backlogLocator = getNavigatorItemLocator("Backlog")
+    val sprintLocator = getNavigatorItemLocator("Active sprints")
 
     override fun isBacklogPresent(): Boolean {
         return driver
@@ -47,6 +49,14 @@ class CloudSideBar(
         return CloudKanbanBoardPage(driver, processBoardLink(getOtherBoardsList().first()))
     }
 
+    override fun clickOpenIssues(): CloudIssueNavigator {
+        return clickSearchNavigatorItem("Open issues")
+    }
+
+    override fun clickAllIssues(): CloudIssueNavigator {
+        return clickSearchNavigatorItem("All issues")
+    }
+
     private fun getOtherBoardsList(): List<WebElement> {
         driver
             .wait(visibilityOfElementLocated(By.cssSelector("[data-test-id='navigation-apps.scope-switcher-v2']")))
@@ -61,5 +71,19 @@ class CloudSideBar(
 
         boardLink.click()
         return URI(boardId);
+    }
+
+    private fun getNavigatorItemLocator(itemName: String): By {
+        return By.xpath("//a[@data-testid='NavigationItem' and //div[text()='$itemName']]")
+    }
+
+    private fun clickSearchNavigatorItem(itemName: String): CloudIssueNavigator {
+        driver
+            .wait(elementToBeClickable(getNavigatorItemLocator(itemName)))
+            .click()
+
+        val loading = driver.wait(visibilityOfElementLocated(By.cssSelector(".details-layout > .loading")))
+        driver.wait(invisibilityOf(loading))
+        return CloudIssueNavigator(jira)
     }
 }
