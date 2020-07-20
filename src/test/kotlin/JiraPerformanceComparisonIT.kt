@@ -43,7 +43,7 @@ class JiraPerformanceComparisonIT {
         val results: List<EdibleResult> = AbruptExecutorService(newCachedThreadPool()).use { pool ->
             listOf(
                 benchmark("a.properties", JiraDcScenario::class.java, quality, pool),
-                benchmark("elsevier.properties", JiraCloudScenario::class.java, quality, pool)
+                benchmark("equifax.properties", JiraCloudScenario::class.java, quality, pool)
                 // feel free to add more, e.g. benchmark("c.properties", ...
             )
                 .map { it.get() }

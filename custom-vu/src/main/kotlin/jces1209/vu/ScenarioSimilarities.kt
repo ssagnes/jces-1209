@@ -14,6 +14,7 @@ import jces1209.vu.memory.SeededMemory
 import jces1209.vu.page.AbstractIssuePage
 import jces1209.vu.page.IssueNavigator
 import jces1209.vu.page.JiraTips
+import jces1209.vu.page.bars.side.SideBar
 import jces1209.vu.page.bars.topBar.TopBar
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
 import jces1209.vu.page.customizecolumns.ColumnsEditor
@@ -43,7 +44,8 @@ class ScenarioSimilarities(
         browseProjectIssues: Action,
         issueNavigator: IssueNavigator,
         columnsEditor: ColumnsEditor,
-        topBar: TopBar
+        topBar: TopBar,
+        sideBar: SideBar
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
         workOnDashboard = workOnDashboard,
@@ -88,6 +90,7 @@ class ScenarioSimilarities(
             viewIssueProbability = 0.1f,
             configureBoardProbability = 0.0f,
             contextOperationProbability = 0.0f
+
         ),
         workOnSprint = WorkOnSprint(
             meter = meter,
@@ -115,6 +118,12 @@ class ScenarioSimilarities(
             globalSearchProbability = 0.9f,
             customizeColumnsProbability = 0.0f,
             switchBetweenIssuesProbability = 0.0f
+        ),
+        workOnTransition = WorkOnTransition(
+            meter = meter,
+            boardsMemory = boardsMemory.sprint,
+            sideBar = sideBar
+
         )
     )
 
@@ -130,7 +139,9 @@ class ScenarioSimilarities(
         workOnSprint: WorkOnSprint,
         browseProjectIssues: Action,
         workOnSearch: Action,
-        workOnTopBar: Action
+        workOnTopBar: Action,
+        workOnTransition: Action
+
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
@@ -140,11 +151,12 @@ class ScenarioSimilarities(
             browseProjects to 0,
             browseBoards to 20,
             viewBoard to 20,
-            workOnDashboard to 10,
-            workOnSprint to 10,
-            browseProjectIssues to 5,
-            workOnSearch to 20,
-            workOnTopBar to 0
+            workOnDashboard to 20,
+            workOnSprint to 0,
+            browseProjectIssues to 0,
+            workOnSearch to 30,
+            workOnTopBar to 0,
+            workOnTransition to 0
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()
