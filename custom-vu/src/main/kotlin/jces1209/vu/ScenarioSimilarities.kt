@@ -121,7 +121,8 @@ class ScenarioSimilarities(
         workOnTransition = WorkOnTransition(
             meter = meter,
             boardsMemory = boardsMemory.sprint,
-            sideBar = sideBar
+            sideBar = sideBar,
+            issueNavigator = issueNavigator
         )
     )
 

@@ -70,9 +70,9 @@ class JiraDcScenario : Scenario {
                 jira = jira,
                 meter = meter,
                 projectKeyMemory = similarities.projectMemory,
-                browseProjectPage = DcProjectNavigatorPage(jira.driver)
+                browseProjectPage = DcProjectNavigatorPage(jira)
             ),
-            issueNavigator = DcIssueNavigator(jira.driver),
+            issueNavigator = DcIssueNavigator(jira),
             columnsEditor = DcColumnsEditor(jira.driver),
             topBar = DcTopBar(jira.driver),
             sideBar = DcSideBar(jira)

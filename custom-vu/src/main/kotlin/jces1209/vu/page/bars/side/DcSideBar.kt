@@ -1,6 +1,7 @@
 package jces1209.vu.page.bars.side
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
+import jces1209.vu.page.DcIssueNavigator
 import jces1209.vu.page.boards.view.KanbanBoardPage
 import jces1209.vu.page.boards.view.ScrumBacklogPage
 import jces1209.vu.page.boards.view.ScrumSprintPage
@@ -11,7 +12,7 @@ import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.interactions.Actions
-import org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable
+import org.openqa.selenium.support.ui.ExpectedConditions.*
 
 class DcSideBar(
     jira: WebJira
@@ -47,6 +48,14 @@ class DcSideBar(
         return DcKanbanBoardPage(jira, processBoardLink(getOtherBoardsList().first()))
     }
 
+    override fun clickOpenIssues(): DcIssueNavigator {
+        return clickSearchNavigatorItem("Open issues")
+    }
+
+    override fun clickAllIssues(): DcIssueNavigator {
+        return clickSearchNavigatorItem("All issues")
+    }
+
     private fun getOtherBoardsList(): List<WebElement> {
         Actions(driver)
             .moveToElement(driver.findElement(By.className("collapsed-scope-filter-container")))
@@ -62,5 +71,15 @@ class DcSideBar(
 
         boardLink.click()
         return boardId;
+    }
+
+    private fun clickSearchNavigatorItem(itemName: String): DcIssueNavigator {
+        driver
+            .wait(elementToBeClickable(By.xpath("//a[contains(@class, 'filter-link' ) and text()='$itemName']")))
+            .click()
+
+        val loading = driver.wait(visibilityOfElementLocated(By.cssSelector(".details-layout > .loading")))
+        driver.wait(invisibilityOf(loading))
+        return DcIssueNavigator(jira)
     }
 }
