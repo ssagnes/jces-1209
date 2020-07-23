@@ -1,5 +1,6 @@
 package jces1209.vu.action
 
+import com.atlassian.performance.tools.jiraactions.api.SeededRandom
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
@@ -16,25 +17,33 @@ class WorkOnDashboard(
     private val jira: WebJira,
     private val meter: ActionMeter,
     private val projectKeyMemory: ProjectMemory,
-    private val dashboardPage: DashboardPage
-
+    private val dashboardPage: DashboardPage,
+    private val random: SeededRandom,
+    private val viewDashboardsProbability: Float,
+    private val viewDashboardProbability: Float,
+    private val createDashboardAndGadgetProbability: Float
 ) : Action {
     private val logger: Logger = LogManager.getLogger(this::class.java)
+
     override fun run() {
         viewDashboards()
-        val dashboardName = createDashboard()
-        createGadget(dashboardPage, dashboardName)
-        openDashboard(dashboardPage)
+        if (random.random.nextFloat() < createDashboardAndGadgetProbability) {
+            val dashboardName = createDashboard()
+            createGadget(dashboardName)
+        }
+        openDashboard()
     }
 
     private fun viewDashboards() {
-        meter.measure(
-            key = VIEW_DASHBOARDS,
-            action = {
-                openDashboardsPage()
-                    .waitForDashboards()
-            }
-        )
+        if (random.random.nextFloat() < viewDashboardsProbability) {
+            meter.measure(
+                key = VIEW_DASHBOARDS,
+                action = {
+                    openDashboardsPage()
+                        .waitForDashboards()
+                }
+            )
+        }
     }
 
     private fun openDashboardsPage(): DashboardPage {
@@ -51,32 +60,34 @@ class WorkOnDashboard(
         )
     }
 
-    private fun createGadget(dashboard: DashboardPage, dashboardName: String) {
+    private fun createGadget(dashboardName: String) {
         val projectKey = projectKeyMemory.recall()
         if (projectKey == null) {
             logger.debug("I don't recall any project keys. Maybe next time I will.")
             return
         }
-        dashboard.selectDashboardIfPresent(dashboardName)
+        dashboardPage.selectDashboardIfPresent(dashboardName)
         meter.measure(
             key = CREATE_GADGET,
             action = {
-                dashboard.createGadget(projectKey.name)
+                dashboardPage.createGadget(projectKey.name)
             }
         )
     }
 
-    private fun openDashboard(dashboard: DashboardPage) {
-        openDashboardsPage()
-            .waitForDashboards()
-            .clickPopularIfPresent()
-        meter.measure(
-            key = VIEW_DASHBOARD,
-            action = {
-                dashboard
-                    .openDashboard()
-                    .waitForGadgetsLoad()
-            }
-        )
+    private fun openDashboard() {
+        if (random.random.nextFloat() < viewDashboardProbability) {
+            openDashboardsPage()
+                .waitForDashboards()
+                .clickPopularIfPresent()
+            meter.measure(
+                key = VIEW_DASHBOARD,
+                action = {
+                    dashboardPage
+                        .openDashboard()
+                        .waitForGadgetsLoad()
+                }
+            )
+        }
     }
 }

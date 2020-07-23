@@ -17,12 +17,15 @@ abstract class DashboardPage(
     abstract fun createDashboard(): String
 
     fun clickPopularIfPresent(): DashboardPage {
-        driver
+        val popularButtons = driver
             .findElements(By.id("popular-dash-tab"))
-            .first()
-            .click()
+        if (popularButtons.isNotEmpty()) {
+            popularButtons
+                .first()
+                .click()
 
-        waitForDashboards()
+            waitForDashboards()
+        }
         return this;
     }
 
