@@ -87,7 +87,7 @@ class ScenarioSimilarities(
             boardsMemory = boardsMemory.all,
             issueKeyMemory = issueKeyMemory,
             random = seededRandom,
-            viewIssueProbability = 0.1f,
+            viewIssueProbability = 0.1f,//0.1f
             configureBoardProbability = 0.0f,
             contextOperationProbability = 0.0f
 
@@ -146,15 +146,15 @@ class ScenarioSimilarities(
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
             createIssue to 0, // 5 if we can mutate data
-            workAnIssue to 10,
+            workAnIssue to 10,//10
             projectSummary to 0,
             browseProjects to 0,
-            browseBoards to 20,
-            viewBoard to 20,
-            workOnDashboard to 20,
+            browseBoards to 20,//20
+            viewBoard to 20,//20
+            workOnDashboard to 20,//20
             workOnSprint to 0,
             browseProjectIssues to 0,
-            workOnSearch to 30,
+            workOnSearch to 30,//30
             workOnTopBar to 0,
             workOnTransition to 0
         )
