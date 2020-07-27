@@ -18,6 +18,8 @@ import jces1209.vu.page.bars.side.SideBar
 import jces1209.vu.page.bars.topBar.TopBar
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
 import jces1209.vu.page.customizecolumns.ColumnsEditor
+import jces1209.vu.page.dashboard.DashboardPage
+import jces1209.vu.page.dashboard.cloud.CloudDashboardPage
 import jces1209.vu.page.filters.FiltersPage
 import java.net.URI
 import java.util.*
@@ -38,9 +40,9 @@ class ScenarioSimilarities(
         issuePage: AbstractIssuePage,
         filtersPage: FiltersPage,
         browseBoardsPage: BrowseBoardsPage,
+        dashboardPage: DashboardPage,
         createIssue: Action,
         browseProjects: Action,
-        workOnDashboard: Action,
         browseProjectIssues: Action,
         issueNavigator: IssueNavigator,
         columnsEditor: ColumnsEditor,
@@ -48,7 +50,16 @@ class ScenarioSimilarities(
         sideBar: SideBar
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
-        workOnDashboard = workOnDashboard,
+        workOnDashboard = WorkOnDashboard(
+            jira = jira,
+            meter = meter,
+            projectKeyMemory = projectMemory,
+            dashboardPage = dashboardPage,
+            random = seededRandom,
+            viewDashboardsProbability = 1.00f,
+            viewDashboardProbability = 1.00f,
+            createDashboardAndGadgetProbability = 0.00f // 0.10f if we can mutate data
+        ),
         workAnIssue = WorkOnIssue(
             issuePage = issuePage,
             jira = jira,
@@ -58,10 +69,10 @@ class ScenarioSimilarities(
             editProbability = 0.00f, // 0.10f if we can mutate data
             commentProbability = 0.00f, // 0.04f if we can mutate data
             linkIssueProbability = 0.00f, // 0.10f if we can mutate data
-            attachScreenShotProbability = 0.05f,
-            changeAssigneeProbability = 0.00f,
-            mentionUserProbability = 0.00f,
-            transitionProbability = 0.00f,
+            attachScreenShotProbability = 0.00f, // 0.04f if we can mutate data
+            changeAssigneeProbability = 0.00f, // 0.04f if we can mutate data
+            mentionUserProbability = 0.00f, // 0.04f if we can mutate data
+            transitionProbability = 0.00f, // 0.04f if we can mutate data
             contextOperationProbability = 0.05f
         ),
         projectSummary = ProjectSummaryAction(
@@ -115,9 +126,9 @@ class ScenarioSimilarities(
             issueKeyMemory = issueKeyMemory,
             searchFilterProbability = 0.50f,
             searchJclProbability = 0.05f,
-            globalSearchProbability = 0.05f,
+            globalSearchProbability = 0.50f,
             customizeColumnsProbability = 0.05f,
-            switchBetweenIssuesProbability = 0.05f
+            switchBetweenIssuesProbability = 0.15f
         ),
         workOnTransition = WorkOnTransition(
             meter = meter,
@@ -151,7 +162,7 @@ class ScenarioSimilarities(
             browseBoards to 5,
             viewBoard to 30,
             workOnDashboard to 5,
-            workOnSprint to 10,
+            workOnSprint to 0, // 3 if we can mutate data
             browseProjectIssues to 5,
             workOnSearch to 5,
             workOnTopBar to 5,

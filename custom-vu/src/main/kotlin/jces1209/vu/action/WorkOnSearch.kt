@@ -33,20 +33,20 @@ class WorkOnSearch(
     private val switchBetweenIssuesProbability: Float
 ) : Action {
     override fun run() {
-        if (roll(switchBetweenIssuesProbability)) {
-            switchBetweenIssues()
-        }
         if (roll(globalSearchProbability)) {
             openGlobalIssueSearch()
-        }
-        if (roll(customizeColumnsProbability)) {
-            customizeColumns()
         }
         if (roll(searchFilterProbability)) {
             searchFilter()
         }
         if (roll(searchJclProbability)) {
             searchJcl()
+        }
+        if (roll(customizeColumnsProbability)) {
+            customizeColumns()
+        }
+        if (roll(switchBetweenIssuesProbability)) {
+            switchBetweenIssues()
         }
     }
 
@@ -71,7 +71,7 @@ class WorkOnSearch(
         meter.measure(
             key = MeasureType.OPEN_GLOBAL_SEARCH,
             action = {
-                jira.driver.navigate().to("/issues/")
+                jira.driver.navigate().to("/issues/?jql=order%20by%20lastViewed%20DESC%2C%20key%20DESC")
                 issueNavigator.waitForNavigator()
             }
         )

@@ -49,6 +49,7 @@ class JiraDcScenario : Scenario {
             issuePage = DcIssuePage(jira.driver),
             filtersPage = ServerFiltersPage(jira, jira.driver),
             browseBoardsPage = DcBrowseBoardsPage(jira),
+            dashboardPage = DcDashboardPage(jira),
             createIssue = CreateAnIssue(
                 jira = jira,
                 meter = meter,
@@ -59,12 +60,6 @@ class JiraDcScenario : Scenario {
                 jira = jira,
                 meter = meter,
                 projectMemory = similarities.projectMemory
-            ),
-            workOnDashboard = WorkOnDashboard(
-                jira = jira,
-                meter = meter,
-                projectKeyMemory = similarities.projectMemory,
-                dashboardPage = DcDashboardPage(jira)
             ),
             browseProjectIssues = BrowseProjectIssues(
                 jira = jira,

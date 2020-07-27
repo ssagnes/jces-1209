@@ -48,6 +48,7 @@ class JiraCloudScenario : Scenario {
             issuePage = CloudIssuePage(jira.driver),
             filtersPage = CloudFiltersPage(jira, jira.driver),
             browseBoardsPage = CloudBrowseBoardsPage(jira),
+            dashboardPage = CloudDashboardPage(jira),
             createIssue = CreateAnIssue(
                 jira = jira,
                 meter = meter,
@@ -58,12 +59,6 @@ class JiraCloudScenario : Scenario {
                 jira = jira,
                 meter = meter,
                 projectMemory = similarities.projectMemory
-            ),
-            workOnDashboard = WorkOnDashboard(
-                jira = jira,
-                meter = meter,
-                projectKeyMemory = similarities.projectMemory,
-                dashboardPage = CloudDashboardPage(jira)
             ),
             browseProjectIssues = BrowseProjectIssues(
                 jira = jira,
