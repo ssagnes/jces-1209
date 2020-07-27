@@ -1,11 +1,11 @@
 package jces1209.vu.action
 
 import com.atlassian.performance.tools.jiraactions.api.ActionType
-import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import jces1209.vu.MeasureType
 import jces1209.vu.memory.SeededMemory
+import jces1209.vu.page.IssueNavigator
 import jces1209.vu.page.bars.side.SideBar
 import jces1209.vu.page.boards.view.ScrumSprintPage
 import org.apache.logging.log4j.LogManager
@@ -14,10 +14,38 @@ import org.apache.logging.log4j.Logger
 class WorkOnTransition(
     private val meter: ActionMeter,
     private val boardsMemory: SeededMemory<ScrumSprintPage>,
-    private val sideBar: SideBar
+    private val sideBar: SideBar,
+    private val issueNavigator: IssueNavigator
 ) : Action {
     private val logger: Logger = LogManager.getLogger(this::class.java)
     override fun run() {
+        workOnBoardTransition()
+        workOnIssueNavigatorTransition()
+    }
+
+    private fun workOnIssueNavigatorTransition() {
+        issueNavigator
+            .openNavigator()
+            .waitForNavigator()
+
+        meter.measure(MeasureType.TRANSITION_ISSUE_NAVIGATOR) {
+            meter.measure(ActionType(MeasureType.TRANSITION_ISSUE_NAVIGATOR.label + " - Open Issues") { Unit }) {
+                sideBar
+                    .clickOpenIssues()
+                    .waitForNavigator()
+            }
+        }
+
+        meter.measure(MeasureType.TRANSITION_ISSUE_NAVIGATOR) {
+            meter.measure(ActionType(MeasureType.TRANSITION_ISSUE_NAVIGATOR.label + " - Search Issues") { Unit }) {
+                sideBar
+                    .clickAllIssues()
+                    .waitForNavigator()
+            }
+        }
+    }
+
+    private fun workOnBoardTransition() {
         val board = boardsMemory.recall()
         if (board == null) {
             logger.debug("I cannot recall board, skipping...")

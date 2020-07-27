@@ -1,5 +1,6 @@
 package jces1209.vu.page
 
+import com.atlassian.performance.tools.jiraactions.api.WebJira
 import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
@@ -10,8 +11,8 @@ import java.time.Duration
 import java.util.*
 
 class DcIssueNavigator(
-    private val driver: WebDriver
-) : IssueNavigator {
+    jira: WebJira
+) : IssueNavigator(jira) {
     private val falliblePage = FalliblePage.Builder(
         driver,
         and(

@@ -87,10 +87,10 @@ class ScenarioSimilarities(
             boardsMemory = boardsMemory.all,
             issueKeyMemory = issueKeyMemory,
             random = seededRandom,
-            viewIssueProbability = 0.1f,//0.1f
-            configureBoardProbability = 0.0f,
-            contextOperationProbability = 0.0f
-
+            viewIssueProbability = 0.50f,
+            configureBoardProbability = 0.05f,
+            contextOperationProbability = 0.05f,
+            changeIssueStatusProbability = 0.10f
         ),
         workOnSprint = WorkOnSprint(
             meter = meter,
@@ -122,8 +122,8 @@ class ScenarioSimilarities(
         workOnTransition = WorkOnTransition(
             meter = meter,
             boardsMemory = boardsMemory.sprint,
-            sideBar = sideBar
-
+            sideBar = sideBar,
+            issueNavigator = issueNavigator
         )
     )
 

@@ -10,17 +10,18 @@ import org.openqa.selenium.support.ui.ExpectedConditions
 class DcProjectNavigatorPage(
     private val jira: WebJira
 ) : ProjectNavigatorPage {
-    override fun openProject(projectKey: String) {
-        jira.navigateTo("projects")
+    override fun openProject(projectKey: String): DcProjectNavigatorPage {
+        jira.driver.navigate().to("/projects/")
         jira.driver
             .wait(ExpectedConditions
                 .elementToBeClickable(
-                    By.xpath("(//*[@class='aui-page-panel-content']//*[contains(@href,'/browse/')])")))
-        jira.navigateTo("projects/$projectKey/issues")
-        waitForNavigator(jira.driver)
+                    By.xpath("(//*[@class='aui-page-panel-content']//*[@href='/browse/$projectKey'])")))
+            .click()
+        waitForNavigator()
+        return this
     }
 
-    override fun waitForNavigator(driver: WebDriver) {
-        DcIssueNavigator(driver).waitForNavigator()
+    override fun waitForNavigator() {
+        DcIssueNavigator(jira).waitForNavigator()
     }
 }

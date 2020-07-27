@@ -72,7 +72,7 @@ class JiraDcScenario : Scenario {
                 projectKeyMemory = similarities.projectMemory,
                 browseProjectPage = DcProjectNavigatorPage(jira)
             ),
-            issueNavigator = DcIssueNavigator(jira.driver),
+            issueNavigator = DcIssueNavigator(jira),
             columnsEditor = DcColumnsEditor(jira.driver),
             topBar = DcTopBar(jira.driver),
             sideBar = DcSideBar(jira)

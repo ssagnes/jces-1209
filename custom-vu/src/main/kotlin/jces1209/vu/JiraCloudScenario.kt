@@ -71,7 +71,7 @@ class JiraCloudScenario : Scenario {
                 projectKeyMemory = similarities.projectMemory,
                 browseProjectPage = CloudProjectNavigatorPage(jira)
             ),
-            issueNavigator = CloudIssueNavigator(jira.driver),
+            issueNavigator = CloudIssueNavigator(jira),
             columnsEditor = CloudColumnsEditor(jira.driver),
             topBar = DcTopBar(jira.driver),
             sideBar = CloudSideBar(jira)
