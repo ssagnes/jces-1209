@@ -13,4 +13,6 @@ abstract class KanbanBoardPage(
     override fun getTypeLabel(): String {
         return "Kanban"
     }
+
+    abstract fun movingIssue(): MovingIssue
 }

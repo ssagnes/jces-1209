@@ -89,7 +89,8 @@ class ScenarioSimilarities(
             random = seededRandom,
             viewIssueProbability = 0.50f,
             configureBoardProbability = 0.05f,
-            contextOperationProbability = 0.05f
+            contextOperationProbability = 0.05f,
+            changeIssueStatusProbability = 0.10f
         ),
         workOnSprint = WorkOnSprint(
             meter = meter,
