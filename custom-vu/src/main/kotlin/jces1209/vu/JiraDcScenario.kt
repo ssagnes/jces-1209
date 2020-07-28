@@ -6,13 +6,13 @@ import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.action.BrowseProjectsAction
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
-import com.atlassian.performance.tools.jiraactions.api.scenario.JiraCoreScenario
 import com.atlassian.performance.tools.jiraactions.api.scenario.Scenario
 import jces1209.vu.action.BrowseProjectIssues
 import jces1209.vu.action.CreateAnIssue
-import jces1209.vu.action.WorkOnDashboard
+import jces1209.vu.action.LogInToDc
 import jces1209.vu.page.DcIssueNavigator
 import jces1209.vu.page.DcIssuePage
+import jces1209.vu.page.admin.workflow.DcBrowseWorkflowsPage
 import jces1209.vu.page.bars.side.DcSideBar
 import jces1209.vu.page.bars.topBar.dc.DcTopBar
 import jces1209.vu.page.boards.browse.dc.DcBrowseBoardsPage
@@ -30,7 +30,7 @@ class JiraDcScenario : Scenario {
         meter: ActionMeter,
         userMemory: UserMemory
     ): Action {
-        return JiraCoreScenario().getLogInAction(jira, meter, userMemory)
+        return LogInToDc(jira, meter, userMemory)
     }
 
     override fun getActions(
@@ -48,6 +48,7 @@ class JiraDcScenario : Scenario {
         return similarities.assembleScenario(
             issuePage = DcIssuePage(jira.driver),
             filtersPage = ServerFiltersPage(jira, jira.driver),
+            browseWorkflowsPage = DcBrowseWorkflowsPage(jira),
             browseBoardsPage = DcBrowseBoardsPage(jira),
             dashboardPage = DcDashboardPage(jira),
             createIssue = CreateAnIssue(

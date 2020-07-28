@@ -6,6 +6,9 @@ class MeasureType {
 
     companion object {
         @JvmField
+        val BROWSE_WORKFLOWS = ActionType("Browse Workflows") { Unit }
+
+        @JvmField
         val CONTEXT_OPERATION_BOARD = ActionType("Context operation (Board)") { Unit }
 
         @JvmField
