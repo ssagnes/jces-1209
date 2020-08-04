@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 class BrowseProjectIssues(
-    private val jira: WebJira,
     private val meter: ActionMeter,
     private val projectKeyMemory: ProjectMemory,
     private val browseProjectPage: ProjectNavigatorPage

@@ -74,7 +74,7 @@ class CloudSideBar(
     }
 
     private fun getNavigatorItemLocator(itemName: String): By {
-        return By.xpath("//a[@data-testid='NavigationItem' and //div[text()='$itemName']]")
+        return By.xpath("//a[@data-testid='NavigationItem' and div/div[text()='$itemName']]")
     }
 
     private fun clickSearchNavigatorItem(itemName: String): CloudIssueNavigator {

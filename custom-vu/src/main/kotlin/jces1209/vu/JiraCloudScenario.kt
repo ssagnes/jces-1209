@@ -51,6 +51,7 @@ class JiraCloudScenario : Scenario {
             browseWorkflowsPage = CloudBrowseWorkflowsPage(jira),
             browseBoardsPage = CloudBrowseBoardsPage(jira),
             dashboardPage = CloudDashboardPage(jira),
+            projectNavigatorPage = CloudProjectNavigatorPage(jira),
             createIssue = CreateAnIssue(
                 jira = jira,
                 meter = meter,
@@ -61,12 +62,6 @@ class JiraCloudScenario : Scenario {
                 jira = jira,
                 meter = meter,
                 projectMemory = similarities.projectMemory
-            ),
-            browseProjectIssues = BrowseProjectIssues(
-                jira = jira,
-                meter = meter,
-                projectKeyMemory = similarities.projectMemory,
-                browseProjectPage = CloudProjectNavigatorPage(jira)
             ),
             issueNavigator = CloudIssueNavigator(jira),
             columnsEditor = CloudColumnsEditor(jira.driver),

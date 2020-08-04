@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.*
+import java.net.URI
 import java.time.Duration
 
 class CloudClassicBoardPage(
@@ -35,16 +36,16 @@ class CloudClassicBoardPage(
         webDriver = driver,
         expectedContent = waitBoardSelectors + unavailableBoardLocators
     )
-        .timeout(Duration.ofSeconds(25))
+        .timeout(Duration.ofSeconds(200))
         .cloudErrors()
         .build()
 
-    fun waitForBoardPageToLoad(): BoardContent {
+    fun waitForBoardPageToLoad(uri: URI): BoardContent {
         falliblePage.waitForPageToLoad()
         unavailableBoardLocators
             .forEach {
                 if (driver.findElements(it).isNotEmpty()) {
-                    val errorMessage = "Board is not available"
+                    val errorMessage = "Board is not available $uri"
                     logger.debug(errorMessage)
                     throw InterruptedException(errorMessage)
                 }
