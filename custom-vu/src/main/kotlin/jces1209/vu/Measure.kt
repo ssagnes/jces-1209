@@ -12,13 +12,14 @@ class Measure(
     private val random: SeededRandom
 ) {
     private val logger: Logger = LogManager.getLogger(this::class.java)
+    private val isSilentDefault = true
 
     fun <T> measure(
         key: ActionType<*>,
         probability: Float = 1.0f,
         preconditions: (() -> Any)? = null,
         observation: ((T) -> JsonObject?)? = null,
-        isSilent: Boolean = true,
+        isSilent: Boolean = isSilentDefault,
         action: () -> T
     ): T? {
         return roll(isSilent, probability) {
@@ -31,7 +32,7 @@ class Measure(
         }
     }
 
-    fun <T> silent(isSilent: Boolean = true, action: () -> T): T? {
+    fun <T> silent(isSilent: Boolean = isSilentDefault, action: () -> T): T? {
         try {
             return action.invoke()
         } catch (e: Throwable) {
@@ -45,7 +46,7 @@ class Measure(
     }
 
     fun <T> roll(probability: Float, action: () -> T): T? {
-        return roll(true, probability, action)
+        return roll(isSilentDefault, probability, action)
     }
 
     fun <T> roll(isSilent: Boolean, probability: Float, action: () -> T): T? {
@@ -53,48 +54,5 @@ class Measure(
             return silent(isSilent, action)
         }
         return null
-    }
-
-    inner class Executor<T>(
-        private val key: ActionType<*>,
-        private val action: () -> T
-    ) {
-        private val logger: Logger = LogManager.getLogger(this::class.java)
-
-        private var isSilent = true
-        private var preconditions: (() -> Unit)? = null
-        private var probability: Float? = null
-        private var observation: (T) -> JsonObject? = { null }
-
-        fun isSilent(value: Boolean): Executor<T> {
-            isSilent = value
-            return this
-        }
-
-        fun probability(value: Float): Executor<T> {
-            probability = value
-            return this
-        }
-
-        fun preconditions(value: () -> Unit): Executor<T> {
-            preconditions = value
-            return this
-        }
-
-        fun measure(): T? {
-            if (null == probability || random.random.nextFloat() < probability!!) {
-                try {
-                    preconditions?.invoke()
-                    return meter.measure(key, action, observation)
-                } catch (e: Throwable) {
-                    if (isSilent) {
-                        logger.error("Failed to measure $key", e)
-                    } else {
-                        throw e
-                    }
-                }
-            }
-            return null
-        }
     }
 }

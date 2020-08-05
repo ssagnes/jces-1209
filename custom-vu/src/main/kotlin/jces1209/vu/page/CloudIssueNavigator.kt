@@ -3,9 +3,7 @@ package jces1209.vu.page
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import jces1209.vu.wait
 import org.openqa.selenium.By
-import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration
 import java.util.*
@@ -37,11 +35,16 @@ class CloudIssueNavigator(
                 presenceOfElementLocated(By.cssSelector("[data-test-id='issue.views.issue-base.foundation.status.status-field-wrapper']")),
                 presenceOfElementLocated(By.cssSelector("[data-test-id='issue.views.issue-details.issue-layout.footnote']"))
             ),
+            and(
+                visibilityOfElementLocated(By.id("issuetable")),
+                presenceOfAllElementsLocatedBy(By.cssSelector("[data-issue-key]")),
+                presenceOfAllElementsLocatedBy(By.cssSelector(".summary, .components, .assignee, .reporter, .priority, .status"))
+            ),
             presenceOfElementLocated(By.className("no-results-hint")) // TODO is it too optimistic like in SearchServerFilter.waitForIssueNavigator ?
         )
     )
         .cloudErrors()
-        .timeout(Duration.ofSeconds(60))
+        .timeout(Duration.ofSeconds(120))
         .build()
 
     override fun waitForNavigator() {
