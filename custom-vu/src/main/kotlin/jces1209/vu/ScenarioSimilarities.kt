@@ -14,6 +14,7 @@ import jces1209.vu.memory.SeededMemory
 import jces1209.vu.page.AbstractIssuePage
 import jces1209.vu.page.IssueNavigator
 import jces1209.vu.page.JiraTips
+import jces1209.vu.page.admin.customfields.BrowseCustomFieldsPage
 import jces1209.vu.page.admin.fieldconfigs.BrowseFieldConfigurationsPage
 import jces1209.vu.page.admin.fieldscreen.BrowseFieldScreensPage
 import jces1209.vu.page.admin.workflow.BrowseWorkflowsPage
@@ -45,6 +46,7 @@ class ScenarioSimilarities(
         filtersPage: FiltersPage,
         browseWorkflowsPage: BrowseWorkflowsPage,
         browseFieldScreensPage: BrowseFieldScreensPage,
+        browseCustomFieldsPage: BrowseCustomFieldsPage,
         browseBoardsPage: BrowseBoardsPage,
         dashboardPage: DashboardPage,
         createIssue: Action,
@@ -143,7 +145,7 @@ class ScenarioSimilarities(
             issueNavigator = issueNavigator
         ),
         browseWorkflows = BrowseWorkflows(
-            meter = meter,
+            measure = measure,
             browseWorkflowsPage = browseWorkflowsPage
         ),
         browseFieldScreens = BrowseFieldScreens(
@@ -153,6 +155,10 @@ class ScenarioSimilarities(
         browseFieldConfigurations = BrowseFieldConfigurations(
             measure = measure,
             browseFieldConfigurationsPage = BrowseFieldConfigurationsPage(jira)
+        ),
+        browseCustomFields = BrowseCustomFields(
+            measure = measure,
+            browseCustomFieldsPage = browseCustomFieldsPage
         )
     )
 
@@ -172,7 +178,8 @@ class ScenarioSimilarities(
         workOnTransition: Action,
         browseWorkflows: Action,
         browseFieldScreens: Action,
-        browseFieldConfigurations: Action
+        browseFieldConfigurations: Action,
+        browseCustomFields: Action
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
@@ -190,7 +197,8 @@ class ScenarioSimilarities(
             workOnTransition to 5,
             browseWorkflows to 5,
             browseFieldScreens to 5,
-            browseFieldConfigurations to 5
+            browseFieldConfigurations to 5,
+            browseCustomFields to 5
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()
