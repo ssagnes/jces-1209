@@ -9,6 +9,9 @@ class MeasureType {
         val BROWSE_FIELD_SCREENS = ActionType("Browse Field Screens") { Unit }
 
         @JvmField
+        val BROWSE_FIELD_CONFIGURATIONS = ActionType("Browse Field Configurations") { Unit }
+
+        @JvmField
         val BROWSE_WORKFLOWS = ActionType("Browse Workflows") { Unit }
 
         @JvmField
@@ -64,7 +67,7 @@ class MeasureType {
 
         @JvmField
         val SPRINT_START_SPRINT_SUBMIT = ActionType("Sprint (Start sprint (submit))") { Unit }
-        
+
         @JvmField
         val MOVE_ISSUE_STATUS_BOARD = ActionType("Move Issue Status on Board") { Unit }
 
