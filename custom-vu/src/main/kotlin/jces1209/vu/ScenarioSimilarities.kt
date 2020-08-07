@@ -14,12 +14,13 @@ import jces1209.vu.memory.SeededMemory
 import jces1209.vu.page.AbstractIssuePage
 import jces1209.vu.page.IssueNavigator
 import jces1209.vu.page.JiraTips
+import jces1209.vu.page.admin.workflow.BrowseWorkflowsPage
+import jces1209.vu.page.admin.workflow.DcBrowseWorkflowsPage
 import jces1209.vu.page.bars.side.SideBar
 import jces1209.vu.page.bars.topBar.TopBar
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
 import jces1209.vu.page.customizecolumns.ColumnsEditor
 import jces1209.vu.page.dashboard.DashboardPage
-import jces1209.vu.page.dashboard.cloud.CloudDashboardPage
 import jces1209.vu.page.filters.FiltersPage
 import java.net.URI
 import java.util.*
@@ -39,6 +40,7 @@ class ScenarioSimilarities(
     fun assembleScenario(
         issuePage: AbstractIssuePage,
         filtersPage: FiltersPage,
+        browseWorkflowsPage: BrowseWorkflowsPage,
         browseBoardsPage: BrowseBoardsPage,
         dashboardPage: DashboardPage,
         createIssue: Action,
@@ -135,6 +137,10 @@ class ScenarioSimilarities(
             boardsMemory = boardsMemory.sprint,
             sideBar = sideBar,
             issueNavigator = issueNavigator
+        ),
+        browseWorkflows = BrowseWorkflows(
+            meter = meter,
+            browseWorkflowsPage = browseWorkflowsPage
         )
     )
 
@@ -151,7 +157,8 @@ class ScenarioSimilarities(
         browseProjectIssues: Action,
         workOnSearch: Action,
         workOnTopBar: Action,
-        workOnTransition: Action
+        workOnTransition: Action,
+        browseWorkflows: Action
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
@@ -166,7 +173,8 @@ class ScenarioSimilarities(
             browseProjectIssues to 5,
             workOnSearch to 5,
             workOnTopBar to 5,
-            workOnTransition to 5
+            workOnTransition to 5,
+            browseWorkflows to 5
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()
