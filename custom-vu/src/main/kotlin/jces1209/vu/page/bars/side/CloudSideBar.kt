@@ -1,8 +1,8 @@
 package jces1209.vu.page.bars.side
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
+import com.atlassian.performance.tools.jiraactions.api.page.wait
 import jces1209.vu.page.CloudIssueNavigator
-import jces1209.vu.page.IssueNavigator
 import jces1209.vu.page.boards.view.KanbanBoardPage
 import jces1209.vu.page.boards.view.ScrumBacklogPage
 import jces1209.vu.page.boards.view.ScrumSprintPage
@@ -14,6 +14,7 @@ import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.net.URI
+import java.time.Duration
 
 class CloudSideBar(
     jira: WebJira
@@ -74,16 +75,26 @@ class CloudSideBar(
     }
 
     private fun getNavigatorItemLocator(itemName: String): By {
-        return By.xpath("//a[@data-testid='NavigationItem' and //div[text()='$itemName']]")
+        return By.xpath("//a[@data-testid='NavigationItem' and div/div[text()='$itemName']]")
     }
 
-    private fun clickSearchNavigatorItem(itemName: String): CloudIssueNavigator {
-        driver
-            .wait(elementToBeClickable(getNavigatorItemLocator(itemName)))
-            .click()
+    private val loadingLocator = By.cssSelector(".details-layout > .loading")
 
-        val loading = driver.wait(visibilityOfElementLocated(By.cssSelector(".details-layout > .loading")))
-        driver.wait(invisibilityOf(loading))
+    private fun clickSearchNavigatorItem(itemName: String): CloudIssueNavigator {
+        val navigatorItem = driver
+            .wait(elementToBeClickable(getNavigatorItemLocator(itemName)))
+
+        val issues = driver.findElements(By.cssSelector("[data-issuekey]"))
+        navigatorItem.click()
+
+        driver
+            .wait(
+                Duration.ofSeconds(60),
+                and(
+                    invisibilityOfAllElements(issues),
+                    invisibilityOfElementLocated(loadingLocator)
+                )
+            )
         return CloudIssueNavigator(jira)
     }
 }

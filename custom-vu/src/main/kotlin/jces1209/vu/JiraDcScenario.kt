@@ -7,7 +7,6 @@ import com.atlassian.performance.tools.jiraactions.api.action.BrowseProjectsActi
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.scenario.Scenario
-import jces1209.vu.action.BrowseProjectIssues
 import jces1209.vu.action.CreateAnIssue
 import jces1209.vu.action.LogInToDc
 import jces1209.vu.page.DcIssueNavigator
@@ -51,6 +50,7 @@ class JiraDcScenario : Scenario {
             browseWorkflowsPage = DcBrowseWorkflowsPage(jira),
             browseBoardsPage = DcBrowseBoardsPage(jira),
             dashboardPage = DcDashboardPage(jira),
+            projectNavigatorPage = DcProjectNavigatorPage(jira),
             createIssue = CreateAnIssue(
                 jira = jira,
                 meter = meter,
@@ -61,12 +61,6 @@ class JiraDcScenario : Scenario {
                 jira = jira,
                 meter = meter,
                 projectMemory = similarities.projectMemory
-            ),
-            browseProjectIssues = BrowseProjectIssues(
-                jira = jira,
-                meter = meter,
-                projectKeyMemory = similarities.projectMemory,
-                browseProjectPage = DcProjectNavigatorPage(jira)
             ),
             issueNavigator = DcIssueNavigator(jira),
             columnsEditor = DcColumnsEditor(jira.driver),

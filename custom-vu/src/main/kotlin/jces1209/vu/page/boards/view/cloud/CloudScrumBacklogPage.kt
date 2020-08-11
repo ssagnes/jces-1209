@@ -24,7 +24,7 @@ class CloudScrumBacklogPage(
             By.cssSelector(".ghx-backlog-container > .ghx-no-issues.js-empty-list")))
 
     override fun waitForBoardPageToLoad(): BoardContent {
-        return cloudClassicBoardPage.waitForBoardPageToLoad()
+        return cloudClassicBoardPage.waitForBoardPageToLoad(uri)
     }
 
     override fun previewIssue(): CloudScrumBacklogPage {

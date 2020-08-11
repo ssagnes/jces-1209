@@ -19,7 +19,7 @@ class CloudScrumSprintPage(
             By.className("ghx-no-active-sprint-icon")))
 
     override fun waitForBoardPageToLoad(): BoardContent {
-        return cloudClassicBoardPage.waitForBoardPageToLoad()
+        return cloudClassicBoardPage.waitForBoardPageToLoad(uri)
     }
 
     override fun previewIssue(): CloudScrumSprintPage {

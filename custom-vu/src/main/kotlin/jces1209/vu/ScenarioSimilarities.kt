@@ -22,6 +22,8 @@ import jces1209.vu.page.boards.browse.BrowseBoardsPage
 import jces1209.vu.page.customizecolumns.ColumnsEditor
 import jces1209.vu.page.dashboard.DashboardPage
 import jces1209.vu.page.filters.FiltersPage
+import jces1209.vu.page.project.CloudProjectNavigatorPage
+import jces1209.vu.page.project.ProjectNavigatorPage
 import java.net.URI
 import java.util.*
 
@@ -30,6 +32,7 @@ class ScenarioSimilarities(
     private val seededRandom: SeededRandom,
     private val meter: ActionMeter
 ) {
+    val measure = Measure(meter, seededRandom)
     val jqlMemory = AdaptiveJqlMemory(seededRandom)
         .also { it.remember(listOf("order by created DESC")) } // work around https://ecosystem.atlassian.net/browse/JPERF-573
     val issueKeyMemory = AdaptiveIssueKeyMemory(seededRandom)
@@ -45,19 +48,18 @@ class ScenarioSimilarities(
         dashboardPage: DashboardPage,
         createIssue: Action,
         browseProjects: Action,
-        browseProjectIssues: Action,
         issueNavigator: IssueNavigator,
         columnsEditor: ColumnsEditor,
         topBar: TopBar,
-        sideBar: SideBar
+        sideBar: SideBar,
+        projectNavigatorPage: ProjectNavigatorPage
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
         workOnDashboard = WorkOnDashboard(
             jira = jira,
-            meter = meter,
+            measure = measure,
             projectKeyMemory = projectMemory,
             dashboardPage = dashboardPage,
-            random = seededRandom,
             viewDashboardsProbability = 1.00f,
             viewDashboardProbability = 1.00f,
             createDashboardAndGadgetProbability = 0.00f // 0.10f if we can mutate data
@@ -65,9 +67,8 @@ class ScenarioSimilarities(
         workAnIssue = WorkOnIssue(
             issuePage = issuePage,
             jira = jira,
-            meter = meter,
+            measure = measure,
             issueKeyMemory = issueKeyMemory,
-            random = seededRandom,
             editProbability = 0.00f, // 0.10f if we can mutate data
             commentProbability = 0.00f, // 0.04f if we can mutate data
             linkIssueProbability = 0.00f, // 0.10f if we can mutate data
@@ -96,10 +97,9 @@ class ScenarioSimilarities(
         ),
         viewBoard = ViewBoard(
             driver = jira.driver,
-            meter = meter,
+            measure = measure,
             boardsMemory = boardsMemory.all,
             issueKeyMemory = issueKeyMemory,
-            random = seededRandom,
             viewIssueProbability = 0.50f,
             configureBoardProbability = 0.05f,
             contextOperationProbability = 0.05f,
@@ -111,7 +111,11 @@ class ScenarioSimilarities(
             sprintsMemory = boardsMemory.sprint,
             jiraTips = JiraTips(jira.driver)
         ),
-        browseProjectIssues = browseProjectIssues,
+        browseProjectIssues = BrowseProjectIssues(
+            meter = meter,
+            projectKeyMemory = projectMemory,
+            browseProjectPage = projectNavigatorPage
+        ),
         workOnTopBar = WorkOnTopBar(
             topBar = topBar,
             jira = jira,
@@ -120,9 +124,8 @@ class ScenarioSimilarities(
         workOnSearch = WorkOnSearch(
             issueNavigator = issueNavigator,
             jira = jira,
-            meter = meter,
+            measure = measure,
             columnsEditor = columnsEditor,
-            random = seededRandom,
             filters = filtersMemory,
             jqlMemory = jqlMemory,
             issueKeyMemory = issueKeyMemory,
@@ -133,7 +136,7 @@ class ScenarioSimilarities(
             switchBetweenIssuesProbability = 0.15f
         ),
         workOnTransition = WorkOnTransition(
-            meter = meter,
+            measure = measure,
             boardsMemory = boardsMemory.sprint,
             sideBar = sideBar,
             issueNavigator = issueNavigator

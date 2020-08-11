@@ -3,8 +3,8 @@ package jces1209.vu.action
 import com.atlassian.performance.tools.jiraactions.api.SeededRandom
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.Action
-import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.ProjectMemory
+import jces1209.vu.Measure
 import jces1209.vu.MeasureType.Companion.CREATE_DASHBOARD
 import jces1209.vu.MeasureType.Companion.CREATE_GADGET
 import jces1209.vu.MeasureType.Companion.VIEW_DASHBOARD
@@ -15,10 +15,9 @@ import org.apache.logging.log4j.Logger
 
 class WorkOnDashboard(
     private val jira: WebJira,
-    private val meter: ActionMeter,
+    private val measure: Measure,
     private val projectKeyMemory: ProjectMemory,
     private val dashboardPage: DashboardPage,
-    private val random: SeededRandom,
     private val viewDashboardsProbability: Float,
     private val viewDashboardProbability: Float,
     private val createDashboardAndGadgetProbability: Float
@@ -27,23 +26,23 @@ class WorkOnDashboard(
 
     override fun run() {
         viewDashboards()
-        if (random.random.nextFloat() < createDashboardAndGadgetProbability) {
+        measure.roll(createDashboardAndGadgetProbability) {
             val dashboardName = createDashboard()
-            createGadget(dashboardName)
+            if (dashboardName != null) {
+                createGadget(dashboardName)
+            }
         }
         openDashboard()
     }
 
     private fun viewDashboards() {
-        if (random.random.nextFloat() < viewDashboardsProbability) {
-            meter.measure(
+        measure
+            .measure(
                 key = VIEW_DASHBOARDS,
-                action = {
-                    openDashboardsPage()
-                        .waitForDashboards()
-                }
-            )
-        }
+                probability = viewDashboardsProbability) {
+                openDashboardsPage()
+                    .waitForDashboards()
+            }
     }
 
     private fun openDashboardsPage(): DashboardPage {
@@ -51,13 +50,11 @@ class WorkOnDashboard(
         return dashboardPage
     }
 
-    private fun createDashboard(): String {
-        return meter.measure(
-            key = CREATE_DASHBOARD,
-            action = {
-                dashboardPage.createDashboard()
-            }
-        )
+    private fun createDashboard(): String? {
+        return measure.measure(
+            key = CREATE_DASHBOARD) {
+            dashboardPage.createDashboard()
+        }
     }
 
     private fun createGadget(dashboardName: String) {
@@ -67,7 +64,7 @@ class WorkOnDashboard(
             return
         }
         dashboardPage.selectDashboardIfPresent(dashboardName)
-        meter.measure(
+        measure.measure(
             key = CREATE_GADGET,
             action = {
                 dashboardPage.createGadget(projectKey.name)
@@ -76,18 +73,19 @@ class WorkOnDashboard(
     }
 
     private fun openDashboard() {
-        if (random.random.nextFloat() < viewDashboardProbability) {
-            openDashboardsPage()
-                .waitForDashboards()
-                .clickPopularIfPresent()
-            meter.measure(
-                key = VIEW_DASHBOARD,
-                action = {
-                    dashboardPage
-                        .openDashboard()
-                        .waitForGadgetsLoad()
-                }
-            )
-        }
+        measure.measure(
+            key = VIEW_DASHBOARD,
+            probability = viewDashboardProbability,
+            preconditions = {
+                openDashboardsPage()
+                    .waitForDashboards()
+                    .clickPopularIfPresent()
+            },
+            action = {
+                dashboardPage
+                    .openDashboard()
+                    .waitForGadgetsLoad()
+            }
+        )
     }
 }

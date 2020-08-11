@@ -9,7 +9,7 @@ import java.net.URI
 
 abstract class BoardPage(
     protected val driver: WebDriver,
-    protected val uri: URI
+    public val uri: URI
 ) {
     open val issueSelector = By.className("ghx-issue")
 
