@@ -108,6 +108,9 @@ class MeasureType {
         var OPEN_GLOBAL_SEARCH = ActionType("Global issue navigator") { Unit }
 
         @JvmField
+        var PROJECT_ROLES = ActionType("Project Roles") { Unit }
+
+        @JvmField
         var VIEW_DASHBOARDS = ActionType("View Dasboards List") { Unit }
 
         @JvmField
