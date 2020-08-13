@@ -14,6 +14,7 @@ import jces1209.vu.memory.SeededMemory
 import jces1209.vu.page.AbstractIssuePage
 import jces1209.vu.page.IssueNavigator
 import jces1209.vu.page.JiraTips
+import jces1209.vu.page.admin.fieldscreen.BrowseFieldScreensPage
 import jces1209.vu.page.admin.workflow.BrowseWorkflowsPage
 import jces1209.vu.page.admin.workflow.DcBrowseWorkflowsPage
 import jces1209.vu.page.bars.side.SideBar
@@ -44,6 +45,7 @@ class ScenarioSimilarities(
         issuePage: AbstractIssuePage,
         filtersPage: FiltersPage,
         browseWorkflowsPage: BrowseWorkflowsPage,
+        browseFieldScreensPage: BrowseFieldScreensPage,
         browseBoardsPage: BrowseBoardsPage,
         dashboardPage: DashboardPage,
         createIssue: Action,
@@ -144,6 +146,10 @@ class ScenarioSimilarities(
         browseWorkflows = BrowseWorkflows(
             meter = meter,
             browseWorkflowsPage = browseWorkflowsPage
+        ),
+        browseFieldScreens = BrowseFieldScreens(
+            measure = measure,
+            browseFieldScreensPage = browseFieldScreensPage
         )
     )
 
@@ -161,7 +167,8 @@ class ScenarioSimilarities(
         workOnSearch: Action,
         workOnTopBar: Action,
         workOnTransition: Action,
-        browseWorkflows: Action
+        browseWorkflows: Action,
+        browseFieldScreens: Action
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
@@ -177,7 +184,8 @@ class ScenarioSimilarities(
             workOnSearch to 5,
             workOnTopBar to 5,
             workOnTransition to 5,
-            browseWorkflows to 5
+            browseWorkflows to 5,
+            browseFieldScreens to 5
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()

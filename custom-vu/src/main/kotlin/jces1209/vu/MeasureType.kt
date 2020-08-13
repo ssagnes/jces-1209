@@ -6,6 +6,9 @@ class MeasureType {
 
     companion object {
         @JvmField
+        val BROWSE_FIELD_SCREENS = ActionType("Browse Field Screens") { Unit }
+
+        @JvmField
         val BROWSE_WORKFLOWS = ActionType("Browse Workflows") { Unit }
 
         @JvmField
