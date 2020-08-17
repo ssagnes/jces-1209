@@ -14,16 +14,15 @@ import jces1209.vu.memory.SeededMemory
 import jces1209.vu.page.AbstractIssuePage
 import jces1209.vu.page.IssueNavigator
 import jces1209.vu.page.JiraTips
+import jces1209.vu.page.admin.fieldconfigs.BrowseFieldConfigurationsPage
 import jces1209.vu.page.admin.fieldscreen.BrowseFieldScreensPage
 import jces1209.vu.page.admin.workflow.BrowseWorkflowsPage
-import jces1209.vu.page.admin.workflow.DcBrowseWorkflowsPage
 import jces1209.vu.page.bars.side.SideBar
 import jces1209.vu.page.bars.topBar.TopBar
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
 import jces1209.vu.page.customizecolumns.ColumnsEditor
 import jces1209.vu.page.dashboard.DashboardPage
 import jces1209.vu.page.filters.FiltersPage
-import jces1209.vu.page.project.CloudProjectNavigatorPage
 import jces1209.vu.page.project.ProjectNavigatorPage
 import java.net.URI
 import java.util.*
@@ -150,6 +149,10 @@ class ScenarioSimilarities(
         browseFieldScreens = BrowseFieldScreens(
             measure = measure,
             browseFieldScreensPage = browseFieldScreensPage
+        ),
+        browseFieldConfigurations = BrowseFieldConfigurations(
+            measure = measure,
+            browseFieldConfigurationsPage = BrowseFieldConfigurationsPage(jira)
         )
     )
 
@@ -168,7 +171,8 @@ class ScenarioSimilarities(
         workOnTopBar: Action,
         workOnTransition: Action,
         browseWorkflows: Action,
-        browseFieldScreens: Action
+        browseFieldScreens: Action,
+        browseFieldConfigurations: Action
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
@@ -185,7 +189,8 @@ class ScenarioSimilarities(
             workOnTopBar to 5,
             workOnTransition to 5,
             browseWorkflows to 5,
-            browseFieldScreens to 5
+            browseFieldScreens to 5,
+            browseFieldConfigurations to 5
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()
