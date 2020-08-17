@@ -9,6 +9,8 @@ import com.atlassian.performance.tools.jiraactions.api.scenario.Scenario
 import jces1209.vu.action.*
 import jces1209.vu.page.CloudIssueNavigator
 import jces1209.vu.page.CloudIssuePage
+import jces1209.vu.page.admin.fieldscreen.CloudBrowseFieldScreensPage
+import jces1209.vu.page.admin.fieldscreen.DcBrowseFieldScreensPage
 import jces1209.vu.page.admin.workflow.CloudBrowseWorkflowsPage
 import jces1209.vu.page.bars.side.CloudSideBar
 import jces1209.vu.page.bars.topBar.dc.DcTopBar
@@ -48,6 +50,7 @@ class JiraCloudScenario : Scenario {
         return similarities.assembleScenario(
             issuePage = CloudIssuePage(jira.driver),
             filtersPage = CloudFiltersPage(jira, jira.driver),
+            browseFieldScreensPage = CloudBrowseFieldScreensPage(jira),
             browseWorkflowsPage = CloudBrowseWorkflowsPage(jira),
             browseBoardsPage = CloudBrowseBoardsPage(jira),
             dashboardPage = CloudDashboardPage(jira),
