@@ -12,6 +12,9 @@ class MeasureType {
         val BROWSE_FIELD_CONFIGURATIONS = ActionType("Browse Field Configurations") { Unit }
 
         @JvmField
+        val BROWSE_CUSTOM_FIELDS = ActionType("Browse Custom fields") { Unit }
+
+        @JvmField
         val BROWSE_WORKFLOWS = ActionType("Browse Workflows") { Unit }
 
         @JvmField

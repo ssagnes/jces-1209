@@ -11,6 +11,7 @@ import jces1209.vu.action.CreateAnIssue
 import jces1209.vu.action.LogInToDc
 import jces1209.vu.page.DcIssueNavigator
 import jces1209.vu.page.DcIssuePage
+import jces1209.vu.page.admin.customfields.DcBrowseCustomFieldsPage
 import jces1209.vu.page.admin.fieldscreen.DcBrowseFieldScreensPage
 import jces1209.vu.page.admin.workflow.DcBrowseWorkflowsPage
 import jces1209.vu.page.bars.side.DcSideBar
@@ -50,6 +51,7 @@ class JiraDcScenario : Scenario {
             filtersPage = ServerFiltersPage(jira, jira.driver),
             browseFieldScreensPage = DcBrowseFieldScreensPage(jira),
             browseWorkflowsPage = DcBrowseWorkflowsPage(jira),
+            browseCustomFieldsPage = DcBrowseCustomFieldsPage(jira),
             browseBoardsPage = DcBrowseBoardsPage(jira),
             dashboardPage = DcDashboardPage(jira),
             projectNavigatorPage = DcProjectNavigatorPage(jira),
