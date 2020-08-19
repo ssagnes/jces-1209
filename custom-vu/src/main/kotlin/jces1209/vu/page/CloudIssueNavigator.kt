@@ -11,6 +11,7 @@ import java.util.*
 class CloudIssueNavigator(
     jira: WebJira
 ) : IssueNavigator(jira) {
+
     private val falliblePage = FalliblePage.Builder(
         driver,
         or(
@@ -37,6 +38,7 @@ class CloudIssueNavigator(
             ),
             and(
                 visibilityOfElementLocated(By.id("issuetable")),
+                visibilityOfElementLocated(By.id("layout-switcher-toggle")),
                 presenceOfAllElementsLocatedBy(By.cssSelector("[data-issue-key]")),
                 presenceOfAllElementsLocatedBy(By.cssSelector(".summary, .components, .assignee, .reporter, .priority, .status"))
             ),

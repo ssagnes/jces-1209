@@ -142,7 +142,8 @@ class ScenarioSimilarities(
             measure = measure,
             boardsMemory = boardsMemory.sprint,
             sideBar = sideBar,
-            issueNavigator = issueNavigator
+            issueNavigator = issueNavigator,
+            switchViewsProbability = 0.75f
         ),
         browseWorkflows = BrowseWorkflows(
             measure = measure,

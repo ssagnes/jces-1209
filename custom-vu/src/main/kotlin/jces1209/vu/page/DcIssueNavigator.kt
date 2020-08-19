@@ -3,9 +3,7 @@ package jces1209.vu.page
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import jces1209.vu.wait
 import org.openqa.selenium.By
-import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration
 import java.util.*
@@ -15,15 +13,21 @@ class DcIssueNavigator(
 ) : IssueNavigator(jira) {
     private val falliblePage = FalliblePage.Builder(
         driver,
-        and(
-            or(
-                presenceOfElementLocated(By.xpath("//*[@data-id = 'project']")),
-                presenceOfElementLocated(By.cssSelector("ol.issue-list")),
-                presenceOfElementLocated(By.id("issuetable")),
-                presenceOfElementLocated(By.id("issue-content"))
+        or(
+            and(
+                or(
+                    presenceOfElementLocated(By.xpath("//*[@data-id = 'project']")),
+                    presenceOfElementLocated(By.cssSelector("ol.issue-list")),
+                    presenceOfElementLocated(By.id("issuetable")),
+                    presenceOfElementLocated(By.id("issue-content"))
+                ),
+                presenceOfElementLocated(By.id("key-val")),
+                presenceOfElementLocated(By.className("issue-body-content"))
             ),
-            presenceOfElementLocated(By.id("key-val")),
-            presenceOfElementLocated(By.className("issue-body-content"))
+            and(
+                presenceOfElementLocated(By.id("issuetable")),
+                presenceOfElementLocated(By.id("layout-switcher-toggle"))
+            )
         )
     )
         .timeout(Duration.ofSeconds(30))
@@ -39,7 +43,7 @@ class DcIssueNavigator(
         val dataKey = element.getAttribute("data-key")
         element.click()
         driver.wait(
-            ExpectedConditions.and(
+            and(
                 presenceOfElementLocated(By.xpath("//*[@id = 'key-val' and contains(text(),'$dataKey')]")),
                 presenceOfElementLocated(By.id("opsbar-edit-issue_container")),
                 visibilityOfElementLocated(By.id("project-avatar"))

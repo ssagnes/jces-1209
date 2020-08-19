@@ -15,13 +15,35 @@ class WorkOnTransition(
     private val measure: Measure,
     private val boardsMemory: SeededMemory<ScrumSprintPage>,
     private val sideBar: SideBar,
-    private val issueNavigator: IssueNavigator
+    private val issueNavigator: IssueNavigator,
+    private val switchViewsProbability: Float
 ) : Action {
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
     override fun run() {
         workOnBoardTransition()
         workOnIssueNavigatorTransition()
+        workOnIssueNavigatorViewTransition()
+    }
+
+    private fun workOnIssueNavigatorViewTransition() {
+        measure.roll(switchViewsProbability) {
+            issueNavigator
+                .openNavigator()
+                .waitForNavigator()
+
+            repeat(2) {
+                val viewType = when (issueNavigator.getViewType()) {
+                    IssueNavigator.ViewType.DETAIL -> "List"
+                    IssueNavigator.ViewType.LIST -> "Detail"
+                }
+                measure.measure(ActionType(MeasureType.TRANSITION_ISSUE_NAVIGATOR_VIEW.label + " ($viewType view)") { Unit }) {
+                    issueNavigator
+                        .openChangeViewPopup()
+                        .selectInactiveViewType()
+                }
+            }
+        }
     }
 
     private fun workOnIssueNavigatorTransition() {
