@@ -1,5 +1,6 @@
 package jces1209.vu.action
 
+import com.atlassian.performance.tools.jiraactions.api.ActionType
 import com.atlassian.performance.tools.jiraactions.api.SEARCH_WITH_JQL
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.Action
@@ -30,7 +31,6 @@ class WorkOnSearch(
     private val searchJclProbability: Float,
     private val globalSearchProbability: Float,
     private val customizeColumnsProbability: Float,
-    private val switchViewsProbability: Float,
     private val switchBetweenIssuesProbability: Float
 ) : Action {
     private val logger: Logger = LogManager.getLogger(this::class.java)
@@ -41,59 +41,6 @@ class WorkOnSearch(
         searchJql()
         customizeColumns()
         switchBetweenIssues()
-        switchViews()
-    }
-
-
-    private fun switchViews() {
-        issueNavigator
-            .openNavigator()
-            .waitForNavigator()
-        measure.measure(MeasureType.SWITCH_VIEWS) {
-            measure.measure(MeasureType.SWITCH_VIEWS_CHANGE_VIEW_POPUP) {
-                issueNavigator.changeViewPopup()
-            }
-            when (issueNavigator.getViewType()) {
-                IssueNavigator.ViewType.DETAIL -> {
-                    measure.measure(MeasureType.SWITCH_VIEWS_CHANGE_VIEW_TYPE) {
-                        issueNavigator.changeViewType(IssueNavigator.ViewType.LIST)
-                        issueNavigator.waitForNavigator()
-                    }
-                    measure.measure(MeasureType.SWITCH_VIEWS_CHANGE_VIEW_POPUP) {
-                        issueNavigator.changeViewPopup()
-                    }
-                    measure.measure(MeasureType.SWITCH_VIEWS_CHANGE_VIEW_TYPE) {
-                        issueNavigator.changeViewType(IssueNavigator.ViewType.DETAIL)
-                        issueNavigator.waitForNavigator()
-                    }
-                }
-                IssueNavigator.ViewType.LIST -> {
-                    measure.measure(
-                        key = MeasureType.SWITCH_VIEWS_CHANGE_VIEW_TYPE,
-                        action = {
-                            issueNavigator.changeViewType(IssueNavigator.ViewType.DETAIL)
-                            issueNavigator.waitForNavigator()
-                        }
-                    )
-                    measure.measure(
-                        key = MeasureType.SWITCH_VIEWS_CHANGE_VIEW_POPUP,
-                        action = {
-                            issueNavigator.changeViewPopup()
-                        }
-                    )
-                    measure.measure(
-                        key = MeasureType.SWITCH_VIEWS_CHANGE_VIEW_TYPE,
-                        action = {
-                            issueNavigator.changeViewType(IssueNavigator.ViewType.LIST)
-                            issueNavigator.waitForNavigator()
-                        }
-                    )
-                }
-                else -> {
-                    throw RuntimeException("Unrecognized view type")
-                }
-            }
-        }
     }
 
     private fun switchBetweenIssues() {
