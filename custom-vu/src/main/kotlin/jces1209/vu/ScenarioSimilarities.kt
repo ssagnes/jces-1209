@@ -17,6 +17,7 @@ import jces1209.vu.page.JiraTips
 import jces1209.vu.page.admin.customfields.BrowseCustomFieldsPage
 import jces1209.vu.page.admin.fieldconfigs.BrowseFieldConfigurationsPage
 import jces1209.vu.page.admin.fieldscreen.BrowseFieldScreensPage
+import jces1209.vu.page.admin.projectroles.BrowseProjectRolesPage
 import jces1209.vu.page.admin.workflow.BrowseWorkflowsPage
 import jces1209.vu.page.bars.side.SideBar
 import jces1209.vu.page.bars.topBar.TopBar
@@ -55,7 +56,8 @@ class ScenarioSimilarities(
         columnsEditor: ColumnsEditor,
         topBar: TopBar,
         sideBar: SideBar,
-        projectNavigatorPage: ProjectNavigatorPage
+        projectNavigatorPage: ProjectNavigatorPage,
+        browseProjectRolesPage: BrowseProjectRolesPage
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
         workOnDashboard = WorkOnDashboard(
@@ -145,6 +147,10 @@ class ScenarioSimilarities(
             issueNavigator = issueNavigator,
             switchViewsProbability = 0.75f
         ),
+        browseProjectRoles = BrowseProjectRoles(
+            meter = meter,
+            browseProjectRolesPage = browseProjectRolesPage
+        ),
         browseWorkflows = BrowseWorkflows(
             measure = measure,
             browseWorkflowsPage = browseWorkflowsPage
@@ -180,7 +186,8 @@ class ScenarioSimilarities(
         browseWorkflows: Action,
         browseFieldScreens: Action,
         browseFieldConfigurations: Action,
-        browseCustomFields: Action
+        browseCustomFields: Action,
+        browseProjectRoles: Action
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
@@ -199,7 +206,8 @@ class ScenarioSimilarities(
             browseWorkflows to 5,
             browseFieldScreens to 5,
             browseFieldConfigurations to 5,
-            browseCustomFields to 5
+            browseCustomFields to 5,
+            projectRoles to 5
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()

@@ -5,6 +5,10 @@ import com.atlassian.performance.tools.jiraactions.api.ActionType
 class MeasureType {
 
     companion object {
+
+        @JvmField
+        val BROWSE_CUSTOM_FIELDS = ActionType("Browse Custom fields") { Unit }
+
         @JvmField
         val BROWSE_FIELD_SCREENS = ActionType("Browse Field Screens") { Unit }
 
@@ -12,7 +16,7 @@ class MeasureType {
         val BROWSE_FIELD_CONFIGURATIONS = ActionType("Browse Field Configurations") { Unit }
 
         @JvmField
-        val BROWSE_CUSTOM_FIELDS = ActionType("Browse Custom fields") { Unit }
+        var BROWSE_PROJECT_ROLES = ActionType("Browse Project Roles") { Unit }
 
         @JvmField
         val BROWSE_WORKFLOWS = ActionType("Browse Workflows") { Unit }
