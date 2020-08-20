@@ -17,7 +17,7 @@ import jces1209.vu.page.JiraTips
 import jces1209.vu.page.admin.customfields.BrowseCustomFieldsPage
 import jces1209.vu.page.admin.fieldconfigs.BrowseFieldConfigurationsPage
 import jces1209.vu.page.admin.fieldscreen.BrowseFieldScreensPage
-import jces1209.vu.page.admin.ProjectRoles.ProjectRolesPage
+import jces1209.vu.page.admin.projectroles.BrowseProjectRolesPage
 import jces1209.vu.page.admin.workflow.BrowseWorkflowsPage
 import jces1209.vu.page.bars.side.SideBar
 import jces1209.vu.page.bars.topBar.TopBar
@@ -57,7 +57,7 @@ class ScenarioSimilarities(
         topBar: TopBar,
         sideBar: SideBar,
         projectNavigatorPage: ProjectNavigatorPage,
-        projectRolesPage: ProjectRolesPage
+        browseProjectRolesPage: BrowseProjectRolesPage
     ): List<Action> = assembleScenario(
         createIssue = createIssue,
         workOnDashboard = WorkOnDashboard(
@@ -147,9 +147,9 @@ class ScenarioSimilarities(
             issueNavigator = issueNavigator,
             switchViewsProbability = 0.75f
         ),
-        projectRoles = ProjectRoles(
+        browseProjectRoles = BrowseProjectRoles(
             meter = meter,
-            projectRolesPage = projectRolesPage
+            browseProjectRolesPage = browseProjectRolesPage
         ),
         browseWorkflows = BrowseWorkflows(
             measure = measure,
@@ -187,7 +187,7 @@ class ScenarioSimilarities(
         browseFieldScreens: Action,
         browseFieldConfigurations: Action,
         browseCustomFields: Action,
-        projectRoles: Action
+        browseProjectRoles: Action
     ): List<Action> {
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(

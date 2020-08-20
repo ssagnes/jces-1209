@@ -11,7 +11,7 @@ import jces1209.vu.action.CreateAnIssue
 import jces1209.vu.action.LogInToDc
 import jces1209.vu.page.DcIssueNavigator
 import jces1209.vu.page.DcIssuePage
-import jces1209.vu.page.admin.ProjectRoles.DcProjectRolesPage
+import jces1209.vu.page.admin.projectroles.DcBrowseProjectRolesPage
 import jces1209.vu.page.admin.customfields.DcBrowseCustomFieldsPage
 import jces1209.vu.page.admin.fieldscreen.DcBrowseFieldScreensPage
 import jces1209.vu.page.admin.workflow.DcBrowseWorkflowsPage
@@ -70,7 +70,7 @@ class JiraDcScenario : Scenario {
             issueNavigator = DcIssueNavigator(jira),
             columnsEditor = DcColumnsEditor(jira.driver),
             topBar = DcTopBar(jira.driver),
-            projectRolesPage = DcProjectRolesPage(jira),
+            browseProjectRolesPage = DcBrowseProjectRolesPage(jira),
             sideBar = DcSideBar(jira)
         )
     }

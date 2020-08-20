@@ -11,7 +11,7 @@ import jces1209.vu.action.CreateAnIssue
 import jces1209.vu.action.LogInWithAtlassianId
 import jces1209.vu.page.CloudIssueNavigator
 import jces1209.vu.page.CloudIssuePage
-import jces1209.vu.page.admin.ProjectRoles.CloudProjectRolesPage
+import jces1209.vu.page.admin.projectroles.CloudBrowseProjectRolesPage
 import jces1209.vu.page.admin.customfields.CloudBrowseCustomFieldsPage
 import jces1209.vu.page.admin.fieldscreen.CloudBrowseFieldScreensPage
 import jces1209.vu.page.admin.workflow.CloudBrowseWorkflowsPage
@@ -73,7 +73,7 @@ class JiraCloudScenario : Scenario {
             issueNavigator = CloudIssueNavigator(jira),
             columnsEditor = CloudColumnsEditor(jira.driver),
             topBar = DcTopBar(jira.driver),
-            projectRolesPage = CloudProjectRolesPage(jira),
+            browseProjectRolesPage = CloudBrowseProjectRolesPage(jira),
             sideBar = CloudSideBar(jira)
         )
     }
