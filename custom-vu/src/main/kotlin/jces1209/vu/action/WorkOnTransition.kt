@@ -5,18 +5,18 @@ import com.atlassian.performance.tools.jiraactions.api.action.Action
 import jces1209.vu.Measure
 import jces1209.vu.MeasureType
 import jces1209.vu.memory.SeededMemory
-import jces1209.vu.page.IssueNavigator
+import jces1209.vu.page.issuenavigator.IssueNavigator
 import jces1209.vu.page.bars.side.SideBar
 import jces1209.vu.page.boards.view.ScrumSprintPage
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 class WorkOnTransition(
-    private val measure: Measure,
-    private val boardsMemory: SeededMemory<ScrumSprintPage>,
-    private val sideBar: SideBar,
-    private val issueNavigator: IssueNavigator,
-    private val switchViewsProbability: Float
+        private val measure: Measure,
+        private val boardsMemory: SeededMemory<ScrumSprintPage>,
+        private val sideBar: SideBar,
+        private val issueNavigator: IssueNavigator,
+        private val switchViewsProbability: Float
 ) : Action {
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
@@ -30,7 +30,7 @@ class WorkOnTransition(
         measure.roll(switchViewsProbability) {
             issueNavigator
                 .openNavigator()
-                .waitForNavigator()
+                .waitForBeingLoaded()
 
             repeat(2) {
                 val viewType = when (issueNavigator.getViewType()) {
@@ -50,13 +50,13 @@ class WorkOnTransition(
         measure.silent {
             issueNavigator
                 .openNavigator()
-                .waitForNavigator()
+                .waitForBeingLoaded()
 
             measure.measure(MeasureType.TRANSITION_ISSUE_NAVIGATOR) {
                 measure.measure(ActionType(MeasureType.TRANSITION_ISSUE_NAVIGATOR.label + " - Open Issues") { Unit }, isSilent = false) {
                     sideBar
                         .clickOpenIssues()
-                        .waitForNavigator()
+                        .waitForBeingLoaded()
                 }
             }
 
@@ -64,7 +64,7 @@ class WorkOnTransition(
                 measure.measure(ActionType(MeasureType.TRANSITION_ISSUE_NAVIGATOR.label + " - Search Issues") { Unit }, isSilent = false) {
                     sideBar
                         .clickAllIssues()
-                        .waitForNavigator()
+                        .waitForBeingLoaded()
                 }
             }
         }

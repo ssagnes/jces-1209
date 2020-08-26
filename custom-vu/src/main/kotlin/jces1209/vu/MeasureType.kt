@@ -22,6 +22,30 @@ class MeasureType {
         val BROWSE_WORKFLOWS = ActionType("Browse Workflows") { Unit }
 
         @JvmField
+        val BULK_EDIT = ActionType("Bulk Edit") { Unit }
+
+        @JvmField
+        val BULK_EDIT_OPEN_PAGE = ActionType("Bulk Edit (Open page)") { Unit }
+
+        @JvmField
+        val BULK_EDIT_SELECT_ISSUES = ActionType("Bulk Edit (Select issues)") { Unit }
+
+        @JvmField
+        val BULK_EDIT_SELECT_OPERATION = ActionType("Bulk Edit (Select Operation)") { Unit }
+
+        @JvmField
+        val BULK_EDIT_OPERATION_DETAILS = ActionType("Bulk Edit (Edit comment)") { Unit }
+
+        @JvmField
+        val BULK_EDIT_CONFIRMATION = ActionType("Bulk Edit (Confirm)") { Unit }
+
+        @JvmField
+        val BULK_EDIT_PROGRESS = ActionType("Bulk Edit (Wait for 100% progress)") { Unit }
+
+        @JvmField
+        val BULK_OPERATION_ACKNOWLEDGE = ActionType("Bulk Edit (Acknowledge)") { Unit }
+
+        @JvmField
         val CONTEXT_OPERATION_BOARD = ActionType("Context operation (Board)") { Unit }
 
         @JvmField

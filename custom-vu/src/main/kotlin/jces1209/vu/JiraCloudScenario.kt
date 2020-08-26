@@ -9,7 +9,7 @@ import com.atlassian.performance.tools.jiraactions.api.scenario.Scenario
 import jces1209.vu.action.BrowseCloudProjects
 import jces1209.vu.action.CreateAnIssue
 import jces1209.vu.action.LogInWithAtlassianId
-import jces1209.vu.page.CloudIssueNavigator
+import jces1209.vu.page.issuenavigator.CloudIssueNavigator
 import jces1209.vu.page.CloudIssuePage
 import jces1209.vu.page.admin.projectroles.CloudBrowseProjectRolesPage
 import jces1209.vu.page.admin.customfields.CloudBrowseCustomFieldsPage
@@ -19,6 +19,7 @@ import jces1209.vu.page.admin.workflow.CloudBrowseWorkflowsPage
 import jces1209.vu.page.bars.side.CloudSideBar
 import jces1209.vu.page.bars.topBar.dc.DcTopBar
 import jces1209.vu.page.boards.browse.cloud.CloudBrowseBoardsPage
+import jces1209.vu.page.issuenavigator.bulkoperation.CloudBulkOperationPage
 import jces1209.vu.page.customizecolumns.CloudColumnsEditor
 import jces1209.vu.page.dashboard.cloud.CloudDashboardPage
 import jces1209.vu.page.filters.CloudFiltersPage

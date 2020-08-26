@@ -2,7 +2,7 @@ package jces1209.vu.page.bars.side
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.page.wait
-import jces1209.vu.page.CloudIssueNavigator
+import jces1209.vu.page.issuenavigator.CloudIssueNavigator
 import jces1209.vu.page.boards.view.KanbanBoardPage
 import jces1209.vu.page.boards.view.ScrumBacklogPage
 import jces1209.vu.page.boards.view.ScrumSprintPage

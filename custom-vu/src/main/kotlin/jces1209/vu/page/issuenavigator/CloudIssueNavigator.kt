@@ -1,6 +1,9 @@
-package jces1209.vu.page
+package jces1209.vu.page.issuenavigator
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
+import jces1209.vu.page.FalliblePage
+import jces1209.vu.page.issuenavigator.bulkoperation.BulkOperationPage
+import jces1209.vu.page.issuenavigator.bulkoperation.CloudBulkOperationPage
 import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
@@ -11,7 +14,8 @@ import java.util.*
 class CloudIssueNavigator(
     jira: WebJira
 ) : IssueNavigator(jira) {
-
+    private val meatballTriggerLocator = By.id("jira-meatball-trigger")
+    private val bulkEditAllLocator = By.id("bulkedit_all")
     private val falliblePage = FalliblePage.Builder(
         driver,
         or(
@@ -49,8 +53,9 @@ class CloudIssueNavigator(
         .timeout(Duration.ofSeconds(120))
         .build()
 
-    override fun waitForNavigator() {
+    override fun waitForBeingLoaded(): CloudIssueNavigator {
         falliblePage.waitForPageToLoad()
+        return this
     }
 
     override fun selectIssue() {
@@ -65,6 +70,19 @@ class CloudIssueNavigator(
                 visibilityOfElementLocated(By.xpath("//*[@aria-label='Add attachment']"))
             )
         )
+    }
+
+    override fun openBulkOperation(): BulkOperationPage {
+        driver
+            .wait(elementToBeClickable(meatballTriggerLocator))
+            .click()
+        driver
+            .wait(visibilityOfElementLocated(bulkEditAllLocator))
+        driver
+            .wait(visibilityOfElementLocated(bulkEditAllLocator))
+            .click()
+        return CloudBulkOperationPage(jira)
+            .waitForBeingLoaded()
     }
 
     private fun getIssueElementFromList(): WebElement {

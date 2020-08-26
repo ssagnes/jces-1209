@@ -1,6 +1,9 @@
-package jces1209.vu.page
+package jces1209.vu.page.issuenavigator
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
+import jces1209.vu.page.FalliblePage
+import jces1209.vu.page.issuenavigator.bulkoperation.BulkOperationPage
+import jces1209.vu.page.issuenavigator.bulkoperation.DcBulkOperationPage
 import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
@@ -34,8 +37,9 @@ class DcIssueNavigator(
         .serverErrors()
         .build()
 
-    override fun waitForNavigator() {
+    override fun waitForBeingLoaded(): DcIssueNavigator {
         falliblePage.waitForPageToLoad()
+        return this
     }
 
     override fun selectIssue() {
@@ -49,6 +53,17 @@ class DcIssueNavigator(
                 visibilityOfElementLocated(By.id("project-avatar"))
             )
         )
+    }
+
+    override fun openBulkOperation(): BulkOperationPage {
+        driver
+            .wait(elementToBeClickable(By.id("AJS_DROPDOWN__80")))
+            .click()
+        driver
+            .wait(visibilityOfElementLocated(By.cssSelector("#bulkedit_max, #bulkedit_all")))
+            .click()
+        return DcBulkOperationPage(jira)
+            .waitForBeingLoaded()
     }
 
     private fun getIssueElementFromList(): WebElement {
