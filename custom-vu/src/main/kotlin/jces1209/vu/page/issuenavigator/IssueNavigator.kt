@@ -1,14 +1,14 @@
-package jces1209.vu.page
+package jces1209.vu.page.issuenavigator
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
-import jces1209.vu.page.bulkOperation.BulkOperation
+import jces1209.vu.page.issuenavigator.bulkoperation.BulkOperationPage
 import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 
 abstract class IssueNavigator(
-    private val jira: WebJira
+    protected val jira: WebJira
 ) {
     enum class ViewType {
         DETAIL, LIST
@@ -18,10 +18,9 @@ abstract class IssueNavigator(
 
     private val changeViewButtonLocator = By.id("layout-switcher-button")
 
-    abstract fun waitForNavigator()
+    abstract fun waitForBeingLoaded(): IssueNavigator
     abstract fun selectIssue()
-    abstract fun clickOnTools()
-    abstract fun selectCurrentPageToolsItem(): BulkOperation
+    abstract fun openBulkOperation(): BulkOperationPage
 
 
     fun openChangeViewPopup(): IssueNavigator {
@@ -56,7 +55,7 @@ abstract class IssueNavigator(
             .wait(elementToBeClickable(By.cssSelector(".layout-switcher-item > .aui-list-item-link > :not(.aui-iconfont-success)")))
             .click()
         driver.wait(invisibilityOfAllElements(issues))
-        waitForNavigator()
+        waitForBeingLoaded()
         return this
     }
 

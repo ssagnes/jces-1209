@@ -1,10 +1,7 @@
 package jces1209.vu.page.project
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
-import jces1209.vu.page.CloudIssueNavigator
-import jces1209.vu.wait
-import org.openqa.selenium.By
-import org.openqa.selenium.support.ui.ExpectedConditions
+import jces1209.vu.page.issuenavigator.CloudIssueNavigator
 
 
 class CloudProjectNavigatorPage(
@@ -17,6 +14,6 @@ class CloudProjectNavigatorPage(
     }
 
     override fun waitForNavigator() {
-        CloudIssueNavigator(jira).waitForNavigator()
+        CloudIssueNavigator(jira).waitForBeingLoaded()
     }
 }

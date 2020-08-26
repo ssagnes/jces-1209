@@ -1,8 +1,9 @@
-package jces1209.vu.page
+package jces1209.vu.page.issuenavigator
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
-import jces1209.vu.page.bulkOperation.BulkOperation
-import jces1209.vu.page.bulkOperation.dc.DcBulkOperation
+import jces1209.vu.page.FalliblePage
+import jces1209.vu.page.issuenavigator.bulkoperation.BulkOperationPage
+import jces1209.vu.page.issuenavigator.bulkoperation.DcBulkOperationPage
 import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
@@ -13,8 +14,6 @@ import java.util.*
 class DcIssueNavigator(
     jira: WebJira
 ) : IssueNavigator(jira) {
-    private val meatballTriggerLocator = By.id("AJS_DROPDOWN__80")
-    private val bulkEditAllLocator = By.id("bulkedit_max")
     private val falliblePage = FalliblePage.Builder(
         driver,
         or(
@@ -38,8 +37,9 @@ class DcIssueNavigator(
         .serverErrors()
         .build()
 
-    override fun waitForNavigator() {
+    override fun waitForBeingLoaded(): DcIssueNavigator {
         falliblePage.waitForPageToLoad()
+        return this
     }
 
     override fun selectIssue() {
@@ -55,27 +55,15 @@ class DcIssueNavigator(
         )
     }
 
-    override fun clickOnTools() {
+    override fun openBulkOperation(): BulkOperationPage {
         driver
-            .wait(
-                elementToBeClickable(meatballTriggerLocator)
-            )
+            .wait(elementToBeClickable(By.id("AJS_DROPDOWN__80")))
             .click()
         driver
-            .wait(
-                visibilityOfElementLocated(bulkEditAllLocator)
-            )
-    }
-
-    override fun selectCurrentPageToolsItem(): BulkOperation {
-        driver
-            .wait(
-                visibilityOfElementLocated(bulkEditAllLocator)
-            )
+            .wait(visibilityOfElementLocated(By.cssSelector("#bulkedit_max, #bulkedit_all")))
             .click()
-        val bulkOperation = DcBulkOperation(driver)
-        bulkOperation.waitForBulkOperationPage()
-        return bulkOperation
+        return DcBulkOperationPage(jira)
+            .waitForBeingLoaded()
     }
 
     private fun getIssueElementFromList(): WebElement {

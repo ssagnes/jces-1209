@@ -12,7 +12,7 @@ class Measure(
     private val random: SeededRandom
 ) {
     private val logger: Logger = LogManager.getLogger(this::class.java)
-    private val isSilentDefault = true
+    private val isSilentDefault = false
 
     fun <T> measure(
         key: ActionType<*>,

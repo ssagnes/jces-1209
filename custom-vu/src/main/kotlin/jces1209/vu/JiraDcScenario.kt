@@ -9,7 +9,7 @@ import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.scenario.Scenario
 import jces1209.vu.action.CreateAnIssue
 import jces1209.vu.action.LogInToDc
-import jces1209.vu.page.DcIssueNavigator
+import jces1209.vu.page.issuenavigator.DcIssueNavigator
 import jces1209.vu.page.DcIssuePage
 import jces1209.vu.page.admin.projectroles.DcBrowseProjectRolesPage
 import jces1209.vu.page.admin.customfields.DcBrowseCustomFieldsPage
@@ -19,7 +19,7 @@ import jces1209.vu.page.admin.workflow.DcBrowseWorkflowsPage
 import jces1209.vu.page.bars.side.DcSideBar
 import jces1209.vu.page.bars.topBar.dc.DcTopBar
 import jces1209.vu.page.boards.browse.dc.DcBrowseBoardsPage
-import jces1209.vu.page.bulkOperation.dc.DcBulkOperation
+import jces1209.vu.page.issuenavigator.bulkoperation.DcBulkOperationPage
 import jces1209.vu.page.customizecolumns.DcColumnsEditor
 import jces1209.vu.page.dashboard.dc.DcDashboardPage
 import jces1209.vu.page.filters.ServerFiltersPage
@@ -74,7 +74,6 @@ class JiraDcScenario : Scenario {
             columnsEditor = DcColumnsEditor(jira.driver),
             topBar = DcTopBar(jira.driver),
             browseProjectRolesPage = DcBrowseProjectRolesPage(jira),
-            bulkOperation = DcBulkOperation(jira.driver),
             sideBar = DcSideBar(jira)
         )
     }

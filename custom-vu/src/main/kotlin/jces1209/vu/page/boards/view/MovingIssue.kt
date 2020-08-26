@@ -57,7 +57,6 @@ class MovingIssue(
                 )
             )
         return issue
-        return Issue(1, "")
     }
 
     fun isModalWindowDisplayed(): Boolean {

@@ -12,7 +12,7 @@ import jces1209.vu.action.*
 import jces1209.vu.memory.BoardPagesMemory
 import jces1209.vu.memory.SeededMemory
 import jces1209.vu.page.AbstractIssuePage
-import jces1209.vu.page.IssueNavigator
+import jces1209.vu.page.issuenavigator.IssueNavigator
 import jces1209.vu.page.JiraTips
 import jces1209.vu.page.admin.customfields.BrowseCustomFieldsPage
 import jces1209.vu.page.admin.fieldconfigs.BrowseFieldConfigurationsPage
@@ -23,7 +23,7 @@ import jces1209.vu.page.admin.workflow.BrowseWorkflowsPage
 import jces1209.vu.page.bars.side.SideBar
 import jces1209.vu.page.bars.topBar.TopBar
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
-import jces1209.vu.page.bulkOperation.BulkOperation
+import jces1209.vu.page.issuenavigator.bulkoperation.BulkOperationPage
 import jces1209.vu.page.customizecolumns.ColumnsEditor
 import jces1209.vu.page.dashboard.DashboardPage
 import jces1209.vu.page.filters.FiltersPage
@@ -58,7 +58,6 @@ class ScenarioSimilarities(
         columnsEditor: ColumnsEditor,
         manageProjectsPage: ManageProjectsPage,
         topBar: TopBar,
-        bulkOperation: BulkOperation,
         sideBar: SideBar,
         projectNavigatorPage: ProjectNavigatorPage,
         browseProjectRolesPage: BrowseProjectRolesPage
@@ -149,10 +148,8 @@ class ScenarioSimilarities(
             switchBetweenIssuesProbability = 0.15f
         ),
         bulkEdit = BulkEdit(
-            issueNavigator = issueNavigator,
-            bulkOperation = bulkOperation,
-            jira = jira,
-            meter = meter
+            measure = measure,
+            issueNavigator = issueNavigator
         ),
         workOnTransition = WorkOnTransition(
             measure = measure,
@@ -219,7 +216,7 @@ class ScenarioSimilarities(
             browseProjectIssues to 5,
             workOnSearch to 5,
             workOnTopBar to 5,
-            bulkEdit to 5,
+            bulkEdit to 0, // 5 if we can mutate data
             workOnTransition to 5,
             browseWorkflows to 5,
             browseFieldScreens to 5,

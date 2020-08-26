@@ -1,12 +1,12 @@
-package jces1209.vu.page
+package jces1209.vu.page.issuenavigator
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
-import jces1209.vu.page.bulkOperation.BulkOperation
-import jces1209.vu.page.bulkOperation.cloud.CloudBulkOperation
+import jces1209.vu.page.FalliblePage
+import jces1209.vu.page.issuenavigator.bulkoperation.BulkOperationPage
+import jces1209.vu.page.issuenavigator.bulkoperation.CloudBulkOperationPage
 import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration
 import java.util.*
@@ -53,8 +53,9 @@ class CloudIssueNavigator(
         .timeout(Duration.ofSeconds(120))
         .build()
 
-    override fun waitForNavigator() {
+    override fun waitForBeingLoaded(): CloudIssueNavigator {
         falliblePage.waitForPageToLoad()
+        return this
     }
 
     override fun selectIssue() {
@@ -71,27 +72,17 @@ class CloudIssueNavigator(
         )
     }
 
-    override fun clickOnTools() {
+    override fun openBulkOperation(): BulkOperationPage {
         driver
-            .wait(
-                ExpectedConditions.elementToBeClickable(meatballTriggerLocator)
-            )
+            .wait(elementToBeClickable(meatballTriggerLocator))
             .click()
         driver
-            .wait(
-                ExpectedConditions.visibilityOfElementLocated(bulkEditAllLocator)
-            )
-    }
-
-    override fun selectCurrentPageToolsItem(): BulkOperation {
+            .wait(visibilityOfElementLocated(bulkEditAllLocator))
         driver
-            .wait(
-                ExpectedConditions.visibilityOfElementLocated(bulkEditAllLocator)
-            )
+            .wait(visibilityOfElementLocated(bulkEditAllLocator))
             .click()
-        val cloudBulkOperation = CloudBulkOperation(driver)
-        cloudBulkOperation.waitForBulkOperationPage()
-        return cloudBulkOperation
+        return CloudBulkOperationPage(jira)
+            .waitForBeingLoaded()
     }
 
     private fun getIssueElementFromList(): WebElement {
