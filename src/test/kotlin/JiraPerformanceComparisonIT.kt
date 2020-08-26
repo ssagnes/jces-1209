@@ -18,6 +18,7 @@ import jces1209.vu.JiraCloudScenario
 import jces1209.vu.JiraDcScenario
 import org.apache.logging.log4j.core.config.ConfigurationFactory
 import org.junit.Test
+import java.io.File
 import java.nio.file.Paths
 import java.time.Duration
 import java.util.concurrent.CompletableFuture
@@ -33,14 +34,15 @@ class JiraPerformanceComparisonIT {
         ConfigurationFactory.setConfigurationFactory(LogConfigurationFactory(workspace))
     }
 
+    private fun listFileNameForCohort(): List<String> {
+        return File("./cohort-secrets").listFiles()?.
+        filter { fileName -> fileName.extension == "properties" }!!.map { f -> f.name }.toList()
+    }
+
     @Test
     fun shouldComparePerformance() {
         val results: List<EdibleResult> = AbruptExecutorService(newCachedThreadPool()).use { pool ->
-            listOf(
-                benchmark("a.properties", JiraDcScenario::class.java, quality, pool),
-                benchmark("b.properties", JiraCloudScenario::class.java, quality, pool)
-                // feel free to add more, e.g. benchmark("c.properties", ...
-            )
+            listFileNameForCohort().map { fileName -> benchmark(fileName, quality, pool) }
                 .map { it.get() }
                 .map { it.prepareForJudgement(FullTimeline()) }
         }
@@ -50,13 +52,18 @@ class JiraPerformanceComparisonIT {
 
     private fun benchmark(
         secretsName: String,
-        scenario: Class<out Scenario>,
         quality: BenchmarkQuality,
         pool: ExecutorService
     ): CompletableFuture<RawCohortResult> {
         val properties = CohortProperties.load(secretsName)
-        return pool.submitWithLogContext(properties.cohort) {
-            benchmark(properties, scenario, quality)
+        return if (properties.jiraType.equals("Cloud", ignoreCase = true)) {
+            pool.submitWithLogContext(properties.cohort) {
+                benchmark(properties, JiraCloudScenario::class.java, quality)
+            }
+        } else {
+            pool.submitWithLogContext(properties.cohort) {
+                benchmark(properties, JiraDcScenario::class.java, quality)
+            }
         }
     }
 
