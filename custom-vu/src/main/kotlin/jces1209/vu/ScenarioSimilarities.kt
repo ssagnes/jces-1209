@@ -130,6 +130,10 @@ class ScenarioSimilarities(
             projectKeyMemory = projectMemory,
             browseProjectPage = projectNavigatorPage
         ),
+        workOnBacklog = WorkOnBacklog(
+            measure = measure,
+            backlogsMemory = boardsMemory.backlog
+        ),
         workOnTopBar = WorkOnTopBar(
             topBar = topBar,
             jira = jira,
@@ -196,8 +200,9 @@ class ScenarioSimilarities(
         browseBoards: Action,
         viewBoard: Action,
         workOnDashboard: Action,
-        workOnSprint: WorkOnSprint,
+        workOnSprint: Action,
         browseProjectIssues: Action,
+        workOnBacklog: Action,
         workOnSearch: Action,
         workOnTopBar: Action,
         bulkEdit: Action,
@@ -221,6 +226,7 @@ class ScenarioSimilarities(
             workOnDashboard to 5,
             workOnSprint to 0, // 3 if we can mutate data
             browseProjectIssues to 5,
+            workOnBacklog to 0, // 3 if we can mutate data
             workOnSearch to 5,
             workOnTopBar to 5,
             bulkEdit to 0, // 5 if we can mutate data
