@@ -2,11 +2,13 @@ package jces1209.vu.page.boards.view
 
 import jces1209.vu.wait
 import org.openqa.selenium.By
+import org.openqa.selenium.Keys
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.interactions.Actions
 import org.openqa.selenium.support.ui.ExpectedCondition
 import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.net.URI
 
 abstract class ScrumBacklogPage(
@@ -44,7 +46,7 @@ abstract class ScrumBacklogPage(
         val sprintContainerLocator = By.className("js-sprint-header")
 
         val createSprintButton = driver.wait(
-            ExpectedConditions.elementToBeClickable(By.className("js-add-sprint"))
+            elementToBeClickable(By.className("js-add-sprint"))
         )
 
         val sprintsNumberBeforeCreate = driver
@@ -100,17 +102,40 @@ abstract class ScrumBacklogPage(
             .click()
 
         driver
-            .wait(ExpectedConditions.visibilityOfElementLocated(By.id("ghx-dialog-start-sprint")))
+            .wait(visibilityOfElementLocated(By.id("ghx-dialog-start-sprint")))
 
         return this
     }
 
     fun submitStartSprint() {
         driver
-            .wait(ExpectedConditions.elementToBeClickable(By.className("button-panel-button")))
+            .wait(elementToBeClickable(By.className("button-panel-button")))
             .click()
 
         driver
-            .wait(ExpectedConditions.visibilityOfElementLocated(By.className("ghx-column-header-group")))
+            .wait(visibilityOfElementLocated(By.className("ghx-column-header-group")))
+    }
+
+    fun inlineCreateIssue(value: String) {
+        driver
+            .wait(elementToBeClickable(By.cssSelector(".iic-trigger > button")))
+            .click()
+
+        driver
+            .wait(visibilityOfElementLocated(By.className("iic-widget__summary")))
+            .click()
+
+        Actions(driver)
+            .sendKeys(value)
+            .sendKeys(Keys.ENTER)
+            .perform()
+
+        driver
+            .wait(
+                and(
+                    presenceOfAllElementsLocatedBy(By.cssSelector(".ghx-summary[title='$value'], .ghx-summary[data-tooltip='$value']")),
+                    visibilityOfElementLocated(By.xpath("//*[@name='summary' and not(text())]")),
+                    invisibilityOfElementLocated(By.cssSelector(".aui-spinner, .jira-page-adg-spinner-svg"))
+                ))
     }
 }

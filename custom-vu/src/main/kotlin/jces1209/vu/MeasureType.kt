@@ -58,6 +58,9 @@ class MeasureType {
         val CUSTOMIZE_COLUMNS = ActionType("Customize columns") { Unit }
 
         @JvmField
+        val INLINE_ISSUE_CREATE_BACKLOG = ActionType("Inline issue creation on Backlog") { Unit }
+
+        @JvmField
         val ISSUE_PREVIEW_BOARD = ActionType("Preview issue (Board)") { Unit }
 
         @JvmField
