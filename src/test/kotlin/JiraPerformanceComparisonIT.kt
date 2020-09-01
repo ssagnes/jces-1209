@@ -42,7 +42,17 @@ class JiraPerformanceComparisonIT {
     @Test
     fun shouldComparePerformance() {
         val results: List<EdibleResult> = AbruptExecutorService(newCachedThreadPool()).use { pool ->
-            listFileNameForCohort().map { fileName -> benchmark(fileName, quality, pool) }
+            val jiraTypePresent = System.getenv("isJiraTypePresent")
+
+            if (jiraTypePresent.isNullOrEmpty()) {
+                listOf(
+                    benchmark("a.properties", JiraDcScenario::class.java, quality, pool),
+                    benchmark("b.properties", JiraCloudScenario::class.java, quality, pool)
+                    // feel free to add more, e.g. benchmark("c.properties", ...
+                )
+            } else {
+                listFileNameForCohort().map { fileName -> benchmark(fileName, quality, pool) }
+            }
                 .map { it.get() }
                 .map { it.prepareForJudgement(FullTimeline()) }
         }
@@ -60,10 +70,22 @@ class JiraPerformanceComparisonIT {
             pool.submitWithLogContext(properties.cohort) {
                 benchmark(properties, JiraCloudScenario::class.java, quality)
             }
-        } else {
+        } else{
             pool.submitWithLogContext(properties.cohort) {
                 benchmark(properties, JiraDcScenario::class.java, quality)
             }
+        }
+    }
+
+    private fun benchmark(
+        secretsName: String,
+        scenario: Class<out Scenario>,
+        quality: BenchmarkQuality,
+        pool: ExecutorService
+    ): CompletableFuture<RawCohortResult> {
+        val properties = CohortProperties.load(secretsName)
+        return pool.submitWithLogContext(properties.cohort) {
+            benchmark(properties, scenario, quality)
         }
     }
 
