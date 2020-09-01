@@ -42,9 +42,9 @@ class JiraPerformanceComparisonIT {
     @Test
     fun shouldComparePerformance() {
         val results: List<EdibleResult> = AbruptExecutorService(newCachedThreadPool()).use { pool ->
-            val jiraTypePresent = System.getenv("isJiraTypePresent")
+            val readDynamicPropertiesFile = System.getenv("readDynamicPropertiesFile")
 
-            if (jiraTypePresent.isNullOrEmpty()) {
+            if (readDynamicPropertiesFile.isNullOrEmpty()) {
                 listOf(
                     benchmark("a.properties", JiraDcScenario::class.java, quality, pool),
                     benchmark("b.properties", JiraCloudScenario::class.java, quality, pool)
