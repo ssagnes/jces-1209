@@ -25,6 +25,15 @@ class MeasureType {
         val BROWSE_WORKFLOWS = ActionType("Browse Workflows") { Unit }
 
         @JvmField
+        val VIEW_WORKFLOW = ActionType("View Workflow") { Unit }
+
+        @JvmField
+        val EDIT_WORKFLOW = ActionType("Edit Workflow") { Unit }
+
+        @JvmField
+        val CREATE_WORKFLOW = ActionType("Create Workflow") { Unit }
+
+        @JvmField
         val BULK_EDIT = ActionType("Bulk Edit") { Unit }
 
         @JvmField

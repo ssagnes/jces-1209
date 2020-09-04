@@ -2,7 +2,6 @@ package jces1209.vu.page.admin.customfields
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import jces1209.vu.page.FalliblePage
-import jces1209.vu.page.admin.workflow.DcBrowseWorkflowsPage
 import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.ExpectedConditions
 import java.time.Duration

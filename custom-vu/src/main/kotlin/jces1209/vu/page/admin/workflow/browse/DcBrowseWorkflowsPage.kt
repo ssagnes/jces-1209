@@ -1,4 +1,4 @@
-package jces1209.vu.page.admin.workflow
+package jces1209.vu.page.admin.workflow.browse
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import jces1209.vu.page.FalliblePage

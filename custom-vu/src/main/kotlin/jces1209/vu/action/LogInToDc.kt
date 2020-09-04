@@ -3,11 +3,10 @@ package jces1209.vu.action
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.Action
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
-import com.atlassian.performance.tools.jiraactions.api.memories.User
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.scenario.JiraCoreScenario
 import jces1209.vu.page.DcAdminLogInPage
-import jces1209.vu.page.admin.workflow.DcBrowseWorkflowsPage
+import jces1209.vu.page.admin.workflow.browse.DcBrowseWorkflowsPage
 
 class LogInToDc(
     private val jira: WebJira,
