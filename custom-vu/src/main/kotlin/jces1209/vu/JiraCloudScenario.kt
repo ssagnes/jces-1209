@@ -16,11 +16,10 @@ import jces1209.vu.page.admin.customfields.CloudBrowseCustomFieldsPage
 import jces1209.vu.page.admin.fieldscreen.CloudBrowseFieldScreensPage
 import jces1209.vu.page.admin.issuetypes.CloudBrowseIssueTypesPage
 import jces1209.vu.page.admin.manageprojects.CloudManageProjectsPage
-import jces1209.vu.page.admin.workflow.CloudBrowseWorkflowsPage
+import jces1209.vu.page.admin.workflow.browse.CloudBrowseWorkflowsPage
 import jces1209.vu.page.bars.side.CloudSideBar
 import jces1209.vu.page.bars.topBar.dc.DcTopBar
 import jces1209.vu.page.boards.browse.cloud.CloudBrowseBoardsPage
-import jces1209.vu.page.issuenavigator.bulkoperation.CloudBulkOperationPage
 import jces1209.vu.page.customizecolumns.CloudColumnsEditor
 import jces1209.vu.page.dashboard.cloud.CloudDashboardPage
 import jces1209.vu.page.filters.CloudFiltersPage

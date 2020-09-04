@@ -12,7 +12,6 @@ import jces1209.vu.action.*
 import jces1209.vu.memory.BoardPagesMemory
 import jces1209.vu.memory.SeededMemory
 import jces1209.vu.page.AbstractIssuePage
-import jces1209.vu.page.issuenavigator.IssueNavigator
 import jces1209.vu.page.JiraTips
 import jces1209.vu.page.admin.customfields.BrowseCustomFieldsPage
 import jces1209.vu.page.admin.fieldconfigs.BrowseFieldConfigurationsPage
@@ -20,14 +19,14 @@ import jces1209.vu.page.admin.fieldscreen.BrowseFieldScreensPage
 import jces1209.vu.page.admin.issuetypes.BrowseIssueTypesPage
 import jces1209.vu.page.admin.manageprojects.ManageProjectsPage
 import jces1209.vu.page.admin.projectroles.BrowseProjectRolesPage
-import jces1209.vu.page.admin.workflow.BrowseWorkflowsPage
+import jces1209.vu.page.admin.workflow.browse.BrowseWorkflowsPage
 import jces1209.vu.page.bars.side.SideBar
 import jces1209.vu.page.bars.topBar.TopBar
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
-import jces1209.vu.page.issuenavigator.bulkoperation.BulkOperationPage
 import jces1209.vu.page.customizecolumns.ColumnsEditor
 import jces1209.vu.page.dashboard.DashboardPage
 import jces1209.vu.page.filters.FiltersPage
+import jces1209.vu.page.issuenavigator.IssueNavigator
 import jces1209.vu.page.project.ProjectNavigatorPage
 import java.net.URI
 import java.util.*
@@ -173,9 +172,13 @@ class ScenarioSimilarities(
             meter = meter,
             browseProjectRolesPage = browseProjectRolesPage
         ),
-        browseWorkflows = BrowseWorkflows(
+        workOnWorkflow = WorkOnWorkflow(
             measure = measure,
-            browseWorkflowsPage = browseWorkflowsPage
+            browseWorkflowsPage = browseWorkflowsPage,
+            browseWorkflowsProbability = 0.50f,
+            viewWorkflowProbability = 0.50f,
+            createWorkflowProbability = 0.00f, // 0.02 if we can mutate data
+            editWorkflowProbability = 0.00f // 0.06 if we can mutate data
         ),
         browseFieldScreens = BrowseFieldScreens(
             measure = measure,
@@ -208,7 +211,7 @@ class ScenarioSimilarities(
         workOnTopBar: Action,
         bulkEdit: Action,
         workOnTransition: Action,
-        browseWorkflows: Action,
+        workOnWorkflow: Action,
         browseFieldScreens: Action,
         browseFieldConfigurations: Action,
         browseCustomFields: Action,
@@ -232,7 +235,7 @@ class ScenarioSimilarities(
             workOnTopBar to 5,
             bulkEdit to 0, // 5 if we can mutate data
             workOnTransition to 5,
-            browseWorkflows to 5,
+            workOnWorkflow to 5,
             browseFieldScreens to 5,
             browseFieldConfigurations to 5,
             browseCustomFields to 5,

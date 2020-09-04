@@ -1,8 +1,7 @@
-package jces1209.vu.page.admin.workflow
+package jces1209.vu.page.admin.workflow.browse
 
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import jces1209.vu.page.FalliblePage
-import jces1209.vu.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration

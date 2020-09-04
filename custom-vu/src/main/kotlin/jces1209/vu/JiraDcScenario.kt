@@ -16,11 +16,10 @@ import jces1209.vu.page.admin.customfields.DcBrowseCustomFieldsPage
 import jces1209.vu.page.admin.fieldscreen.DcBrowseFieldScreensPage
 import jces1209.vu.page.admin.issuetypes.DcBrowseIssueTypesPage
 import jces1209.vu.page.admin.manageprojects.DcManageProjectsPage
-import jces1209.vu.page.admin.workflow.DcBrowseWorkflowsPage
+import jces1209.vu.page.admin.workflow.browse.DcBrowseWorkflowsPage
 import jces1209.vu.page.bars.side.DcSideBar
 import jces1209.vu.page.bars.topBar.dc.DcTopBar
 import jces1209.vu.page.boards.browse.dc.DcBrowseBoardsPage
-import jces1209.vu.page.issuenavigator.bulkoperation.DcBulkOperationPage
 import jces1209.vu.page.customizecolumns.DcColumnsEditor
 import jces1209.vu.page.dashboard.dc.DcDashboardPage
 import jces1209.vu.page.filters.ServerFiltersPage
