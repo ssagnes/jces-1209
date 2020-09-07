@@ -68,13 +68,38 @@ class WorkOnSearch(
     }
 
     private fun openGlobalIssueSearch(): IssueNavigator {
-        meter.measure(
-            key = MeasureType.OPEN_GLOBAL_SEARCH,
-            action = {
-                jira.driver.navigate().to("/issues/")
-                issueNavigator.waitForNavigator()
-            }
-        )
+
+
+        val orderByCreatedProbability = 0.9f
+        val lastViewedProbability = 0.02f
+        val byProjectProbability = 0.02f
+        val withAssigneeProbability = 0.02f
+        val byStatusProbability = 0.02f
+        val emptyProbability = 0.02f
+        val orderByCreated = "/issues/?jql=order%20by%20created%20DESC"
+        val lastViewed = "/issues/?jql=order%20by%20lastViewed%20DESC%2C%20key%20DESC"
+        val byProject = "/issues/?jql=project%20is%20"
+        val withAssignee = "/issues/?jql=Assignee%20"
+        val byStatus = "/issues/?jql=status%20not%20in%20(%20Resolved)"
+        val empty = "/issues/"
+        val queryList = HashMap<String, Float>()
+        queryList[orderByCreated] = orderByCreatedProbability
+        queryList[lastViewed] = lastViewedProbability
+        queryList[byProject] = byProjectProbability
+        queryList[withAssignee] = withAssigneeProbability
+        queryList[byStatus] = byStatusProbability
+        queryList[empty] = emptyProbability
+
+        queryList.forEach { k, v ->
+            meter.measure(
+                key = MeasureType.OPEN_GLOBAL_SEARCH,
+                action = {
+                    if (roll(v))
+                        jira.navigateTo(k)
+                    issueNavigator.waitForNavigator()
+                }
+            )
+        }
         return issueNavigator
     }
 
