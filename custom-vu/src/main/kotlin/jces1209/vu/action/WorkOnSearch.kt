@@ -11,8 +11,8 @@ import com.atlassian.performance.tools.jiraactions.api.page.IssueNavigatorPage
 import jces1209.vu.Measure
 import jces1209.vu.MeasureType
 import jces1209.vu.MeasureType.Companion.SWITCH_BETWEEN_ISSUES_IN_SEARCH_RESULTS
-import jces1209.vu.page.issuenavigator.IssueNavigator
 import jces1209.vu.page.customizecolumns.ColumnsEditor
+import jces1209.vu.page.issuenavigator.IssueNavigator
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.net.URI
@@ -57,9 +57,34 @@ class WorkOnSearch(
     }
 
     private fun openGlobalIssueSearch() {
-        measure.measure(MeasureType.OPEN_GLOBAL_SEARCH, globalSearchProbability) {
-            jira.navigateTo("/issues/?jql=order%20by%20lastViewed%20DESC%2C%20key%20DESC")
-            issueNavigator.waitForBeingLoaded()
+
+        val orderByCreatedProbability = 0.9f
+        val lastViewedProbability = 0.02f
+        val byProjectProbability = 0.02f
+        val withAssigneeProbability = 0.02f
+        val byStatusProbability = 0.02f
+        val emptyProbability = 0.02f
+        val orderByCreated = "/issues/?jql=order%20by%20created%20DESC"
+        val lastViewed = "/issues/?jql=order%20by%20lastViewed%20DESC%2C%20key%20DESC"
+        val byProject = "/issues/?jql=project%20is%20"
+        val withAssignee = "/issues/?jql=Assignee%20"
+        val byStatus = "/issues/?jql=status%20not%20in%20(%20Resolved)"
+        val empty = "/issues/"
+        val queryList = HashMap<String, Float>()
+        queryList[orderByCreated] = orderByCreatedProbability
+        queryList[lastViewed] = lastViewedProbability
+        queryList[byProject] = byProjectProbability
+        queryList[withAssignee] = withAssigneeProbability
+        queryList[byStatus] = byStatusProbability
+        queryList[empty] = emptyProbability
+
+        queryList.forEach { k, v ->
+            measure.measure(MeasureType.OPEN_GLOBAL_SEARCH, globalSearchProbability) {
+                measure.roll(v) {
+                    jira.navigateTo(k)
+                    issueNavigator.waitForBeingLoaded()
+                }
+            }
         }
     }
 
