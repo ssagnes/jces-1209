@@ -43,7 +43,7 @@ class WorkOnIssue(
             return
         }
         val loadedIssuePage = read(issueKey)
-        Thread.sleep(10000)
+        Thread.sleep(30000)
 
         if (null != loadedIssuePage) {
             editDescription(loadedIssuePage)
