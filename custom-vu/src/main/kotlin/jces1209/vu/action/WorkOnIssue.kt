@@ -43,6 +43,8 @@ class WorkOnIssue(
             return
         }
         val loadedIssuePage = read(issueKey)
+        Thread.sleep(10000)
+
         if (null != loadedIssuePage) {
             editDescription(loadedIssuePage)
             linkIssue(loadedIssuePage, issueKey.substringBefore("-"))
@@ -56,7 +58,7 @@ class WorkOnIssue(
             contextOperation(loadedIssuePage)
             transition(loadedIssuePage)
         }
-        Thread.sleep(10000)
+
     }
 
     private fun read(
