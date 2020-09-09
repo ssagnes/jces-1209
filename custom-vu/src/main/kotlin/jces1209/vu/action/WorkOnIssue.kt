@@ -56,6 +56,7 @@ class WorkOnIssue(
             contextOperation(loadedIssuePage)
             transition(loadedIssuePage)
         }
+        Thread.sleep(10_000)
     }
 
     private fun read(
