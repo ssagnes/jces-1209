@@ -18,6 +18,7 @@ import jces1209.vu.JiraCloudScenario
 import jces1209.vu.JiraDcScenario
 import org.apache.logging.log4j.core.config.ConfigurationFactory
 import org.junit.Test
+import java.io.File
 import java.nio.file.Paths
 import java.time.Duration
 import java.util.concurrent.CompletableFuture
@@ -33,19 +34,48 @@ class JiraPerformanceComparisonIT {
         ConfigurationFactory.setConfigurationFactory(LogConfigurationFactory(workspace))
     }
 
+    private fun listFileNameForCohort(): List<String> {
+        return File("./cohort-secrets").listFiles()?.
+        filter { fileName -> fileName.extension == "properties" }!!.map { f -> f.name }.toList()
+    }
+
     @Test
     fun shouldComparePerformance() {
         val results: List<EdibleResult> = AbruptExecutorService(newCachedThreadPool()).use { pool ->
-            listOf(
-                benchmark("a.properties", JiraDcScenario::class.java, quality, pool),
-                benchmark("b.properties", JiraCloudScenario::class.java, quality, pool)
-                // feel free to add more, e.g. benchmark("c.properties", ...
-            )
+            val readDynamicPropertiesFile = System.getenv("readDynamicPropertiesFile")
+
+            // JPERF-2968: Just for my testing changing to false (No need to set env locally)
+            if (false) {
+                listOf(
+                    benchmark("a.properties", JiraDcScenario::class.java, quality, pool),
+                    benchmark("b.properties", JiraCloudScenario::class.java, quality, pool)
+                    // feel free to add more, e.g. benchmark("c.properties", ...
+                )
+            } else {
+                listFileNameForCohort().map { fileName -> benchmark(fileName, quality, pool) }
+            }
                 .map { it.get() }
                 .map { it.prepareForJudgement(FullTimeline()) }
         }
         FullReport().dump(results, workspace.isolateTest("Compare"))
         dumpMegaSlowWaterfalls(results)
+    }
+
+    private fun benchmark(
+        secretsName: String,
+        quality: BenchmarkQuality,
+        pool: ExecutorService
+    ): CompletableFuture<RawCohortResult> {
+        val properties = CohortProperties.load(secretsName)
+        return if (properties.jiraType.equals("Cloud", ignoreCase = true)) {
+            pool.submitWithLogContext(properties.cohort) {
+                benchmark(properties, JiraCloudScenario::class.java, quality)
+            }
+        } else{
+            pool.submitWithLogContext(properties.cohort) {
+                benchmark(properties, JiraDcScenario::class.java, quality)
+            }
+        }
     }
 
     private fun benchmark(

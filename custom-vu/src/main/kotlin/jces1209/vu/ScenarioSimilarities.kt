@@ -12,7 +12,6 @@ import jces1209.vu.action.*
 import jces1209.vu.memory.BoardPagesMemory
 import jces1209.vu.memory.SeededMemory
 import jces1209.vu.page.AbstractIssuePage
-import jces1209.vu.page.issuenavigator.IssueNavigator
 import jces1209.vu.page.JiraTips
 import jces1209.vu.page.admin.customfields.BrowseCustomFieldsPage
 import jces1209.vu.page.admin.fieldconfigs.BrowseFieldConfigurationsPage
@@ -24,10 +23,10 @@ import jces1209.vu.page.admin.workflow.BrowseWorkflowsPage
 import jces1209.vu.page.bars.side.SideBar
 import jces1209.vu.page.bars.topBar.TopBar
 import jces1209.vu.page.boards.browse.BrowseBoardsPage
-import jces1209.vu.page.issuenavigator.bulkoperation.BulkOperationPage
 import jces1209.vu.page.customizecolumns.ColumnsEditor
 import jces1209.vu.page.dashboard.DashboardPage
 import jces1209.vu.page.filters.FiltersPage
+import jces1209.vu.page.issuenavigator.IssueNavigator
 import jces1209.vu.page.project.ProjectNavigatorPage
 import java.net.URI
 import java.util.*
@@ -172,10 +171,6 @@ class ScenarioSimilarities(
             meter = meter,
             browseProjectRolesPage = browseProjectRolesPage
         ),
-        browseWorkflows = BrowseWorkflows(
-            measure = measure,
-            browseWorkflowsPage = browseWorkflowsPage
-        ),
         browseFieldScreens = BrowseFieldScreens(
             measure = measure,
             browseFieldScreensPage = browseFieldScreensPage
@@ -207,40 +202,76 @@ class ScenarioSimilarities(
         workOnTopBar: Action,
         bulkEdit: Action,
         workOnTransition: Action,
-        browseWorkflows: Action,
         browseFieldScreens: Action,
         browseFieldConfigurations: Action,
         browseCustomFields: Action,
         browseIssueTypes: Action,
         browseProjectRoles: Action
     ): List<Action> {
+
+        /*JPERF-2968: I tried with CohortProperties class but it's in different module,
+         might need to add module dependency
+         val properties = CohortProperties.load(secretsName)*/
+
+        // I have tried two methods one is below and another is after function ends
+
+
+        /* Method 1 :Just to for testing purpose I have added ConfigProperties Class which does same thing as CohortProperties
+          Ideally this should pickup properties filename automatically I meant we will be running 5k and 10k instances
+          together so it should pick up file accordingly but I am not sure how's that possible ??? */
+        val properties = ConfigProperties.load("example.properties")
+
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
-            createIssue to 0, // 5 if we can mutate data
-            workAnIssue to 55,
-            manageProjects to 5,
-            projectSummary to 5,
-            browseProjects to 5,
-            browseBoards to 5,
-            viewBoard to 30,
-            workOnDashboard to 5,
-            workOnSprint to 0, // 3 if we can mutate data
-            browseProjectIssues to 5,
-            workOnBacklog to 0, // 3 if we can mutate data
-            workOnSearch to 5,
-            workOnTopBar to 5,
-            bulkEdit to 0, // 5 if we can mutate data
-            workOnTransition to 5,
-            browseWorkflows to 5,
-            browseFieldScreens to 5,
-            browseFieldConfigurations to 5,
-            browseCustomFields to 5,
-            browseIssueTypes to 5,
-            browseProjectRoles to 5
+
+            createIssue to properties.createIssue, // 5 if we can mutate data
+            workAnIssue to properties.workAnIssue,
+            manageProjects to properties.manageProjects,
+            projectSummary to properties.projectSummary,
+            browseProjects to properties.browseProjects,
+            browseBoards to properties.browseBoards,
+            viewBoard to properties.viewBoard,
+            workOnDashboard to properties.workOnDashboard,
+            workOnSprint to properties.workOnSprint, // 3 if we can mutate data
+            browseProjectIssues to properties.browseProjectIssues,
+            workOnBacklog to properties.workOnBacklog, // 3 if we can mutate data
+            workOnSearch to properties.workOnSearch,
+            workOnTopBar to properties.workOntopBar,
+            bulkEdit to properties.bulkEdit, // 5 if we can mutate data
+            workOnTransition to properties.workOnTransition,
+            browseFieldScreens to properties.browseFieldScreens,
+            browseFieldConfigurations to properties.browseFieldConfigurations,
+            browseCustomFields to properties.browseCustomFields,
+            browseIssueTypes to properties.browseIssueTypes,
+            browseProjectRoles to properties.browseProjectRoles
         )
             .map { (action, proportion) -> Collections.nCopies(proportion, action) }
             .flatten()
             .shuffled(seededRandom.random)
         return exploreData + spreadOut
+
+        //Method 2:  Method 1 was reading it from properties file under cohort-secrets
+        // I tried to read it via resource properties and it works but again here my concern is how to read file dynamically for each instance
+
+        /*val resourceName = "test.properties" --> check resources/test.properties
+        val cookieStream = this::class.java.getResourceAsStream("/$resourceName")
+            ?: throw Exception("Copy test.properties as $resourceName and fill in the values")
+        val props = Properties()
+        cookieStream.use { props.load(it) }
+
+        val exploreData = listOf(browseProjects, browseFilters, browseBoards)
+        val spreadOut = mapOf(
+            createIssue to props.getProperty("createIssue", 0.toString()).toInt(), // 5 if we can mutate data
+            workAnIssue to props.getProperty("workAnIssue",55.toString()).toInt(),
+            manageProjects to props.getProperty("manageProjects",5.toString()).toInt(),
+            ...
+            continue rest of the code...
+
+            ...
+            ...
+            ..
+            ..
+            */
+
     }
 }
