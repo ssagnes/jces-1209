@@ -219,11 +219,10 @@ class ScenarioSimilarities(
         /* Method 1 :Just to for testing purpose I have added ConfigProperties Class which does same thing as CohortProperties
           Ideally this should pickup properties filename automatically I meant we will be running 5k and 10k instances
           together so it should pick up file accordingly but I am not sure how's that possible ??? */
-        val properties = ConfigProperties.load("example.properties")
+        val properties = DistributionProperties.load("main_distribution.properties")
 
         val exploreData = listOf(browseProjects, browseFilters, browseBoards)
         val spreadOut = mapOf(
-
             createIssue to properties.createIssue, // 5 if we can mutate data
             workAnIssue to properties.workAnIssue,
             manageProjects to properties.manageProjects,

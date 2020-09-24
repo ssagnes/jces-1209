@@ -12,7 +12,7 @@ import com.atlassian.performance.tools.virtualusers.api.config.VirtualUserTarget
 import com.atlassian.performance.tools.workspace.api.RootWorkspace
 import com.atlassian.performance.tools.workspace.api.TestWorkspace
 import jces1209.BenchmarkQuality
-import jces1209.SlowAndMeaningful
+import jces1209.QuickAndDirty
 import jces1209.log.LogConfigurationFactory
 import jces1209.vu.JiraCloudScenario
 import jces1209.vu.JiraDcScenario
@@ -28,7 +28,7 @@ import java.util.concurrent.Executors.newCachedThreadPool
 class JiraPerformanceComparisonIT {
 
     private val workspace = RootWorkspace(Paths.get("build")).currentTask
-    private val quality: BenchmarkQuality = SlowAndMeaningful.Builder().build()
+    private val quality: BenchmarkQuality = QuickAndDirty()
 
     init {
         ConfigurationFactory.setConfigurationFactory(LogConfigurationFactory(workspace))
@@ -71,7 +71,7 @@ class JiraPerformanceComparisonIT {
             pool.submitWithLogContext(properties.cohort) {
                 benchmark(properties, JiraCloudScenario::class.java, quality)
             }
-        } else{
+        } else {
             pool.submitWithLogContext(properties.cohort) {
                 benchmark(properties, JiraDcScenario::class.java, quality)
             }
