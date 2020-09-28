@@ -121,6 +121,8 @@ class JiraPerformanceComparisonIT {
             userName = properties.userName,
             password = properties.userPassword
         )
+        println("properties.configProperties")
+        println(properties.configProperties)
         val behavior = quality.behave(scenario, properties.configProperties)
             .let { VirtualUserBehavior.Builder(it) }
             .build()

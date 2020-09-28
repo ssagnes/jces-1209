@@ -22,10 +22,10 @@ class SlowAndMeaningful private constructor(
         configProperties
     )
 
-    override fun behave(scenario: Class<out Scenario>, readConfigProperties: String?): VirtualUserBehavior = VirtualUserBehavior.Builder(scenario)
+    override fun behave(scenario: Class<out Scenario>, configProperties: String?): VirtualUserBehavior = VirtualUserBehavior.Builder(scenario)
         .browser(browser)
         .load(
-            getVirtualUserLoad(readConfigProperties)
+            getVirtualUserLoad(configProperties)
         )
         .skipSetup(true)
         .seed(12345L)

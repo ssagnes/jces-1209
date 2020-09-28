@@ -8,11 +8,11 @@ import java.time.Duration
 
 class QuickAndDirty : BenchmarkQuality {
 
-    override fun provide(readConfigProperties: String?): VirtualUsersSource = LocalVus()
+    override fun provide(configProperties: String?): VirtualUsersSource = LocalVus()
 
     override fun behave(
-            scenario: Class<out Scenario>,
-            readConfigProperties: String?
+        scenario: Class<out Scenario>,
+        configProperties: String?
     ): VirtualUserBehavior = VirtualUserBehavior.Builder(scenario)
         .browser(Firefox::class.java) // local Chrome is flaky around version 80, so let's use Firefox
         .load(
