@@ -7,7 +7,8 @@ class CohortProperties(
     val userName: String,
     val userPassword: String,
     val cohort: String,
-    val jiraType: String?
+    val jiraType: String?,
+    val configProperties: String?
 ) {
     companion object {
         fun load(secretsName: String): CohortProperties {
@@ -19,7 +20,8 @@ class CohortProperties(
                 userName = properties.getProperty("user.name")!!,
                 userPassword = properties.getProperty("user.password")!!,
                 cohort = properties.getProperty("cohort")!!,
-                jiraType = properties.getProperty("jira.type")
+                jiraType = properties.getProperty("jira.type"),
+                configProperties = properties.getProperty("configProperties")
             )
         }
     }

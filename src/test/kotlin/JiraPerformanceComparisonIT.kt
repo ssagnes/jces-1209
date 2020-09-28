@@ -35,8 +35,7 @@ class JiraPerformanceComparisonIT {
     }
 
     private fun listFileNameForCohort(): List<String> {
-        return File("./cohort-secrets").listFiles()?.
-        filter { fileName -> fileName.extension == "properties" }!!.map { f -> f.name }.toList()
+        return File("./cohort-secrets").listFiles()?.filter { fileName -> fileName.extension == "properties" }!!.map { f -> f.name }.toList()
     }
 
     @Test
@@ -70,7 +69,7 @@ class JiraPerformanceComparisonIT {
             pool.submitWithLogContext(properties.cohort) {
                 benchmark(properties, JiraCloudScenario::class.java, quality)
             }
-        } else{
+        } else {
             pool.submitWithLogContext(properties.cohort) {
                 benchmark(properties, JiraDcScenario::class.java, quality)
             }
@@ -98,7 +97,7 @@ class JiraPerformanceComparisonIT {
         val cohort = properties.cohort
         val resultsTarget = workspace.directory.resolve("vu-results").resolve(cohort)
         val provisioned = quality
-            .provide()
+            .provide(properties.configProperties)
             .obtainVus(resultsTarget, workspace.directory)
         val virtualUsers = provisioned.virtualUsers
         return try {
@@ -122,7 +121,7 @@ class JiraPerformanceComparisonIT {
             userName = properties.userName,
             password = properties.userPassword
         )
-        val behavior = quality.behave(scenario)
+        val behavior = quality.behave(scenario, properties.configProperties)
             .let { VirtualUserBehavior.Builder(it) }
             .build()
         return VirtualUserOptions(target, behavior)

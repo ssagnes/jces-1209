@@ -20,6 +20,7 @@ import com.atlassian.performance.tools.awsinfrastructure.api.virtualusers.Provis
 import com.atlassian.performance.tools.infrastructure.api.virtualusers.DirectResultsTransport
 import com.atlassian.performance.tools.io.api.dereference
 import com.atlassian.performance.tools.io.api.ensureDirectory
+import jces1209.vu.ConfigProperties
 import java.nio.file.Path
 import java.time.Duration
 import java.util.*
@@ -29,7 +30,8 @@ class AwsVus(
     duration: Duration,
     private val region: Regions,
     private val vpcId: String?,
-    private val subnetId: String?
+    private val subnetId: String?,
+    private val configProperties: String?
 ) : VirtualUsersSource {
 
     private val lifespan = Duration.ofMinutes(10) + duration
@@ -62,7 +64,7 @@ class AwsVus(
             ).provision()
         }
         val provisioned = MulticastVirtualUsersFormula.Builder(
-                nodes = 6,
+                nodes = getProvisionedNodes(),
                 shadowJar = dereference("jpt.virtual-users.shadow-jar")
             )
             .browser(Chromium77())
@@ -83,6 +85,14 @@ class AwsVus(
                 dependency = sshKey.remote
             )
         )
+    }
+
+    private fun getProvisionedNodes(): Int {
+        return if(configProperties.isNullOrEmpty()){
+            6
+        }else{
+            (ConfigProperties.load(configProperties).nodes) ?: 6
+        }
     }
 
     private fun workAroundDirectResultTransportRaceCondition(

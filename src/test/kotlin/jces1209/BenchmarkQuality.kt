@@ -5,9 +5,10 @@ import com.atlassian.performance.tools.virtualusers.api.config.VirtualUserBehavi
 
 interface BenchmarkQuality {
 
-    fun provide(): VirtualUsersSource
+    fun provide(configProperties: String?): VirtualUsersSource
 
     fun behave(
-        scenario: Class<out Scenario>
+        scenario: Class<out Scenario>,
+        configProperties: String?
     ): VirtualUserBehavior
 }
