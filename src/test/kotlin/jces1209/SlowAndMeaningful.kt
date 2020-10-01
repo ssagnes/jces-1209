@@ -55,7 +55,8 @@ class SlowAndMeaningful private constructor(
     class Builder {
         private var browser: Class<out Browser> = EagerChromeBrowser::class.java
         private var region: Regions = Regions.US_EAST_1
-        private var duration: Duration = Duration.ofMinutes(20)
+        private var duration: Duration = System.getenv("duration").takeUnless { it.isNullOrEmpty() }?.toLong()?.let { Duration.ofMinutes(it) }
+            ?:Duration.ofMinutes(20)
 
         fun browser(browser: Class<out Browser>) = apply { this.browser = browser }
         fun region(region: Regions) = apply { this.region = region }
