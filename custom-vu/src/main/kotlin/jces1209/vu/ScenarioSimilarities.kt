@@ -219,75 +219,43 @@ class ScenarioSimilarities(
         browseProjectRoles: Action
     ): List<Action> {
         val readTrafficShapeConfig = System.getenv("readTrafficShapeConfig")
+        var properties = Properties()
 
-        if (readTrafficShapeConfig.isNullOrEmpty()) {
-            val exploreData = listOf(browseProjects, browseFilters, browseBoards)
-            val spreadOut = mapOf(
-                createIssue to 0, // 5 if we can mutate data
-                workAnIssue to 55,
-                manageProjects to 5,
-                projectSummary to 5,
-                browseProjects to 5,
-                browseBoards to 5,
-                viewBoard to 30,
-                workOnDashboard to 5,
-                workOnSprint to 0, // 3 if we can mutate data
-                browseProjectIssues to 5,
-                workOnBacklog to 0, // 3 if we can mutate data
-                workOnSearch to 5,
-                workOnTopBar to 5,
-                bulkEdit to 0, // 5 if we can mutate data
-                workOnTransition to 5,
-                workOnWorkflow to 5,
-                browseFieldScreens to 5,
-                browseFieldConfigurations to 5,
-                browseCustomFields to 5,
-                browseIssueTypes to 5,
-                browseProjectRoles to 5
-            )
-
-                .map { (action, proportion) -> Collections.nCopies(proportion, action) }
-                .flatten()
-                .shuffled(seededRandom.random)
-
-            return exploreData + spreadOut
-
-        } else {
-
-            val resourceName = TrafficDataParser.parseData(jira.base.host, readTrafficShapeConfig)
-            val properties = ConfigProperties.load(resourceName)
-            val exploreData = listOf(browseProjects, browseFilters, browseBoards)
-            val spreadOut = mapOf(
-                createIssue to properties.createIssue, // 5 if we can mutate data
-                workAnIssue to properties.workAnIssue,
-                manageProjects to properties.manageProjects,
-                projectSummary to properties.projectSummary,
-                browseProjects to properties.browseProjects,
-                browseBoards to properties.browseBoards,
-                viewBoard to properties.viewBoard,
-                workOnDashboard to properties.workOnDashboard,
-                workOnSprint to properties.workOnSprint, // 3 if we can mutate data
-                browseProjectIssues to properties.browseProjectIssues,
-                workOnBacklog to properties.workOnBacklog, // 3 if we can mutate data
-                workOnSearch to properties.workOnSearch,
-                workOnTopBar to properties.workOnTopBar,
-                bulkEdit to properties.bulkEdit, // 5 if we can mutate data
-                workOnTransition to properties.workOnTransition,
-                workOnWorkflow to properties.workOnWorkflow,
-                browseFieldScreens to properties.browseFieldScreens,
-                browseFieldConfigurations to properties.browseFieldConfigurations,
-                browseCustomFields to properties.browseCustomFields,
-                browseIssueTypes to properties.browseIssueTypes,
-                browseProjectRoles to properties.browseProjectRoles
-            )
-
-                .map { (action, proportion) -> Collections.nCopies(proportion, action) }
-                .flatten()
-                .shuffled(seededRandom.random)
-
-            return exploreData + spreadOut
-
-
+        if(!readTrafficShapeConfig.isNullOrEmpty()){
+            val resourceName = TrafficDataParser.parseData(jira.base.host,readTrafficShapeConfig)
+            properties = ConfigProperties.load(resourceName)
         }
+
+        val exploreData = listOf(browseProjects, browseFilters, browseBoards)
+        val spreadOut = mapOf(
+            createIssue to ((properties.getProperty("createIssue")?.toInt()) ?: 0), // 5 if we can mutate data
+            workAnIssue to ((properties.getProperty("workAnIssue")?.toInt()) ?: 55),
+            manageProjects to ((properties.getProperty("manageProjects")?.toInt()) ?: 5),
+            projectSummary to ((properties.getProperty("projectSummary")?.toInt()) ?: 5),
+            browseProjects to ((properties.getProperty("browseProjects")?.toInt()) ?: 5),
+            browseBoards to ((properties.getProperty("browseBoards")?.toInt()) ?: 5),
+            viewBoard to ((properties.getProperty("viewBoard")?.toInt()) ?: 30),
+            workOnDashboard to ((properties.getProperty("workOnDashboard")?.toInt()) ?: 5),
+            workOnSprint to ((properties.getProperty("workOnSprint")?.toInt()) ?: 0), // 3 if we can mutate data
+            browseProjectIssues to ((properties.getProperty("browseProjectIssues")?.toInt()) ?: 5),
+            workOnBacklog to ((properties.getProperty("workOnBacklog")?.toInt()) ?: 0), // 3 if we can mutate data
+            workOnSearch to ((properties.getProperty("workOnSearch")?.toInt()) ?: 5),
+            workOnTopBar to ((properties.getProperty("workOnTopBar")?.toInt()) ?: 5),
+            bulkEdit to ((properties.getProperty("bulkEdit")?.toInt()) ?: 0), // 5 if we can mutate data
+            workOnTransition to ((properties.getProperty("workOnTransition")?.toInt()) ?: 5),
+            workOnWorkflow to ((properties.getProperty("workOnWorkflow")?.toInt()) ?: 5),
+            browseFieldScreens to ((properties.getProperty("browseFieldScreens")?.toInt()) ?: 5),
+            browseFieldConfigurations to ((properties.getProperty("browseFieldConfigurations")?.toInt()) ?: 5),
+            browseCustomFields to ((properties.getProperty("browseCustomFields")?.toInt()) ?: 5),
+            browseIssueTypes to ((properties.getProperty("browseIssueTypes")?.toInt()) ?: 5),
+            browseProjectRoles to ((properties.getProperty("browseProjectRoles")?.toInt()) ?: 5)
+        )
+            .map { (action, proportion) -> Collections.nCopies(proportion, action) }
+            .flatten()
+            .shuffled(seededRandom.random)
+        return exploreData + spreadOut
+
+
+
     }
 }

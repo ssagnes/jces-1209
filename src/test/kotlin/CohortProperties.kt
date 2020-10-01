@@ -1,3 +1,4 @@
+import jces1209.vu.ConfigProperties
 import java.io.File
 import java.net.URI
 import java.util.*
@@ -8,7 +9,7 @@ class CohortProperties(
     val userPassword: String,
     val cohort: String,
     val jiraType: String?,
-    val configProperties: String?
+    val trafficConfigObj: Properties?
 ) {
     companion object {
         fun load(secretsName: String): CohortProperties {
@@ -21,7 +22,7 @@ class CohortProperties(
                 userPassword = properties.getProperty("user.password")!!,
                 cohort = properties.getProperty("cohort")!!,
                 jiraType = properties.getProperty("jira.type"),
-                configProperties = properties.getProperty("configProperties")
+                trafficConfigObj = ConfigProperties.load(properties.getProperty("config.trafficConfigFile"))
             )
         }
     }

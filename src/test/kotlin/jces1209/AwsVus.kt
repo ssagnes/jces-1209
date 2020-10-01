@@ -31,7 +31,7 @@ class AwsVus(
     private val region: Regions,
     private val vpcId: String?,
     private val subnetId: String?,
-    private val configProperties: String?
+    private val configProperties: Properties?
 ) : VirtualUsersSource {
 
     private val lifespan = Duration.ofMinutes(10) + duration
@@ -64,7 +64,7 @@ class AwsVus(
             ).provision()
         }
         val provisioned = MulticastVirtualUsersFormula.Builder(
-                nodes = getProvisionedNodes(),
+                nodes = (configProperties?.getProperty("nodes"))?.toInt() ?: 6,
                 shadowJar = dereference("jpt.virtual-users.shadow-jar")
             )
             .browser(Chromium77())
@@ -85,14 +85,6 @@ class AwsVus(
                 dependency = sshKey.remote
             )
         )
-    }
-
-    private fun getProvisionedNodes(): Int {
-        return if(configProperties.isNullOrEmpty()){
-            6
-        }else{
-            (ConfigProperties.load(configProperties).nodes) ?: 6
-        }
     }
 
     private fun workAroundDirectResultTransportRaceCondition(

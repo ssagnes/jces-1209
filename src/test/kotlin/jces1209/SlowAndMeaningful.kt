@@ -6,9 +6,9 @@ import com.atlassian.performance.tools.virtualusers.api.TemporalRate
 import com.atlassian.performance.tools.virtualusers.api.VirtualUserLoad
 import com.atlassian.performance.tools.virtualusers.api.browsers.Browser
 import com.atlassian.performance.tools.virtualusers.api.config.VirtualUserBehavior
-import jces1209.vu.ConfigProperties
 import jces1209.vu.EagerChromeBrowser
 import java.time.Duration
+import java.util.*
 
 class SlowAndMeaningful private constructor(
     private val browser: Class<out Browser>,
@@ -16,38 +16,40 @@ class SlowAndMeaningful private constructor(
     private val duration: Duration
 ) : BenchmarkQuality {
 
-    override fun provide(configProperties: String?): VirtualUsersSource = AwsVus(duration, region,
+    override fun provide(trafficConfigObj: Properties?): VirtualUsersSource = AwsVus(duration, region,
         System.getenv("vpcId"),
         System.getenv("subnetId"),
-        configProperties
+        trafficConfigObj
     )
 
-    override fun behave(scenario: Class<out Scenario>, configProperties: String?): VirtualUserBehavior = VirtualUserBehavior.Builder(scenario)
+    override fun behave(scenario: Class<out Scenario>, trafficConfigObj: Properties?): VirtualUserBehavior = VirtualUserBehavior.Builder(scenario)
         .browser(browser)
         .load(
-            getVirtualUserLoad(configProperties)
+            getVirtualUserLoad(trafficConfigObj)
         )
         .skipSetup(true)
         .seed(12345L)
         .build()
 
-    private fun getVirtualUserLoad(configProperties: String?): VirtualUserLoad {
-        return if (configProperties.isNullOrEmpty()) {
-            VirtualUserLoad.Builder()
-                .virtualUsers(72)
-                .ramp(Duration.ofMinutes(1))
-                .maxOverallLoad(TemporalRate(15.0, Duration.ofSeconds(1)))
-                .flat(duration)
-                .build()
-        } else {
-            VirtualUserLoad.Builder()
-                .virtualUsers((ConfigProperties.load(configProperties).virtualUsers) ?: 72)
-                .ramp(Duration.ofMinutes((ConfigProperties.load(configProperties).ramp) ?: 1))
-                .maxOverallLoad(TemporalRate((ConfigProperties.load(configProperties).maxOverallLoad)
-                    ?: 15.0, Duration.ofSeconds(1)))
-                .flat(duration)
-                .build()
+    private fun getVirtualUserLoad(trafficConfigObj: Properties?): VirtualUserLoad {
+        var virtualUser = 72
+        var ramp = 1L
+        var maxOverallLoad = 15.0
+
+        if (null != trafficConfigObj) {
+
+            virtualUser = trafficConfigObj.getProperty("virtualUser")?.toInt() ?: 72
+            ramp = trafficConfigObj.getProperty("ramp")?.toLong() ?: 1
+            maxOverallLoad = trafficConfigObj.getProperty("maxOverallLoad")?.toDouble() ?: 15.0
+
         }
+
+        return VirtualUserLoad.Builder()
+            .virtualUsers(virtualUser)
+            .ramp(Duration.ofMinutes(ramp))
+            .maxOverallLoad(TemporalRate(maxOverallLoad, Duration.ofSeconds(1)))
+            .flat(duration)
+            .build()
     }
 
     class Builder {

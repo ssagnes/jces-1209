@@ -11,9 +11,11 @@ class TrafficDataParser {
         fun parseData(hostName: String, readEnvTrafficShapeConfig: String): String {
 
             val jsonReader: JsonReader = Json.createReader(StringReader(readEnvTrafficShapeConfig))
-            val obj: javax.json.JsonObject = jsonReader.readObject()
-            val propertiesFileName: String = obj.getString(hostName)
-            jsonReader.close()
+            var propertiesFileName = ""
+            jsonReader.use {
+                val obj: javax.json.JsonObject = jsonReader.readObject()
+                propertiesFileName = obj.getString(hostName)
+            }
             return propertiesFileName
         }
 
