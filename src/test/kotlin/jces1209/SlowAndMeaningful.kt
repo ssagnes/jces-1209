@@ -38,10 +38,9 @@ class SlowAndMeaningful private constructor(
 
         if (null != trafficConfigObj) {
 
-            virtualUser = trafficConfigObj.getProperty("virtualUser")?.toInt() ?: 72
-            ramp = trafficConfigObj.getProperty("ramp")?.toLong() ?: 1
-            maxOverallLoad = trafficConfigObj.getProperty("maxOverallLoad")?.toDouble() ?: 15.0
-
+            virtualUser = trafficConfigObj.getProperty("setting.virtualUsers")?.toInt() ?: 72
+            ramp = trafficConfigObj.getProperty("setting.rampInMinute")?.toLong() ?: 1
+            maxOverallLoad = trafficConfigObj.getProperty("setting.maxOverallLoad")?.toDouble() ?: 15.0
         }
 
         return VirtualUserLoad.Builder()

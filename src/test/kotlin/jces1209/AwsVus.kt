@@ -64,7 +64,7 @@ class AwsVus(
             ).provision()
         }
         val provisioned = MulticastVirtualUsersFormula.Builder(
-                nodes = (configProperties?.getProperty("nodes"))?.toInt() ?: 6,
+                nodes = (configProperties?.getProperty("setting.nodes"))?.toInt() ?: 6,
                 shadowJar = dereference("jpt.virtual-users.shadow-jar")
             )
             .browser(Chromium77())
